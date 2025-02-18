@@ -1,0 +1,181 @@
+module amba_ahb_parametric_new
+
+define N := $PARAM$;
+define IND := N-1;
+
+env boolean[N] hbusreq;
+env boolean[N] hlock;
+env boolean hready;
+env boolean hburst0;
+env boolean hburst1;
+
+sys boolean[N] hmaster;
+sys boolean[N] hgrant;
+sys boolean hmastlock;
+sys boolean start;
+sys boolean decide;
+sys boolean hlocked;
+sys boolean[N] stateA1;
+sys boolean[N] stateG2;
+sys boolean stateG3_0;
+sys boolean stateG3_1;
+sys boolean stateG3_2;
+sys boolean[N] stateG10;
+
+
+define stateA1_false := (forall j in Int(0..IND) . !stateA1[j]);
+define stateA1_next_false := (forall j in Int(0..IND) . next(!stateA1[j]));
+
+assumption
+	!hready;
+assumption
+	forall i in Int(0..IND) . !hbusreq[i];
+assumption
+	forall i in Int(0..IND) . !hlock[i];	
+assumption
+	!hburst0;
+assumption
+	!hburst1;
+//assumption
+//	G forall i in Int(0..IND) . hlock[i] -> hbusreq[i];	
+assumption
+	GF stateA1_false;
+assumption
+	GF hready;
+	
+	
+guarantee
+	G forall i in Int(0..IND) . forall j in Int(0..IND) . (i != j) -> !(stateA1[i] & stateA1[j]);
+guarantee
+	G forall i in Int(0..IND) . forall j in Int(0..IND) . (i != j) -> !(hmaster[i] & hmaster[j]);
+
+
+guarantee
+	forall i in Int(0..IND) . !hmaster[i];
+guarantee
+	hmastlock=false;
+guarantee
+	start=true;
+guarantee
+	decide=true;
+guarantee
+	hlocked=false;
+guarantee
+	hgrant[0]=true;
+guarantee
+	forall i in Int(1..IND) . !hgrant[i];
+guarantee
+	forall i in Int(1..IND) . !stateA1[i];
+guarantee
+	forall i in Int(1..IND) . !stateG2[i];
+guarantee
+	forall i in Int(1..IND) . !stateG10[i];
+
+guarantee
+	G forall i in Int(0..IND) . (stateA1[i] & hbusreq[i]) -> next(stateA1[i]);
+guarantee
+	G forall i in Int(0..IND) . (stateA1[i] & !hbusreq[i]) -> stateA1_next_false;
+guarantee
+	G forall i in Int(0..IND) . (stateA1_false & hmastlock & hmaster[i] & !hburst0 & !hburst1) -> next(stateA1[i]);
+guarantee
+	G forall i in Int(0..IND) . (stateA1_false & (!hmastlock | hburst0 | hburst1)) -> stateA1_next_false;
+	
+guarantee
+	G !hready -> next(!start);
+guarantee
+	G forall i in Int(0..IND) . (!stateG2[i] & !hmastlock) -> next(!stateG2[i]);	
+guarantee
+	G forall i in Int(0..IND) . (!stateG2[i] & !start) -> next(!stateG2[i]);	
+guarantee
+	G forall i in Int(0..IND) . (!stateG2[i] & hburst0) -> next(!stateG2[i]);	
+guarantee
+	G forall i in Int(0..IND) . (!stateG2[i] & hburst1) -> next(!stateG2[i]);	
+guarantee
+	G forall i in Int(0..IND) . (!stateG2[i] & !hmaster[i]) -> next(!stateG2[i]);	
+guarantee
+	G forall i in Int(0..IND) . (!stateG2[i] & hmastlock & start & !hburst0 & !hburst1 & hmaster[i]) -> next(stateG2[i]);	
+guarantee
+	G forall i in Int(0..IND) . (stateG2[i] & !start & hbusreq[i]) -> next(stateG2[i]);	
+guarantee
+	G forall i in Int(0..IND) . (stateG2[i] & start) -> FALSE;
+guarantee
+	G forall i in Int(0..IND) . (stateG2[i] & !start & !hbusreq[i]) -> next(!stateG2[i]);
+
+
+guarantee
+	G((((stateG3_0=false)&(stateG3_1=false)&(stateG3_2=false)&((hmastlock=false)|(start=false)|((hburst0=true)|(hburst1=false)))) ->next((stateG3_0=false)&(stateG3_1=false)&(stateG3_2=false))));
+guarantee
+	G((((stateG3_0=false)&(stateG3_1=false)&(stateG3_2=false)&((hmastlock=true)&(start=true)&((hburst0=false)&(hburst1=true))&(hready=false))) ->next((stateG3_0=true)&(stateG3_1=false)&(stateG3_2=false))));
+guarantee
+	G((((stateG3_0=false)&(stateG3_1=false)&(stateG3_2=false)&((hmastlock=true)&(start=true)&((hburst0=false)&(hburst1=true))&(hready=true))) ->next((stateG3_0=false)&(stateG3_1=true)&(stateG3_2=false))));
+guarantee
+	G((((stateG3_0=true)&(stateG3_1=false)&(stateG3_2=false)&((start=false)&(hready=false))) ->next((stateG3_0=true)&(stateG3_1=false)&(stateG3_2=false))));
+guarantee
+	G((((stateG3_0=true)&(stateG3_1=false)&(stateG3_2=false)&((start=false)&(hready=true))) ->next((stateG3_0=false)&(stateG3_1=true)&(stateG3_2=false))));
+guarantee
+	G((((stateG3_0=true)&(stateG3_1=false)&(stateG3_2=false)&((start=true))) -> FALSE));
+guarantee
+	G((((stateG3_0=false)&(stateG3_1=true)&(stateG3_2=false)&((start=false)&(hready=false))) ->next((stateG3_0=false)&(stateG3_1=true)&(stateG3_2=false))));
+guarantee
+	G((((stateG3_0=false)&(stateG3_1=true)&(stateG3_2=false)&((start=false)&(hready=true))) ->next((stateG3_0=true)&(stateG3_1=true)&(stateG3_2=false))));
+guarantee
+	G((((stateG3_0=false)&(stateG3_1=true)&(stateG3_2=false)&((start=true))) -> FALSE));
+guarantee
+	G((((stateG3_0=true)&(stateG3_1=true)&(stateG3_2=false)&((start=false)&(hready=false))) ->next((stateG3_0=true)&(stateG3_1=true)&(stateG3_2=false))));
+guarantee
+	G((((stateG3_0=true)&(stateG3_1=true)&(stateG3_2=false)&((start=false)&(hready=true))) ->next((stateG3_0=false)&(stateG3_1=false)&(stateG3_2=true))));
+guarantee
+	G((((stateG3_0=true)&(stateG3_1=true)&(stateG3_2=false)&((start=true))) -> FALSE));
+guarantee
+	G((((stateG3_0=false)&(stateG3_1=false)&(stateG3_2=true)&((start=false)&(hready=false))) ->next((stateG3_0=false)&(stateG3_1=false)&(stateG3_2=true))));
+guarantee
+	G((((stateG3_0=false)&(stateG3_1=false)&(stateG3_2=true)&((start=false)&(hready=true))) ->next((stateG3_0=false)&(stateG3_1=false)&(stateG3_2=false))));
+guarantee
+	G((((stateG3_0=false)&(stateG3_1=false)&(stateG3_2=true)&((start=true))) -> FALSE));
+	
+
+guarantee
+	G forall i in Int(0..IND) . hready -> (hgrant[i] = next(hmaster[i]));
+guarantee
+	G hready -> (hlocked <-> next(hmastlock));
+guarantee
+	G forall i in Int(0..IND) . next(!start) -> (hmaster[i] = next(hmaster[i]));	
+	
+guarantee
+	G next(!start) -> ((hmastlock) <-> next(hmastlock));
+guarantee
+	G forall i in Int(0..IND) . (decide & hlock[i] & next(hgrant[i])) -> next(hlocked);
+guarantee
+	G forall i in Int(0..IND) . (decide & !hlock[i] & next(hgrant[i])) -> next(!hlocked);
+guarantee
+	G (decide & (forall j in Int(0..IND) . !hbusreq[j])) -> next(hgrant[0]);
+guarantee
+	G forall i in Int(0..IND) . (!decide) -> (hgrant[i] = next(hgrant[i]));
+
+guarantee
+	G (!decide)-> (hlocked <-> next(hlocked));
+guarantee
+	G forall i in Int(1..IND) . (!stateG10[i] & (hgrant[i] | hbusreq[i])) -> next(!stateG10[i]);
+guarantee
+	G forall i in Int(1..IND) . (!stateG10[i] & !hgrant[i] & !hbusreq[i]) -> next(stateG10[i]);
+guarantee
+	G forall i in Int(1..IND) . (stateG10[i] & !hgrant[i] & !hbusreq[i]) -> next(stateG10[i]);
+guarantee
+	G forall i in Int(1..IND) . (stateG10[i] & hgrant[i] & !hbusreq[i]) -> FALSE;
+guarantee
+	G forall i in Int(1..IND) . (stateG10[i] & hbusreq[i]) -> next(!stateG10[i]);
+guarantee
+	G !stateG10[0];
+
+guarantee G2_false{Int(0..IND) i}: 
+	GF !stateG2[i];
+guarantee
+	GF !stateG3_0 & !stateG3_1 & !stateG3_2;
+guarantee master{Int(0..IND) i}: 
+	GF hmaster[i] | !hbusreq[i];
+	
+	
+@symmetry {
+	arrays: hgrant, hbusreq, hlock, hmaster, stateA1, stateG2, stateG10;
+	indexes: 1..IND;
+}

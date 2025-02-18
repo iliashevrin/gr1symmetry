@@ -1,0 +1,13 @@
+Spec,Size,Remove,Time,Best?,
+specs/full_arbiter_unreal.spectra, 2, -1, 0.211,1.000,
+specs/full_arbiter_unreal.spectra, 2, 0, 0.210,1.000,
+specs/full_arbiter_unreal.spectra, 2, 1, 0.197,1.000,
+specs/full_arbiter_unreal.spectra, 2, 2, 0.208,1.000,
+specs/full_arbiter_unreal.spectra, 3, -1, 2.556,1.000,
+specs/full_arbiter_unreal.spectra, 3, 0, 2.480,1.000,
+specs/full_arbiter_unreal.spectra, 3, 1, 2.778,1.000,
+specs/full_arbiter_unreal.spectra, 3, 2, 2.505,1.000,
+specs/full_arbiter_unreal.spectra, 4, -1, class java.util.concurrent.TimeoutException
+specs/full_arbiter_unreal.spectra, 4, 0, class java.util.concurrent.TimeoutException
+specs/full_arbiter_unreal.spectra, 4, 1, class java.util.concurrent.TimeoutException
+specs/full_arbiter_unreal.spectra, 4, 2, class java.util.concurrent.TimeoutException

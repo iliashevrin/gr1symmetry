@@ -1,0 +1,49 @@
+Spec,Size,Remove,Prep.,Real. Check,Total,
+specs/dining.spectra, 5, -1, 0.784,0.105,0.889,
+specs/dining.spectra, 5, 0, 0.689,0.100,0.789,
+specs/dining.spectra, 5, 1, 0.771,0.073,0.845,
+specs/dining.spectra, 5, 2, 0.741,0.141,0.882,
+specs/dining.spectra, 5, 3, 0.767,0.088,0.855,
+specs/dining.spectra, 5, 4, 0.704,0.042,0.745,
+specs/dining.spectra, 5, 10, 0.751,0.117,0.868,
+specs/dining.spectra, 5, 11, 0.734,0.047,0.781,
+specs/dining.spectra, 8, -1, 0.810,1.278,2.089,
+specs/dining.spectra, 8, 0, 0.827,1.292,2.118,
+specs/dining.spectra, 8, 1, 0.749,1.191,1.940,
+specs/dining.spectra, 8, 2, 0.828,3.422,4.250,
+specs/dining.spectra, 8, 3, 0.725,0.819,1.545,
+specs/dining.spectra, 8, 4, 0.784,0.479,1.263,
+specs/dining.spectra, 8, 13, 0.756,1.307,2.063,
+specs/dining.spectra, 8, 14, 0.777,0.417,1.194,
+specs/dining.spectra, 11, -1, 0.895,11.383,12.278,
+specs/dining.spectra, 11, 0, 0.872,15.456,16.328,
+specs/dining.spectra, 11, 1, 0.933,46.543,47.476,
+specs/dining.spectra, 11, 2, 0.898,13.560,14.458,
+specs/dining.spectra, 11, 3, 0.839,13.148,13.987,
+specs/dining.spectra, 11, 4, 0.849,1.695,2.544,
+specs/dining.spectra, 11, 16, 0.871,9.919,10.790,
+specs/dining.spectra, 11, 17, 0.953,6.503,7.456,
+specs/dining.spectra, 14, -1, 1.066,100.697,101.763,
+specs/dining.spectra, 14, 0, 1.054,51.011,52.065,
+specs/dining.spectra, 14, 1, 0.902,182.884,183.785,
+specs/dining.spectra, 14, 2, 1.063,103.881,104.945,
+specs/dining.spectra, 14, 3, 1.122,173.995,175.117,
+specs/dining.spectra, 14, 4, 1.085,3.538,4.623,
+specs/dining.spectra, 14, 19, 0.977,67.910,68.887,
+specs/dining.spectra, 14, 20, 1.020,43.356,44.376,
+specs/dining.spectra, 17, -1, class java.util.concurrent.TimeoutException
+specs/dining.spectra, 17, 0, 4.445,238.662,243.107,
+specs/dining.spectra, 17, 1, class java.util.concurrent.TimeoutException
+specs/dining.spectra, 17, 2, class java.util.concurrent.TimeoutException
+specs/dining.spectra, 17, 3, class java.util.concurrent.TimeoutException
+specs/dining.spectra, 17, 4, 4.600,12.632,17.233,
+specs/dining.spectra, 17, 22, class java.util.concurrent.TimeoutException
+specs/dining.spectra, 17, 23, class java.util.concurrent.TimeoutException
+specs/dining.spectra, 20, -1, class java.util.concurrent.TimeoutException
+specs/dining.spectra, 20, 0, class java.util.concurrent.TimeoutException
+specs/dining.spectra, 20, 1, class java.util.concurrent.TimeoutException
+specs/dining.spectra, 20, 2, class java.util.concurrent.TimeoutException
+specs/dining.spectra, 20, 3, class java.util.concurrent.TimeoutException
+specs/dining.spectra, 20, 4, 19.764,28.759,48.523,
+specs/dining.spectra, 20, 25, class java.util.concurrent.TimeoutException
+specs/dining.spectra, 20, 26, class java.util.concurrent.TimeoutException

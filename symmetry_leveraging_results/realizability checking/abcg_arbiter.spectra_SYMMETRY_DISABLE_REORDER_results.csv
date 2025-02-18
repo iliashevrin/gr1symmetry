@@ -1,0 +1,61 @@
+Spec,Size,Remove,Prep.,Real. Check,Total,
+specs/abcg_arbiter.spectra, 10, -1, 0.694,16.607,17.301,
+specs/abcg_arbiter.spectra, 10, 0, 1.059,0.141,1.200,
+specs/abcg_arbiter.spectra, 10, 1, 0.761,1.363,2.123,
+specs/abcg_arbiter.spectra, 10, 2, 0.689,7.085,7.774,
+specs/abcg_arbiter.spectra, 10, 3, 0.676,25.758,26.433,
+specs/abcg_arbiter.spectra, 10, 4, 0.826,14.328,15.154,
+specs/abcg_arbiter.spectra, 10, 5, 0.801,76.770,77.571,
+specs/abcg_arbiter.spectra, 10, 6, 0.721,4.401,5.123,
+specs/abcg_arbiter.spectra, 10, 7, 0.783,16.839,17.622,
+specs/abcg_arbiter.spectra, 10, 8, 0.757,24.211,24.968,
+specs/abcg_arbiter.spectra, 20, -1, 2.006,15.472,17.478,
+specs/abcg_arbiter.spectra, 20, 0, 1.146,0.386,1.532,
+specs/abcg_arbiter.spectra, 20, 1, 1.672,4.593,6.265,
+specs/abcg_arbiter.spectra, 20, 2, 1.688,16.361,18.050,
+specs/abcg_arbiter.spectra, 20, 3, 1.817,12.363,14.180,
+specs/abcg_arbiter.spectra, 20, 4, class java.util.concurrent.TimeoutException
+specs/abcg_arbiter.spectra, 20, 5, class java.util.concurrent.TimeoutException
+specs/abcg_arbiter.spectra, 20, 6, 1.708,21.865,23.573,
+specs/abcg_arbiter.spectra, 20, 7, 1.779,13.742,15.521,
+specs/abcg_arbiter.spectra, 20, 8, 1.805,12.539,14.344,
+specs/abcg_arbiter.spectra, 30, -1, 4.898,96.103,101.001,
+specs/abcg_arbiter.spectra, 30, 0, 2.664,1.325,3.989,
+specs/abcg_arbiter.spectra, 30, 1, 5.021,23.599,28.620,
+specs/abcg_arbiter.spectra, 30, 2, 5.481,89.419,94.900,
+specs/abcg_arbiter.spectra, 30, 3, 4.526,50.124,54.650,
+specs/abcg_arbiter.spectra, 30, 4, class java.util.concurrent.TimeoutException
+specs/abcg_arbiter.spectra, 30, 5, class java.util.concurrent.TimeoutException
+specs/abcg_arbiter.spectra, 30, 6, class java.util.concurrent.TimeoutException
+specs/abcg_arbiter.spectra, 30, 7, 4.907,112.188,117.095,
+specs/abcg_arbiter.spectra, 30, 8, 5.037,98.069,103.106,
+specs/abcg_arbiter.spectra, 40, -1, 13.613,88.366,101.979,
+specs/abcg_arbiter.spectra, 40, 0, 7.772,3.384,11.157,
+specs/abcg_arbiter.spectra, 40, 1, 13.626,40.525,54.150,
+specs/abcg_arbiter.spectra, 40, 2, 13.378,95.774,109.153,
+specs/abcg_arbiter.spectra, 40, 3, 13.117,129.727,142.844,
+specs/abcg_arbiter.spectra, 40, 4, class java.util.concurrent.TimeoutException
+specs/abcg_arbiter.spectra, 40, 5, class java.util.concurrent.TimeoutException
+specs/abcg_arbiter.spectra, 40, 6, class java.util.concurrent.TimeoutException
+specs/abcg_arbiter.spectra, 40, 7, 13.671,98.523,112.193,
+specs/abcg_arbiter.spectra, 40, 8, 13.390,86.488,99.878,
+specs/abcg_arbiter.spectra, 50, -1, 25.188,338.617,363.805,
+specs/abcg_arbiter.spectra, 50, 0, 24.707,12.069,36.776,
+specs/abcg_arbiter.spectra, 50, 1, 21.867,91.310,113.178,
+specs/abcg_arbiter.spectra, 50, 2, 22.483,302.020,324.503,
+specs/abcg_arbiter.spectra, 50, 3, 24.332,333.277,357.609,
+specs/abcg_arbiter.spectra, 50, 4, class java.util.concurrent.TimeoutException
+specs/abcg_arbiter.spectra, 50, 5, class java.util.concurrent.TimeoutException
+specs/abcg_arbiter.spectra, 50, 6, 22.428,48.815,71.243,
+specs/abcg_arbiter.spectra, 50, 7, 22.286,284.232,306.518,
+specs/abcg_arbiter.spectra, 50, 8, 24.656,301.149,325.805,
+specs/abcg_arbiter.spectra, 60, -1, class java.util.concurrent.TimeoutException
+specs/abcg_arbiter.spectra, 60, 0, 50.235,19.788,70.023,
+specs/abcg_arbiter.spectra, 60, 1, class java.util.concurrent.TimeoutException
+specs/abcg_arbiter.spectra, 60, 2, class java.util.concurrent.TimeoutException
+specs/abcg_arbiter.spectra, 60, 3, class java.util.concurrent.TimeoutException
+specs/abcg_arbiter.spectra, 60, 4, class java.util.concurrent.TimeoutException
+specs/abcg_arbiter.spectra, 60, 5, class java.util.concurrent.TimeoutException
+specs/abcg_arbiter.spectra, 60, 6, class java.util.concurrent.TimeoutException
+specs/abcg_arbiter.spectra, 60, 7, class java.util.concurrent.TimeoutException
+specs/abcg_arbiter.spectra, 60, 8, class java.util.concurrent.TimeoutException

@@ -1,0 +1,33 @@
+import "DwyerPatterns.spectra"
+module DiningPhilosophers     
+
+type State = {FREE, LEFT, RIGHT};
+define N := $PARAM$;
+env boolean[N] hungry;
+sys State[N] forks;
+predicate hasTwoForks(Int(0..(N-1)) i):
+	forks[i%N] = RIGHT & forks[(i+1)%N] = LEFT;
+
+asm initialNoHungry: forall i in Int(0..(N-1)) . !hungry[i];
+
+asm keepBeingHungry: G forall i in Int(0..(N-1)) . (hungry[i] & !hasTwoForks(i)) -> next(hungry[i]);
+
+asm stopsEating{Int(0..(N-1)) i}: S_responds_to_P_globally(!hungry[i], hasTwoForks(i));
+
+gar initialForksFree: forall i in Int(0..(N-1)) . forks[i] = FREE;
+
+gar alwaysKeepForksWhileEating: G forall i in Int(0..(N-1)) . (hasTwoForks(i) & hungry[i]) -> (next(hasTwoForks(i)));
+
+gar alwaysGiveLeftAndRightTogether: G forall i in Int(0..(N-1)) . (forks[i] = RIGHT <-> forks[(i+1)%N] = LEFT);
+
+gar mustPutDownFork: G forall i in Int(0..(N-1)) . (forks[i] = LEFT -> next(forks[i]) != RIGHT) & (forks[i] = RIGHT -> next(forks[i]) != LEFT);
+
+gar dontGiveForkIfNoHungry: G forall i in Int(0..(N-1)) . (!hungry[i] -> (next(forks[i] != RIGHT) & next(forks[(i+1)%N] != LEFT)));
+
+gar eventuallyEats{Int(0..(N-1)) i}: S_responds_to_P_globally(hasTwoForks(i), hungry[i]);
+
+@symmetry {
+	arrays: hungry,forks;
+	indexes: 0..(N-1);
+}
+

@@ -1,0 +1,484 @@
+Spec,Size,Remove,Prep.,Real. Check,Total,
+specs/amba_unreal_wgf.spectra, 4, -1, 0.536,60.157,60.692,
+specs/amba_unreal_wgf.spectra, 4, 0, 0.549,48.644,49.193,
+specs/amba_unreal_wgf.spectra, 4, 1, 0.513,38.811,39.323,
+specs/amba_unreal_wgf.spectra, 4, 2, 0.582,62.647,63.229,
+specs/amba_unreal_wgf.spectra, 4, 3, 0.506,75.015,75.521,
+specs/amba_unreal_wgf.spectra, 4, 4, 0.546,60.113,60.659,
+specs/amba_unreal_wgf.spectra, 4, 5, 0.514,67.173,67.687,
+specs/amba_unreal_wgf.spectra, 4, 6, 0.522,63.479,64.001,
+specs/amba_unreal_wgf.spectra, 4, 7, 0.514,64.373,64.887,
+specs/amba_unreal_wgf.spectra, 4, 8, 0.530,47.388,47.918,
+specs/amba_unreal_wgf.spectra, 4, 9, 0.513,53.544,54.056,
+specs/amba_unreal_wgf.spectra, 4, 10, 0.564,54.565,55.129,
+specs/amba_unreal_wgf.spectra, 4, 11, 0.542,61.349,61.891,
+specs/amba_unreal_wgf.spectra, 4, 12, 0.548,29.360,29.908,
+specs/amba_unreal_wgf.spectra, 4, 13, 0.526,17.297,17.823,
+specs/amba_unreal_wgf.spectra, 4, 14, 0.576,51.156,51.732,
+specs/amba_unreal_wgf.spectra, 4, 15, 0.682,37.056,37.738,
+specs/amba_unreal_wgf.spectra, 4, 16, 0.603,67.384,67.986,
+specs/amba_unreal_wgf.spectra, 4, 17, 0.574,75.924,76.498,
+specs/amba_unreal_wgf.spectra, 4, 18, 0.560,57.529,58.089,
+specs/amba_unreal_wgf.spectra, 4, 19, 0.552,47.833,48.386,
+specs/amba_unreal_wgf.spectra, 4, 20, 0.497,66.640,67.137,
+specs/amba_unreal_wgf.spectra, 4, 21, 0.515,64.016,64.531,
+specs/amba_unreal_wgf.spectra, 4, 22, 0.541,28.394,28.935,
+specs/amba_unreal_wgf.spectra, 4, 23, 0.490,13.810,14.300,
+specs/amba_unreal_wgf.spectra, 4, 24, 0.516,8.107,8.623,
+specs/amba_unreal_wgf.spectra, 4, 25, 0.520,80.880,81.400,
+specs/amba_unreal_wgf.spectra, 4, 26, 0.518,39.807,40.324,
+specs/amba_unreal_wgf.spectra, 4, 27, 0.535,52.064,52.599,
+specs/amba_unreal_wgf.spectra, 4, 28, 0.524,47.021,47.545,
+specs/amba_unreal_wgf.spectra, 4, 29, 0.509,46.588,47.096,
+specs/amba_unreal_wgf.spectra, 4, 30, 0.486,43.875,44.361,
+specs/amba_unreal_wgf.spectra, 4, 31, 0.518,57.156,57.674,
+specs/amba_unreal_wgf.spectra, 4, 32, 0.529,40.817,41.346,
+specs/amba_unreal_wgf.spectra, 4, 33, 0.537,37.165,37.702,
+specs/amba_unreal_wgf.spectra, 4, 34, 0.568,34.111,34.680,
+specs/amba_unreal_wgf.spectra, 4, 35, 0.493,51.639,52.132,
+specs/amba_unreal_wgf.spectra, 4, 36, 0.527,56.598,57.125,
+specs/amba_unreal_wgf.spectra, 4, 37, 0.535,53.583,54.118,
+specs/amba_unreal_wgf.spectra, 4, 38, 0.518,60.540,61.058,
+specs/amba_unreal_wgf.spectra, 4, 39, 0.504,60.810,61.314,
+specs/amba_unreal_wgf.spectra, 4, 40, 0.513,59.093,59.606,
+specs/amba_unreal_wgf.spectra, 4, 41, 0.517,1.473,1.990,
+specs/amba_unreal_wgf.spectra, 4, 42, 0.538,8.330,8.868,
+specs/amba_unreal_wgf.spectra, 4, 43, 0.508,12.240,12.748,
+specs/amba_unreal_wgf.spectra, 4, 44, 0.527,26.567,27.095,
+specs/amba_unreal_wgf.spectra, 4, 45, 0.527,35.489,36.015,
+specs/amba_unreal_wgf.spectra, 4, 46, 0.511,37.867,38.379,
+specs/amba_unreal_wgf.spectra, 4, 47, 0.501,40.264,40.765,
+specs/amba_unreal_wgf.spectra, 4, 48, 0.484,29.036,29.520,
+specs/amba_unreal_wgf.spectra, 4, 49, 0.535,38.439,38.975,
+specs/amba_unreal_wgf.spectra, 4, 50, 0.490,54.364,54.854,
+specs/amba_unreal_wgf.spectra, 4, 51, 0.487,53.426,53.913,
+specs/amba_unreal_wgf.spectra, 4, 52, 0.484,73.332,73.817,
+specs/amba_unreal_wgf.spectra, 4, 53, 0.499,47.452,47.951,
+specs/amba_unreal_wgf.spectra, 4, 54, 0.504,80.929,81.433,
+specs/amba_unreal_wgf.spectra, 4, 55, 0.502,51.002,51.504,
+specs/amba_unreal_wgf.spectra, 4, 56, 0.501,60.770,61.270,
+specs/amba_unreal_wgf.spectra, 4, 60, 0.519,64.322,64.841,
+specs/amba_unreal_wgf.spectra, 4, 61, 0.508,45.632,46.140,
+specs/amba_unreal_wgf.spectra, 4, 65, 0.521,61.855,62.375,
+specs/amba_unreal_wgf.spectra, 4, 66, 0.498,54.287,54.784,
+specs/amba_unreal_wgf.spectra, 4, 67, 0.521,51.073,51.594,
+specs/amba_unreal_wgf.spectra, 4, 68, 0.486,47.231,47.718,
+specs/amba_unreal_wgf.spectra, 4, 69, 0.511,76.088,76.599,
+specs/amba_unreal_wgf.spectra, 4, 70, 0.502,50.758,51.260,
+specs/amba_unreal_wgf.spectra, 4, 71, 0.492,24.837,25.329,
+specs/amba_unreal_wgf.spectra, 4, 72, 0.523,5.346,5.869,
+specs/amba_unreal_wgf.spectra, 4, 73, 0.497,13.030,13.526,
+specs/amba_unreal_wgf.spectra, 5, -1, 0.527,73.821,74.348,
+specs/amba_unreal_wgf.spectra, 5, 0, 0.530,79.262,79.791,
+specs/amba_unreal_wgf.spectra, 5, 1, 0.536,69.176,69.712,
+specs/amba_unreal_wgf.spectra, 5, 2, 0.551,66.471,67.022,
+specs/amba_unreal_wgf.spectra, 5, 3, 0.531,72.190,72.722,
+specs/amba_unreal_wgf.spectra, 5, 4, 0.529,72.308,72.836,
+specs/amba_unreal_wgf.spectra, 5, 5, 0.534,58.930,59.464,
+specs/amba_unreal_wgf.spectra, 5, 6, 0.560,68.318,68.878,
+specs/amba_unreal_wgf.spectra, 5, 7, 0.531,74.029,74.560,
+specs/amba_unreal_wgf.spectra, 5, 8, 0.515,68.688,69.203,
+specs/amba_unreal_wgf.spectra, 5, 9, 0.550,67.297,67.848,
+specs/amba_unreal_wgf.spectra, 5, 10, 0.530,63.899,64.429,
+specs/amba_unreal_wgf.spectra, 5, 11, 0.493,62.302,62.796,
+specs/amba_unreal_wgf.spectra, 5, 12, 0.504,54.507,55.011,
+specs/amba_unreal_wgf.spectra, 5, 13, 0.511,25.138,25.648,
+specs/amba_unreal_wgf.spectra, 5, 14, 0.519,56.551,57.070,
+specs/amba_unreal_wgf.spectra, 5, 15, 0.528,62.711,63.239,
+specs/amba_unreal_wgf.spectra, 5, 16, 0.505,64.440,64.945,
+specs/amba_unreal_wgf.spectra, 5, 17, 0.517,67.919,68.436,
+specs/amba_unreal_wgf.spectra, 5, 18, 0.562,74.263,74.824,
+specs/amba_unreal_wgf.spectra, 5, 19, 0.546,69.590,70.136,
+specs/amba_unreal_wgf.spectra, 5, 20, 0.524,72.612,73.136,
+specs/amba_unreal_wgf.spectra, 5, 21, 0.523,75.923,76.446,
+specs/amba_unreal_wgf.spectra, 5, 22, 0.511,36.933,37.445,
+specs/amba_unreal_wgf.spectra, 5, 23, 0.522,16.693,17.214,
+specs/amba_unreal_wgf.spectra, 5, 24, 0.499,34.595,35.094,
+specs/amba_unreal_wgf.spectra, 5, 25, 0.529,62.292,62.821,
+specs/amba_unreal_wgf.spectra, 5, 26, 0.523,46.759,47.282,
+specs/amba_unreal_wgf.spectra, 5, 27, 0.541,53.321,53.862,
+specs/amba_unreal_wgf.spectra, 5, 28, 0.509,59.410,59.919,
+specs/amba_unreal_wgf.spectra, 5, 29, 0.536,55.027,55.563,
+specs/amba_unreal_wgf.spectra, 5, 30, 0.528,51.759,52.288,
+specs/amba_unreal_wgf.spectra, 5, 31, 0.505,76.121,76.625,
+specs/amba_unreal_wgf.spectra, 5, 32, 0.527,54.767,55.294,
+specs/amba_unreal_wgf.spectra, 5, 33, 0.516,51.658,52.174,
+specs/amba_unreal_wgf.spectra, 5, 34, 0.528,51.420,51.948,
+specs/amba_unreal_wgf.spectra, 5, 35, 0.511,65.311,65.822,
+specs/amba_unreal_wgf.spectra, 5, 36, 0.545,55.911,56.456,
+specs/amba_unreal_wgf.spectra, 5, 37, 0.529,51.172,51.701,
+specs/amba_unreal_wgf.spectra, 5, 38, 0.497,52.795,53.293,
+specs/amba_unreal_wgf.spectra, 5, 39, 0.517,62.240,62.757,
+specs/amba_unreal_wgf.spectra, 5, 40, 0.514,56.302,56.816,
+specs/amba_unreal_wgf.spectra, 5, 41, 0.500,3.442,3.941,
+specs/amba_unreal_wgf.spectra, 5, 42, 0.520,13.063,13.583,
+specs/amba_unreal_wgf.spectra, 5, 43, 0.500,14.905,15.405,
+specs/amba_unreal_wgf.spectra, 5, 44, 0.524,58.524,59.048,
+specs/amba_unreal_wgf.spectra, 5, 45, 0.523,40.119,40.641,
+specs/amba_unreal_wgf.spectra, 5, 46, 0.504,40.709,41.213,
+specs/amba_unreal_wgf.spectra, 5, 47, 0.501,47.373,47.875,
+specs/amba_unreal_wgf.spectra, 5, 48, 0.490,30.417,30.906,
+specs/amba_unreal_wgf.spectra, 5, 49, 0.512,74.340,74.852,
+specs/amba_unreal_wgf.spectra, 5, 50, 0.515,77.541,78.055,
+specs/amba_unreal_wgf.spectra, 5, 51, 0.543,58.956,59.499,
+specs/amba_unreal_wgf.spectra, 5, 52, 0.513,70.657,71.170,
+specs/amba_unreal_wgf.spectra, 5, 53, 0.480,105.309,105.789,
+specs/amba_unreal_wgf.spectra, 5, 54, 0.509,60.871,61.380,
+specs/amba_unreal_wgf.spectra, 5, 55, 0.518,75.901,76.420,
+specs/amba_unreal_wgf.spectra, 5, 56, 0.521,77.260,77.781,
+specs/amba_unreal_wgf.spectra, 5, 61, 0.562,59.134,59.695,
+specs/amba_unreal_wgf.spectra, 5, 62, 0.510,65.388,65.898,
+specs/amba_unreal_wgf.spectra, 5, 67, 0.526,86.650,87.176,
+specs/amba_unreal_wgf.spectra, 5, 68, 0.510,59.227,59.737,
+specs/amba_unreal_wgf.spectra, 5, 69, 0.513,77.625,78.138,
+specs/amba_unreal_wgf.spectra, 5, 70, 0.521,89.507,90.027,
+specs/amba_unreal_wgf.spectra, 5, 71, 0.530,64.338,64.869,
+specs/amba_unreal_wgf.spectra, 5, 72, 0.541,65.891,66.432,
+specs/amba_unreal_wgf.spectra, 5, 73, 0.495,58.734,59.229,
+specs/amba_unreal_wgf.spectra, 5, 74, 0.555,8.679,9.233,
+specs/amba_unreal_wgf.spectra, 5, 75, 0.513,13.180,13.693,
+specs/amba_unreal_wgf.spectra, 6, -1, 0.547,132.489,133.036,
+specs/amba_unreal_wgf.spectra, 6, 0, 0.525,155.585,156.110,
+specs/amba_unreal_wgf.spectra, 6, 1, 0.551,108.816,109.368,
+specs/amba_unreal_wgf.spectra, 6, 2, Could not start thread
+specs/amba_unreal_wgf.spectra, 6, 3, Could not start thread
+specs/amba_unreal_wgf.spectra, 6, 4, Could not start thread
+specs/amba_unreal_wgf.spectra, 6, 5, Could not start thread
+specs/amba_unreal_wgf.spectra, 6, 6, Could not start thread
+specs/amba_unreal_wgf.spectra, 6, 7, Could not start thread
+specs/amba_unreal_wgf.spectra, 6, 8, Could not start thread
+specs/amba_unreal_wgf.spectra, 6, 9, Could not start thread
+specs/amba_unreal_wgf.spectra, 6, 10, Could not start thread
+specs/amba_unreal_wgf.spectra, 6, 11, Could not start thread
+specs/amba_unreal_wgf.spectra, 6, 12, Could not start thread
+specs/amba_unreal_wgf.spectra, 6, 13, Could not start thread
+specs/amba_unreal_wgf.spectra, 6, 14, Could not start thread
+specs/amba_unreal_wgf.spectra, 6, 15, Could not start thread
+specs/amba_unreal_wgf.spectra, 6, 16, Could not start thread
+specs/amba_unreal_wgf.spectra, 6, 17, Could not start thread
+specs/amba_unreal_wgf.spectra, 6, 18, Could not start thread
+specs/amba_unreal_wgf.spectra, 6, 19, Could not start thread
+specs/amba_unreal_wgf.spectra, 6, 20, Could not start thread
+specs/amba_unreal_wgf.spectra, 6, 21, Could not start thread
+specs/amba_unreal_wgf.spectra, 6, 22, Could not start thread
+specs/amba_unreal_wgf.spectra, 6, 23, Could not start thread
+specs/amba_unreal_wgf.spectra, 6, 24, Could not start thread
+specs/amba_unreal_wgf.spectra, 6, 25, Could not start thread
+specs/amba_unreal_wgf.spectra, 6, 26, Could not start thread
+specs/amba_unreal_wgf.spectra, 6, 27, Could not start thread
+specs/amba_unreal_wgf.spectra, 6, 28, Could not start thread
+specs/amba_unreal_wgf.spectra, 6, 29, Could not start thread
+specs/amba_unreal_wgf.spectra, 6, 30, Could not start thread
+specs/amba_unreal_wgf.spectra, 6, 31, Could not start thread
+specs/amba_unreal_wgf.spectra, 6, 32, Could not start thread
+specs/amba_unreal_wgf.spectra, 6, 33, Could not start thread
+specs/amba_unreal_wgf.spectra, 6, 34, Could not start thread
+specs/amba_unreal_wgf.spectra, 6, 35, Could not start thread
+specs/amba_unreal_wgf.spectra, 6, 36, Could not start thread
+specs/amba_unreal_wgf.spectra, 6, 37, Could not start thread
+specs/amba_unreal_wgf.spectra, 6, 38, Could not start thread
+specs/amba_unreal_wgf.spectra, 6, 39, Could not start thread
+specs/amba_unreal_wgf.spectra, 6, 40, Could not start thread
+specs/amba_unreal_wgf.spectra, 6, 41, Could not start thread
+specs/amba_unreal_wgf.spectra, 6, 42, Could not start thread
+specs/amba_unreal_wgf.spectra, 6, 43, Could not start thread
+specs/amba_unreal_wgf.spectra, 6, 44, Could not start thread
+specs/amba_unreal_wgf.spectra, 6, 45, Could not start thread
+specs/amba_unreal_wgf.spectra, 6, 46, Could not start thread
+specs/amba_unreal_wgf.spectra, 6, 47, Could not start thread
+specs/amba_unreal_wgf.spectra, 6, 48, Could not start thread
+specs/amba_unreal_wgf.spectra, 6, 49, Could not start thread
+specs/amba_unreal_wgf.spectra, 6, 50, Could not start thread
+specs/amba_unreal_wgf.spectra, 6, 51, Could not start thread
+specs/amba_unreal_wgf.spectra, 6, 52, Could not start thread
+specs/amba_unreal_wgf.spectra, 6, 53, Could not start thread
+specs/amba_unreal_wgf.spectra, 6, 54, Could not start thread
+specs/amba_unreal_wgf.spectra, 6, 55, Could not start thread
+specs/amba_unreal_wgf.spectra, 6, 56, Could not start thread
+specs/amba_unreal_wgf.spectra, 6, 62, Could not start thread
+specs/amba_unreal_wgf.spectra, 6, 63, Could not start thread
+specs/amba_unreal_wgf.spectra, 6, 69, Could not start thread
+specs/amba_unreal_wgf.spectra, 6, 70, Could not start thread
+specs/amba_unreal_wgf.spectra, 6, 71, Could not start thread
+specs/amba_unreal_wgf.spectra, 6, 72, Could not start thread
+specs/amba_unreal_wgf.spectra, 6, 73, Could not start thread
+specs/amba_unreal_wgf.spectra, 6, 74, Could not start thread
+specs/amba_unreal_wgf.spectra, 6, 75, Could not start thread
+specs/amba_unreal_wgf.spectra, 6, 76, Could not start thread
+specs/amba_unreal_wgf.spectra, 6, 77, Could not start thread
+specs/amba_unreal_wgf.spectra, 7, -1, Could not start thread
+specs/amba_unreal_wgf.spectra, 7, 0, Could not start thread
+specs/amba_unreal_wgf.spectra, 7, 1, Could not start thread
+specs/amba_unreal_wgf.spectra, 7, 2, Could not start thread
+specs/amba_unreal_wgf.spectra, 7, 3, Could not start thread
+specs/amba_unreal_wgf.spectra, 7, 4, Could not start thread
+specs/amba_unreal_wgf.spectra, 7, 5, Could not start thread
+specs/amba_unreal_wgf.spectra, 7, 6, Could not start thread
+specs/amba_unreal_wgf.spectra, 7, 7, Could not start thread
+specs/amba_unreal_wgf.spectra, 7, 8, Could not start thread
+specs/amba_unreal_wgf.spectra, 7, 9, Could not start thread
+specs/amba_unreal_wgf.spectra, 7, 10, Could not start thread
+specs/amba_unreal_wgf.spectra, 7, 11, Could not start thread
+specs/amba_unreal_wgf.spectra, 7, 12, Could not start thread
+specs/amba_unreal_wgf.spectra, 7, 13, Could not start thread
+specs/amba_unreal_wgf.spectra, 7, 14, Could not start thread
+specs/amba_unreal_wgf.spectra, 7, 15, Could not start thread
+specs/amba_unreal_wgf.spectra, 7, 16, Could not start thread
+specs/amba_unreal_wgf.spectra, 7, 17, Could not start thread
+specs/amba_unreal_wgf.spectra, 7, 18, Could not start thread
+specs/amba_unreal_wgf.spectra, 7, 19, Could not start thread
+specs/amba_unreal_wgf.spectra, 7, 20, Could not start thread
+specs/amba_unreal_wgf.spectra, 7, 21, Could not start thread
+specs/amba_unreal_wgf.spectra, 7, 22, Could not start thread
+specs/amba_unreal_wgf.spectra, 7, 23, Could not start thread
+specs/amba_unreal_wgf.spectra, 7, 24, Could not start thread
+specs/amba_unreal_wgf.spectra, 7, 25, Could not start thread
+specs/amba_unreal_wgf.spectra, 7, 26, Could not start thread
+specs/amba_unreal_wgf.spectra, 7, 27, Could not start thread
+specs/amba_unreal_wgf.spectra, 7, 28, Could not start thread
+specs/amba_unreal_wgf.spectra, 7, 29, Could not start thread
+specs/amba_unreal_wgf.spectra, 7, 30, Could not start thread
+specs/amba_unreal_wgf.spectra, 7, 31, Could not start thread
+specs/amba_unreal_wgf.spectra, 7, 32, Could not start thread
+specs/amba_unreal_wgf.spectra, 7, 33, Could not start thread
+specs/amba_unreal_wgf.spectra, 7, 34, Could not start thread
+specs/amba_unreal_wgf.spectra, 7, 35, Could not start thread
+specs/amba_unreal_wgf.spectra, 7, 36, Could not start thread
+specs/amba_unreal_wgf.spectra, 7, 37, Could not start thread
+specs/amba_unreal_wgf.spectra, 7, 38, Could not start thread
+specs/amba_unreal_wgf.spectra, 7, 39, Could not start thread
+specs/amba_unreal_wgf.spectra, 7, 40, Could not start thread
+specs/amba_unreal_wgf.spectra, 7, 41, Could not start thread
+specs/amba_unreal_wgf.spectra, 7, 42, Could not start thread
+specs/amba_unreal_wgf.spectra, 7, 43, Could not start thread
+specs/amba_unreal_wgf.spectra, 7, 44, Could not start thread
+specs/amba_unreal_wgf.spectra, 7, 45, Could not start thread
+specs/amba_unreal_wgf.spectra, 7, 46, Could not start thread
+specs/amba_unreal_wgf.spectra, 7, 47, Could not start thread
+specs/amba_unreal_wgf.spectra, 7, 48, Could not start thread
+specs/amba_unreal_wgf.spectra, 7, 49, Could not start thread
+specs/amba_unreal_wgf.spectra, 7, 50, Could not start thread
+specs/amba_unreal_wgf.spectra, 7, 51, Could not start thread
+specs/amba_unreal_wgf.spectra, 7, 52, Could not start thread
+specs/amba_unreal_wgf.spectra, 7, 53, Could not start thread
+specs/amba_unreal_wgf.spectra, 7, 54, Could not start thread
+specs/amba_unreal_wgf.spectra, 7, 55, Could not start thread
+specs/amba_unreal_wgf.spectra, 7, 56, Could not start thread
+specs/amba_unreal_wgf.spectra, 7, 63, Could not start thread
+specs/amba_unreal_wgf.spectra, 7, 64, Could not start thread
+specs/amba_unreal_wgf.spectra, 7, 71, Could not start thread
+specs/amba_unreal_wgf.spectra, 7, 72, Could not start thread
+specs/amba_unreal_wgf.spectra, 7, 73, Could not start thread
+specs/amba_unreal_wgf.spectra, 7, 74, Could not start thread
+specs/amba_unreal_wgf.spectra, 7, 75, Could not start thread
+specs/amba_unreal_wgf.spectra, 7, 76, Could not start thread
+specs/amba_unreal_wgf.spectra, 7, 77, Could not start thread
+specs/amba_unreal_wgf.spectra, 7, 78, Could not start thread
+specs/amba_unreal_wgf.spectra, 7, 79, Could not start thread
+specs/amba_unreal_wgf.spectra, 8, -1, Could not start thread
+specs/amba_unreal_wgf.spectra, 8, 0, Could not start thread
+specs/amba_unreal_wgf.spectra, 8, 1, Could not start thread
+specs/amba_unreal_wgf.spectra, 8, 2, Could not start thread
+specs/amba_unreal_wgf.spectra, 8, 3, Could not start thread
+specs/amba_unreal_wgf.spectra, 8, 4, Could not start thread
+specs/amba_unreal_wgf.spectra, 8, 5, Could not start thread
+specs/amba_unreal_wgf.spectra, 8, 6, Could not start thread
+specs/amba_unreal_wgf.spectra, 8, 7, Could not start thread
+specs/amba_unreal_wgf.spectra, 8, 8, Could not start thread
+specs/amba_unreal_wgf.spectra, 8, 9, Could not start thread
+specs/amba_unreal_wgf.spectra, 8, 10, Could not start thread
+specs/amba_unreal_wgf.spectra, 8, 11, Could not start thread
+specs/amba_unreal_wgf.spectra, 8, 12, Could not start thread
+specs/amba_unreal_wgf.spectra, 8, 13, Could not start thread
+specs/amba_unreal_wgf.spectra, 8, 14, Could not start thread
+specs/amba_unreal_wgf.spectra, 8, 15, Could not start thread
+specs/amba_unreal_wgf.spectra, 8, 16, Could not start thread
+specs/amba_unreal_wgf.spectra, 8, 17, Could not start thread
+specs/amba_unreal_wgf.spectra, 8, 18, Could not start thread
+specs/amba_unreal_wgf.spectra, 8, 19, Could not start thread
+specs/amba_unreal_wgf.spectra, 8, 20, Could not start thread
+specs/amba_unreal_wgf.spectra, 8, 21, Could not start thread
+specs/amba_unreal_wgf.spectra, 8, 22, Could not start thread
+specs/amba_unreal_wgf.spectra, 8, 23, Could not start thread
+specs/amba_unreal_wgf.spectra, 8, 24, Could not start thread
+specs/amba_unreal_wgf.spectra, 8, 25, Could not start thread
+specs/amba_unreal_wgf.spectra, 8, 26, Could not start thread
+specs/amba_unreal_wgf.spectra, 8, 27, Could not start thread
+specs/amba_unreal_wgf.spectra, 8, 28, Could not start thread
+specs/amba_unreal_wgf.spectra, 8, 29, Could not start thread
+specs/amba_unreal_wgf.spectra, 8, 30, Could not start thread
+specs/amba_unreal_wgf.spectra, 8, 31, Could not start thread
+specs/amba_unreal_wgf.spectra, 8, 32, Could not start thread
+specs/amba_unreal_wgf.spectra, 8, 33, Could not start thread
+specs/amba_unreal_wgf.spectra, 8, 34, Could not start thread
+specs/amba_unreal_wgf.spectra, 8, 35, Could not start thread
+specs/amba_unreal_wgf.spectra, 8, 36, Could not start thread
+specs/amba_unreal_wgf.spectra, 8, 37, Could not start thread
+specs/amba_unreal_wgf.spectra, 8, 38, Could not start thread
+specs/amba_unreal_wgf.spectra, 8, 39, Could not start thread
+specs/amba_unreal_wgf.spectra, 8, 40, Could not start thread
+specs/amba_unreal_wgf.spectra, 8, 41, Could not start thread
+specs/amba_unreal_wgf.spectra, 8, 42, Could not start thread
+specs/amba_unreal_wgf.spectra, 8, 43, Could not start thread
+specs/amba_unreal_wgf.spectra, 8, 44, Could not start thread
+specs/amba_unreal_wgf.spectra, 8, 45, Could not start thread
+specs/amba_unreal_wgf.spectra, 8, 46, Could not start thread
+specs/amba_unreal_wgf.spectra, 8, 47, Could not start thread
+specs/amba_unreal_wgf.spectra, 8, 48, Could not start thread
+specs/amba_unreal_wgf.spectra, 8, 49, Could not start thread
+specs/amba_unreal_wgf.spectra, 8, 50, Could not start thread
+specs/amba_unreal_wgf.spectra, 8, 51, Could not start thread
+specs/amba_unreal_wgf.spectra, 8, 52, Could not start thread
+specs/amba_unreal_wgf.spectra, 8, 53, Could not start thread
+specs/amba_unreal_wgf.spectra, 8, 54, Could not start thread
+specs/amba_unreal_wgf.spectra, 8, 55, Could not start thread
+specs/amba_unreal_wgf.spectra, 8, 56, Could not start thread
+specs/amba_unreal_wgf.spectra, 8, 64, Could not start thread
+specs/amba_unreal_wgf.spectra, 8, 65, Could not start thread
+specs/amba_unreal_wgf.spectra, 8, 73, Could not start thread
+specs/amba_unreal_wgf.spectra, 8, 74, Could not start thread
+specs/amba_unreal_wgf.spectra, 8, 75, Could not start thread
+specs/amba_unreal_wgf.spectra, 8, 76, Could not start thread
+specs/amba_unreal_wgf.spectra, 8, 77, Could not start thread
+specs/amba_unreal_wgf.spectra, 8, 78, Could not start thread
+specs/amba_unreal_wgf.spectra, 8, 79, Could not start thread
+specs/amba_unreal_wgf.spectra, 8, 80, Could not start thread
+specs/amba_unreal_wgf.spectra, 8, 81, Could not start thread
+specs/amba_unreal_wgf.spectra, 9, -1, Could not start thread
+specs/amba_unreal_wgf.spectra, 9, 0, Could not start thread
+specs/amba_unreal_wgf.spectra, 9, 1, Could not start thread
+specs/amba_unreal_wgf.spectra, 9, 2, Could not start thread
+specs/amba_unreal_wgf.spectra, 9, 3, Could not start thread
+specs/amba_unreal_wgf.spectra, 9, 4, Could not start thread
+specs/amba_unreal_wgf.spectra, 9, 5, Could not start thread
+specs/amba_unreal_wgf.spectra, 9, 6, Could not start thread
+specs/amba_unreal_wgf.spectra, 9, 7, Could not start thread
+specs/amba_unreal_wgf.spectra, 9, 8, Could not start thread
+specs/amba_unreal_wgf.spectra, 9, 9, Could not start thread
+specs/amba_unreal_wgf.spectra, 9, 10, Could not start thread
+specs/amba_unreal_wgf.spectra, 9, 11, Could not start thread
+specs/amba_unreal_wgf.spectra, 9, 12, Could not start thread
+specs/amba_unreal_wgf.spectra, 9, 13, Could not start thread
+specs/amba_unreal_wgf.spectra, 9, 14, Could not start thread
+specs/amba_unreal_wgf.spectra, 9, 15, Could not start thread
+specs/amba_unreal_wgf.spectra, 9, 16, Could not start thread
+specs/amba_unreal_wgf.spectra, 9, 17, Could not start thread
+specs/amba_unreal_wgf.spectra, 9, 18, Could not start thread
+specs/amba_unreal_wgf.spectra, 9, 19, Could not start thread
+specs/amba_unreal_wgf.spectra, 9, 20, Could not start thread
+specs/amba_unreal_wgf.spectra, 9, 21, Could not start thread
+specs/amba_unreal_wgf.spectra, 9, 22, Could not start thread
+specs/amba_unreal_wgf.spectra, 9, 23, Could not start thread
+specs/amba_unreal_wgf.spectra, 9, 24, Could not start thread
+specs/amba_unreal_wgf.spectra, 9, 25, Could not start thread
+specs/amba_unreal_wgf.spectra, 9, 26, Could not start thread
+specs/amba_unreal_wgf.spectra, 9, 27, Could not start thread
+specs/amba_unreal_wgf.spectra, 9, 28, Could not start thread
+specs/amba_unreal_wgf.spectra, 9, 29, Could not start thread
+specs/amba_unreal_wgf.spectra, 9, 30, Could not start thread
+specs/amba_unreal_wgf.spectra, 9, 31, Could not start thread
+specs/amba_unreal_wgf.spectra, 9, 32, Could not start thread
+specs/amba_unreal_wgf.spectra, 9, 33, Could not start thread
+specs/amba_unreal_wgf.spectra, 9, 34, Could not start thread
+specs/amba_unreal_wgf.spectra, 9, 35, Could not start thread
+specs/amba_unreal_wgf.spectra, 9, 36, Could not start thread
+specs/amba_unreal_wgf.spectra, 9, 37, Could not start thread
+specs/amba_unreal_wgf.spectra, 9, 38, Could not start thread
+specs/amba_unreal_wgf.spectra, 9, 39, Could not start thread
+specs/amba_unreal_wgf.spectra, 9, 40, Could not start thread
+specs/amba_unreal_wgf.spectra, 9, 41, Could not start thread
+specs/amba_unreal_wgf.spectra, 9, 42, Could not start thread
+specs/amba_unreal_wgf.spectra, 9, 43, Could not start thread
+specs/amba_unreal_wgf.spectra, 9, 44, Could not start thread
+specs/amba_unreal_wgf.spectra, 9, 45, Could not start thread
+specs/amba_unreal_wgf.spectra, 9, 46, Could not start thread
+specs/amba_unreal_wgf.spectra, 9, 47, Could not start thread
+specs/amba_unreal_wgf.spectra, 9, 48, Could not start thread
+specs/amba_unreal_wgf.spectra, 9, 49, Could not start thread
+specs/amba_unreal_wgf.spectra, 9, 50, Could not start thread
+specs/amba_unreal_wgf.spectra, 9, 51, Could not start thread
+specs/amba_unreal_wgf.spectra, 9, 52, Could not start thread
+specs/amba_unreal_wgf.spectra, 9, 53, Could not start thread
+specs/amba_unreal_wgf.spectra, 9, 54, Could not start thread
+specs/amba_unreal_wgf.spectra, 9, 55, Could not start thread
+specs/amba_unreal_wgf.spectra, 9, 56, Could not start thread
+specs/amba_unreal_wgf.spectra, 9, 65, Could not start thread
+specs/amba_unreal_wgf.spectra, 9, 66, Could not start thread
+specs/amba_unreal_wgf.spectra, 9, 75, Could not start thread
+specs/amba_unreal_wgf.spectra, 9, 76, Could not start thread
+specs/amba_unreal_wgf.spectra, 9, 77, Could not start thread
+specs/amba_unreal_wgf.spectra, 9, 78, Could not start thread
+specs/amba_unreal_wgf.spectra, 9, 79, Could not start thread
+specs/amba_unreal_wgf.spectra, 9, 80, Could not start thread
+specs/amba_unreal_wgf.spectra, 9, 81, Could not start thread
+specs/amba_unreal_wgf.spectra, 9, 82, Could not start thread
+specs/amba_unreal_wgf.spectra, 9, 83, Could not start thread
+specs/amba_unreal_wgf.spectra, 10, -1, Could not start thread
+specs/amba_unreal_wgf.spectra, 10, 0, Could not start thread
+specs/amba_unreal_wgf.spectra, 10, 1, Could not start thread
+specs/amba_unreal_wgf.spectra, 10, 2, Could not start thread
+specs/amba_unreal_wgf.spectra, 10, 3, Could not start thread
+specs/amba_unreal_wgf.spectra, 10, 4, Could not start thread
+specs/amba_unreal_wgf.spectra, 10, 5, Could not start thread
+specs/amba_unreal_wgf.spectra, 10, 6, Could not start thread
+specs/amba_unreal_wgf.spectra, 10, 7, Could not start thread
+specs/amba_unreal_wgf.spectra, 10, 8, Could not start thread
+specs/amba_unreal_wgf.spectra, 10, 9, Could not start thread
+specs/amba_unreal_wgf.spectra, 10, 10, Could not start thread
+specs/amba_unreal_wgf.spectra, 10, 11, Could not start thread
+specs/amba_unreal_wgf.spectra, 10, 12, Could not start thread
+specs/amba_unreal_wgf.spectra, 10, 13, Could not start thread
+specs/amba_unreal_wgf.spectra, 10, 14, Could not start thread
+specs/amba_unreal_wgf.spectra, 10, 15, Could not start thread
+specs/amba_unreal_wgf.spectra, 10, 16, Could not start thread
+specs/amba_unreal_wgf.spectra, 10, 17, Could not start thread
+specs/amba_unreal_wgf.spectra, 10, 18, Could not start thread
+specs/amba_unreal_wgf.spectra, 10, 19, Could not start thread
+specs/amba_unreal_wgf.spectra, 10, 20, Could not start thread
+specs/amba_unreal_wgf.spectra, 10, 21, Could not start thread
+specs/amba_unreal_wgf.spectra, 10, 22, Could not start thread
+specs/amba_unreal_wgf.spectra, 10, 23, Could not start thread
+specs/amba_unreal_wgf.spectra, 10, 24, Could not start thread
+specs/amba_unreal_wgf.spectra, 10, 25, Could not start thread
+specs/amba_unreal_wgf.spectra, 10, 26, Could not start thread
+specs/amba_unreal_wgf.spectra, 10, 27, Could not start thread
+specs/amba_unreal_wgf.spectra, 10, 28, Could not start thread
+specs/amba_unreal_wgf.spectra, 10, 29, Could not start thread
+specs/amba_unreal_wgf.spectra, 10, 30, Could not start thread
+specs/amba_unreal_wgf.spectra, 10, 31, Could not start thread
+specs/amba_unreal_wgf.spectra, 10, 32, Could not start thread
+specs/amba_unreal_wgf.spectra, 10, 33, Could not start thread
+specs/amba_unreal_wgf.spectra, 10, 34, Could not start thread
+specs/amba_unreal_wgf.spectra, 10, 35, Could not start thread
+specs/amba_unreal_wgf.spectra, 10, 36, Could not start thread
+specs/amba_unreal_wgf.spectra, 10, 37, Could not start thread
+specs/amba_unreal_wgf.spectra, 10, 38, Could not start thread
+specs/amba_unreal_wgf.spectra, 10, 39, Could not start thread
+specs/amba_unreal_wgf.spectra, 10, 40, Could not start thread
+specs/amba_unreal_wgf.spectra, 10, 41, Could not start thread
+specs/amba_unreal_wgf.spectra, 10, 42, Could not start thread
+specs/amba_unreal_wgf.spectra, 10, 43, Could not start thread
+specs/amba_unreal_wgf.spectra, 10, 44, Could not start thread
+specs/amba_unreal_wgf.spectra, 10, 45, Could not start thread
+specs/amba_unreal_wgf.spectra, 10, 46, Could not start thread
+specs/amba_unreal_wgf.spectra, 10, 47, Could not start thread
+specs/amba_unreal_wgf.spectra, 10, 48, Could not start thread
+specs/amba_unreal_wgf.spectra, 10, 49, Could not start thread
+specs/amba_unreal_wgf.spectra, 10, 50, Could not start thread
+specs/amba_unreal_wgf.spectra, 10, 51, Could not start thread
+specs/amba_unreal_wgf.spectra, 10, 52, Could not start thread
+specs/amba_unreal_wgf.spectra, 10, 53, Could not start thread
+specs/amba_unreal_wgf.spectra, 10, 54, Could not start thread
+specs/amba_unreal_wgf.spectra, 10, 55, Could not start thread
+specs/amba_unreal_wgf.spectra, 10, 56, Could not start thread
+specs/amba_unreal_wgf.spectra, 10, 66, Could not start thread
+specs/amba_unreal_wgf.spectra, 10, 67, Could not start thread
+specs/amba_unreal_wgf.spectra, 10, 77, Could not start thread
+specs/amba_unreal_wgf.spectra, 10, 78, Could not start thread
+specs/amba_unreal_wgf.spectra, 10, 79, Could not start thread
+specs/amba_unreal_wgf.spectra, 10, 80, Could not start thread
+specs/amba_unreal_wgf.spectra, 10, 81, Could not start thread
+specs/amba_unreal_wgf.spectra, 10, 82, Could not start thread
+specs/amba_unreal_wgf.spectra, 10, 83, Could not start thread
+specs/amba_unreal_wgf.spectra, 10, 84, Could not start thread
+specs/amba_unreal_wgf.spectra, 10, 85, Could not start thread

@@ -1,0 +1,7 @@
+Spec,Size,Remove,Time,Best?,
+specs/full_arbiter.spectra, 2, -1, 0.130,1.000,
+specs/full_arbiter.spectra, 2, 0, 0.143,1.000,
+specs/full_arbiter.spectra, 3, -1, 0.713,1.000,
+specs/full_arbiter.spectra, 3, 0, 0.697,1.000,
+specs/full_arbiter.spectra, 4, -1, 34.915,1.000,
+specs/full_arbiter.spectra, 4, 0, 34.529,1.000,

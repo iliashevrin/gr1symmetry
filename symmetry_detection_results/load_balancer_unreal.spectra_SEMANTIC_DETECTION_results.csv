@@ -1,0 +1,38 @@
+Spec,Size,Remove,Time,Best?,
+specs/load_balancer_unreal.spectra, 2, -1, Time data not found
+specs/load_balancer_unreal.spectra, 2, 0, Time data not found
+specs/load_balancer_unreal.spectra, 2, 1, Time data not found
+specs/load_balancer_unreal.spectra, 2, 2, Time data not found
+specs/load_balancer_unreal.spectra, 2, 3, Time data not found
+specs/load_balancer_unreal.spectra, 2, 4, Time data not found
+specs/load_balancer_unreal.spectra, 2, 5, Time data not found
+specs/load_balancer_unreal.spectra, 2, 6, Time data not found
+specs/load_balancer_unreal.spectra, 2, 7, Time data not found
+specs/load_balancer_unreal.spectra, 2, 8, Time data not found
+specs/load_balancer_unreal.spectra, 2, 9, Time data not found
+specs/load_balancer_unreal.spectra, 2, 10, Time data not found
+specs/load_balancer_unreal.spectra, 2, 11, Time data not found
+specs/load_balancer_unreal.spectra, 3, -1, 0.160,0.000,
+specs/load_balancer_unreal.spectra, 3, 0, 0.155,0.000,
+specs/load_balancer_unreal.spectra, 3, 1, 0.191,0.000,
+specs/load_balancer_unreal.spectra, 3, 2, 0.164,0.000,
+specs/load_balancer_unreal.spectra, 3, 3, 0.235,0.000,
+specs/load_balancer_unreal.spectra, 3, 4, 0.115,1.000,
+specs/load_balancer_unreal.spectra, 3, 7, 0.180,0.000,
+specs/load_balancer_unreal.spectra, 3, 8, 0.153,0.000,
+specs/load_balancer_unreal.spectra, 3, 9, 0.168,0.000,
+specs/load_balancer_unreal.spectra, 3, 10, 0.154,0.000,
+specs/load_balancer_unreal.spectra, 3, 11, 0.247,0.000,
+specs/load_balancer_unreal.spectra, 3, 12, 0.175,0.000,
+specs/load_balancer_unreal.spectra, 4, -1, 0.889,0.000,
+specs/load_balancer_unreal.spectra, 4, 0, 0.900,0.000,
+specs/load_balancer_unreal.spectra, 4, 1, 0.891,0.000,
+specs/load_balancer_unreal.spectra, 4, 2, 0.917,0.000,
+specs/load_balancer_unreal.spectra, 4, 3, 4.349,0.000,
+specs/load_balancer_unreal.spectra, 4, 4, 0.364,1.000,
+specs/load_balancer_unreal.spectra, 4, 8, 0.847,0.000,
+specs/load_balancer_unreal.spectra, 4, 9, 0.956,0.000,
+specs/load_balancer_unreal.spectra, 4, 10, 0.860,0.000,
+specs/load_balancer_unreal.spectra, 4, 11, 0.930,0.000,
+specs/load_balancer_unreal.spectra, 4, 12, 2.062,0.000,
+specs/load_balancer_unreal.spectra, 4, 13, 0.947,0.000,

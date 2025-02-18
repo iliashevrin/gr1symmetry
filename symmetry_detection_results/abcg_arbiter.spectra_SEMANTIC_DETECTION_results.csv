@@ -1,0 +1,31 @@
+Spec,Size,Remove,Time,Best?,
+specs/abcg_arbiter.spectra, 2, -1, 1.108,1.000,
+specs/abcg_arbiter.spectra, 2, 0, 0.671,1.000,
+specs/abcg_arbiter.spectra, 2, 1, 0.818,1.000,
+specs/abcg_arbiter.spectra, 2, 2, 0.740,1.000,
+specs/abcg_arbiter.spectra, 2, 3, 0.768,1.000,
+specs/abcg_arbiter.spectra, 2, 4, 0.722,1.000,
+specs/abcg_arbiter.spectra, 2, 5, 0.801,1.000,
+specs/abcg_arbiter.spectra, 2, 6, 0.759,1.000,
+specs/abcg_arbiter.spectra, 2, 7, 0.774,1.000,
+specs/abcg_arbiter.spectra, 2, 8, 0.775,1.000,
+specs/abcg_arbiter.spectra, 3, -1, class java.util.concurrent.TimeoutException
+specs/abcg_arbiter.spectra, 3, 0, 119.159,1.000,
+specs/abcg_arbiter.spectra, 3, 1, class java.util.concurrent.TimeoutException
+specs/abcg_arbiter.spectra, 3, 2, class java.util.concurrent.TimeoutException
+specs/abcg_arbiter.spectra, 3, 3, class java.util.concurrent.TimeoutException
+specs/abcg_arbiter.spectra, 3, 4, class java.util.concurrent.TimeoutException
+specs/abcg_arbiter.spectra, 3, 5, class java.util.concurrent.TimeoutException
+specs/abcg_arbiter.spectra, 3, 6, class java.util.concurrent.TimeoutException
+specs/abcg_arbiter.spectra, 3, 7, class java.util.concurrent.TimeoutException
+specs/abcg_arbiter.spectra, 3, 8, class java.util.concurrent.TimeoutException
+specs/abcg_arbiter.spectra, 4, -1, class java.util.concurrent.TimeoutException
+specs/abcg_arbiter.spectra, 4, 0, class java.util.concurrent.TimeoutException
+specs/abcg_arbiter.spectra, 4, 1, class java.util.concurrent.TimeoutException
+specs/abcg_arbiter.spectra, 4, 2, class java.util.concurrent.TimeoutException
+specs/abcg_arbiter.spectra, 4, 3, class java.util.concurrent.TimeoutException
+specs/abcg_arbiter.spectra, 4, 4, class java.util.concurrent.TimeoutException
+specs/abcg_arbiter.spectra, 4, 5, class java.util.concurrent.TimeoutException
+specs/abcg_arbiter.spectra, 4, 6, class java.util.concurrent.TimeoutException
+specs/abcg_arbiter.spectra, 4, 7, class java.util.concurrent.TimeoutException
+specs/abcg_arbiter.spectra, 4, 8, class java.util.concurrent.TimeoutException

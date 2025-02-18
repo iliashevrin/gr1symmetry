@@ -1,0 +1,85 @@
+Spec,Size,Remove,Prep.,Real. Check,Total,
+specs/full_arbiter.spectra, 20, -1, class java.util.concurrent.TimeoutException
+specs/full_arbiter.spectra, 20, 0, class java.util.concurrent.TimeoutException
+specs/full_arbiter.spectra, 20, 1, class java.util.concurrent.TimeoutException
+specs/full_arbiter.spectra, 20, 2, class java.util.concurrent.TimeoutException
+specs/full_arbiter.spectra, 20, 3, class java.util.concurrent.TimeoutException
+specs/full_arbiter.spectra, 20, 4, class java.util.concurrent.TimeoutException
+specs/full_arbiter.spectra, 20, 5, class java.util.concurrent.TimeoutException
+specs/full_arbiter.spectra, 20, 6, Could not start thread
+specs/full_arbiter.spectra, 20, 7, Could not start thread
+specs/full_arbiter.spectra, 20, 8, Could not start thread
+specs/full_arbiter.spectra, 20, 9, Could not start thread
+specs/full_arbiter.spectra, 20, 10, Could not start thread
+specs/full_arbiter.spectra, 20, 11, Could not start thread
+specs/full_arbiter.spectra, 20, 12, Could not start thread
+specs/full_arbiter.spectra, 30, -1, Could not start thread
+specs/full_arbiter.spectra, 30, 0, Could not start thread
+specs/full_arbiter.spectra, 30, 1, Could not start thread
+specs/full_arbiter.spectra, 30, 2, Could not start thread
+specs/full_arbiter.spectra, 30, 3, Could not start thread
+specs/full_arbiter.spectra, 30, 4, Could not start thread
+specs/full_arbiter.spectra, 30, 5, Could not start thread
+specs/full_arbiter.spectra, 30, 6, Could not start thread
+specs/full_arbiter.spectra, 30, 7, Could not start thread
+specs/full_arbiter.spectra, 30, 8, Could not start thread
+specs/full_arbiter.spectra, 30, 9, Could not start thread
+specs/full_arbiter.spectra, 30, 10, Could not start thread
+specs/full_arbiter.spectra, 30, 11, Could not start thread
+specs/full_arbiter.spectra, 30, 12, Could not start thread
+specs/full_arbiter.spectra, 40, -1, Could not start thread
+specs/full_arbiter.spectra, 40, 0, Could not start thread
+specs/full_arbiter.spectra, 40, 1, Could not start thread
+specs/full_arbiter.spectra, 40, 2, Could not start thread
+specs/full_arbiter.spectra, 40, 3, Could not start thread
+specs/full_arbiter.spectra, 40, 4, Could not start thread
+specs/full_arbiter.spectra, 40, 5, Could not start thread
+specs/full_arbiter.spectra, 40, 6, Could not start thread
+specs/full_arbiter.spectra, 40, 7, Could not start thread
+specs/full_arbiter.spectra, 40, 8, Could not start thread
+specs/full_arbiter.spectra, 40, 9, Could not start thread
+specs/full_arbiter.spectra, 40, 10, Could not start thread
+specs/full_arbiter.spectra, 40, 11, Could not start thread
+specs/full_arbiter.spectra, 40, 12, Could not start thread
+specs/full_arbiter.spectra, 50, -1, Could not start thread
+specs/full_arbiter.spectra, 50, 0, Could not start thread
+specs/full_arbiter.spectra, 50, 1, Could not start thread
+specs/full_arbiter.spectra, 50, 2, Could not start thread
+specs/full_arbiter.spectra, 50, 3, Could not start thread
+specs/full_arbiter.spectra, 50, 4, Could not start thread
+specs/full_arbiter.spectra, 50, 5, Could not start thread
+specs/full_arbiter.spectra, 50, 6, Could not start thread
+specs/full_arbiter.spectra, 50, 7, Could not start thread
+specs/full_arbiter.spectra, 50, 8, Could not start thread
+specs/full_arbiter.spectra, 50, 9, Could not start thread
+specs/full_arbiter.spectra, 50, 10, Could not start thread
+specs/full_arbiter.spectra, 50, 11, Could not start thread
+specs/full_arbiter.spectra, 50, 12, Could not start thread
+specs/full_arbiter.spectra, 60, -1, Could not start thread
+specs/full_arbiter.spectra, 60, 0, Could not start thread
+specs/full_arbiter.spectra, 60, 1, Could not start thread
+specs/full_arbiter.spectra, 60, 2, Could not start thread
+specs/full_arbiter.spectra, 60, 3, Could not start thread
+specs/full_arbiter.spectra, 60, 4, Could not start thread
+specs/full_arbiter.spectra, 60, 5, Could not start thread
+specs/full_arbiter.spectra, 60, 6, Could not start thread
+specs/full_arbiter.spectra, 60, 7, Could not start thread
+specs/full_arbiter.spectra, 60, 8, Could not start thread
+specs/full_arbiter.spectra, 60, 9, Could not start thread
+specs/full_arbiter.spectra, 60, 10, Could not start thread
+specs/full_arbiter.spectra, 60, 11, Could not start thread
+specs/full_arbiter.spectra, 60, 12, Could not start thread
+specs/full_arbiter.spectra, 70, -1, Could not start thread
+specs/full_arbiter.spectra, 70, 0, Could not start thread
+specs/full_arbiter.spectra, 70, 1, Could not start thread
+specs/full_arbiter.spectra, 70, 2, Could not start thread
+specs/full_arbiter.spectra, 70, 3, Could not start thread
+specs/full_arbiter.spectra, 70, 4, Could not start thread
+specs/full_arbiter.spectra, 70, 5, Could not start thread
+specs/full_arbiter.spectra, 70, 6, Could not start thread
+specs/full_arbiter.spectra, 70, 7, Could not start thread
+specs/full_arbiter.spectra, 70, 8, Could not start thread
+specs/full_arbiter.spectra, 70, 9, Could not start thread
+specs/full_arbiter.spectra, 70, 10, Could not start thread
+specs/full_arbiter.spectra, 70, 11, Could not start thread
+specs/full_arbiter.spectra, 70, 12, Could not start thread

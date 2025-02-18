@@ -1,0 +1,37 @@
+Spec,Size,Remove,Prep.,Real. Check,Total,
+specs/round_robin_arbiter_unreal.spectra, 20, -1, 0.987,265.405,266.392,
+specs/round_robin_arbiter_unreal.spectra, 20, 0, 0.912,0.834,1.746,
+specs/round_robin_arbiter_unreal.spectra, 20, 1, 0.872,0.143,1.015,
+specs/round_robin_arbiter_unreal.spectra, 20, 2, 0.955,0.055,1.010,
+specs/round_robin_arbiter_unreal.spectra, 20, 23, 0.933,147.536,148.469,
+specs/round_robin_arbiter_unreal.spectra, 20, 24, 0.943,289.343,290.286,
+specs/round_robin_arbiter_unreal.spectra, 30, -1, class java.util.concurrent.TimeoutException
+specs/round_robin_arbiter_unreal.spectra, 30, 0, 1.305,2.634,3.938,
+specs/round_robin_arbiter_unreal.spectra, 30, 1, 1.076,0.404,1.480,
+specs/round_robin_arbiter_unreal.spectra, 30, 2, 1.412,0.123,1.535,
+specs/round_robin_arbiter_unreal.spectra, 30, 33, class java.util.concurrent.TimeoutException
+specs/round_robin_arbiter_unreal.spectra, 30, 34, class java.util.concurrent.TimeoutException
+specs/round_robin_arbiter_unreal.spectra, 40, -1, class java.util.concurrent.TimeoutException
+specs/round_robin_arbiter_unreal.spectra, 40, 0, 2.108,7.149,9.257,
+specs/round_robin_arbiter_unreal.spectra, 40, 1, 1.569,0.959,2.528,
+specs/round_robin_arbiter_unreal.spectra, 40, 2, 2.535,0.276,2.811,
+specs/round_robin_arbiter_unreal.spectra, 40, 43, class java.util.concurrent.TimeoutException
+specs/round_robin_arbiter_unreal.spectra, 40, 44, class java.util.concurrent.TimeoutException
+specs/round_robin_arbiter_unreal.spectra, 50, -1, class java.util.concurrent.TimeoutException
+specs/round_robin_arbiter_unreal.spectra, 50, 0, 3.020,13.950,16.969,
+specs/round_robin_arbiter_unreal.spectra, 50, 1, 2.168,1.973,4.141,
+specs/round_robin_arbiter_unreal.spectra, 50, 2, 4.312,0.460,4.772,
+specs/round_robin_arbiter_unreal.spectra, 50, 53, class java.util.concurrent.TimeoutException
+specs/round_robin_arbiter_unreal.spectra, 50, 54, class java.util.concurrent.TimeoutException
+specs/round_robin_arbiter_unreal.spectra, 60, -1, class java.util.concurrent.TimeoutException
+specs/round_robin_arbiter_unreal.spectra, 60, 0, 5.311,22.064,27.375,
+specs/round_robin_arbiter_unreal.spectra, 60, 1, 3.204,2.999,6.204,
+specs/round_robin_arbiter_unreal.spectra, 60, 2, 6.930,0.838,7.768,
+specs/round_robin_arbiter_unreal.spectra, 60, 63, class java.util.concurrent.TimeoutException
+specs/round_robin_arbiter_unreal.spectra, 60, 64, class java.util.concurrent.TimeoutException
+specs/round_robin_arbiter_unreal.spectra, 70, -1, class java.util.concurrent.TimeoutException
+specs/round_robin_arbiter_unreal.spectra, 70, 0, 8.200,43.935,52.134,
+specs/round_robin_arbiter_unreal.spectra, 70, 1, 4.686,5.327,10.013,
+specs/round_robin_arbiter_unreal.spectra, 70, 2, 11.330,1.335,12.665,
+specs/round_robin_arbiter_unreal.spectra, 70, 73, class java.util.concurrent.TimeoutException
+specs/round_robin_arbiter_unreal.spectra, 70, 74, class java.util.concurrent.TimeoutException

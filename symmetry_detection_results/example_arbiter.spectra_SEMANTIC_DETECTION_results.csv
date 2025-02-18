@@ -1,0 +1,24 @@
+Spec,Size,Remove,Time,Best?,
+specs/example_arbiter.spectra, 2, -1, Time data not found
+specs/example_arbiter.spectra, 2, 0, Time data not found
+specs/example_arbiter.spectra, 2, 1, Time data not found
+specs/example_arbiter.spectra, 2, 2, Time data not found
+specs/example_arbiter.spectra, 2, 3, Time data not found
+specs/example_arbiter.spectra, 2, 4, Time data not found
+specs/example_arbiter.spectra, 2, 5, Time data not found
+specs/example_arbiter.spectra, 2, 6, Time data not found
+specs/example_arbiter.spectra, 2, 7, Time data not found
+specs/example_arbiter.spectra, 3, -1, 0.130,0.000,
+specs/example_arbiter.spectra, 3, 0, 0.087,1.000,
+specs/example_arbiter.spectra, 3, 1, 0.077,1.000,
+specs/example_arbiter.spectra, 3, 4, 0.101,1.000,
+specs/example_arbiter.spectra, 3, 5, 0.118,0.000,
+specs/example_arbiter.spectra, 3, 6, 0.119,0.000,
+specs/example_arbiter.spectra, 3, 7, 0.082,1.000,
+specs/example_arbiter.spectra, 4, -1, 0.494,0.000,
+specs/example_arbiter.spectra, 4, 0, 0.099,1.000,
+specs/example_arbiter.spectra, 4, 1, 0.100,1.000,
+specs/example_arbiter.spectra, 4, 5, 0.153,1.000,
+specs/example_arbiter.spectra, 4, 6, 0.493,0.000,
+specs/example_arbiter.spectra, 4, 7, 0.472,0.000,
+specs/example_arbiter.spectra, 4, 8, 0.104,1.000,

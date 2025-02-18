@@ -1,0 +1,349 @@
+INFO {
+  TITLE: "SymmetryExample"
+  DESCRIPTION: "Specification translated from Spectra"
+  SEMANTICS:Mealy
+  TARGET:Mealy
+}
+
+GLOBAL {
+  PARAMETERS { 
+n = 2;
+  }
+  
+  DEFINITIONS
+  {
+  
+    // copied from the full arbiter
+    mutual_exclusion(bus) = mone(bus,0,(SIZEOF bus) - 1);
+    none(bus,i,j) = &&[i <= t <= j] !bus[t];
+    mone(bus,i,j) =
+    i > j : false
+    i == j : true
+    i < j :
+      (none(bus, i, m(i,j)) && mone(bus, m(i,j) + 1, j)) ||
+      (mone(bus, i, m(i,j)) && none(bus, m(i,j) + 1, j));
+    m(i,j) = (i + j) / 2;
+    
+    
+    mutual(b) =
+	&&[i IN {0, 1 .. (SIZEOF b) - 1}]
+	&&[j IN {0, 1 .. (SIZEOF b) - 1} (\) {i}]
+	!(b[i] && b[j]);
+    
+  }
+}
+
+MAIN {
+  INPUTS  { 
+  
+  hbusreq[n]; 
+  hlock[n];
+  hready;
+  hburst0;
+  hburst1;
+  }
+  
+  OUTPUTS { 
+  
+  hmaster[n]; 
+  hgrant[n];
+  hmastlock;
+  start;
+  decide;
+  hlocked;
+  stateA1[n];
+  stateG2[n];
+  stateG3_0;
+  stateG3_1;
+  stateG3_2;
+  stateG10[n];
+  }
+
+  ASSUME {
+  
+    !hready;
+  
+    // asm forall i in Int(0..IND) . !hbusreq[i];
+    &&[0 <= i < n]
+    (
+      !hbusreq[i]
+    );
+
+    // asm forall i in Int(0..IND) . !hlock[i];
+    &&[0 <= i < n]
+    (
+      !hlock[i]
+    );
+    
+    !hburst0;
+    
+    !hburst1;
+    
+    G F (&&[0 <= i < n]
+    (
+      !stateA1[i]
+    ));
+    
+    G F (hready);
+      
+  }
+
+  GUARANTEE {
+  
+    // gar G forall i in Int(0..IND) . forall j in Int(0..IND) . (i != j) -> !(stateA1[i] & stateA1[j]);
+    G mutual(stateA1);
+    
+    // gar G forall i in Int(0..IND) . forall j in Int(0..IND) . (i != j) -> !(hmaster[i] & hmaster[j]);
+    G mutual(hmaster);
+  
+  
+    // gar forall i in Int(0..IND) . !hmaster[i];
+    &&[0 <= i < n]
+    (
+      !hmaster[i]
+    );
+    
+    !hmastlock;
+    
+    start;
+    
+    decide;
+    
+    !hlocked;
+    
+    hgrant[0];
+    
+    // gar forall i in Int(1..IND) . !hgrant[i];
+    &&[1 <= i < n]
+    (
+      !hgrant[i]
+    );
+    
+    // gar forall i in Int(1..IND) . !stateA1[i];
+    &&[1 <= i < n]
+    (
+      !stateA1[i]
+    );
+
+    // gar forall i in Int(1..IND) . !stateG2[i];
+    &&[1 <= i < n]
+    (
+      !stateG2[i]
+    );    
+
+    // gar forall i in Int(1..IND) . !stateG10[i];
+    &&[1 <= i < n]
+    (
+      !stateG10[i]
+    );
+    
+
+    // gar G forall i in Int(0..IND) . (stateA1[i] & hbusreq[i]) -> next(stateA1[i]);
+    &&[0 <= i < n]
+    (
+     G ((stateA1[i] && hbusreq[i]) -> X(stateA1[i]))
+    );
+    
+    // gar G forall i in Int(0..IND) . (stateA1[i] & !hbusreq[i]) -> stateA1_next_false;
+    &&[0 <= i < n]
+    (
+     G ((stateA1[i] && !hbusreq[i]) -> &&[0 <= j < n](X(!stateA1[j])))
+    );
+    
+    // gar G forall i in Int(0..IND) . (stateA1_false & hmastlock & hmaster[i] & !hburst0 & !hburst1) -> next(stateA1[i]);
+    &&[0 <= i < n]
+    (
+     G ((&&[0 <= j < n](!stateA1[j]) && hmastlock && hmaster[i] && !hburst0 && !hburst1) -> X(stateA1[i]))
+    );
+    
+    // gar G forall i in Int(0..IND) . (stateA1_false & (!hmastlock | hburst0 | hburst1)) -> stateA1_next_false;
+    &&[0 <= i < n]
+    (
+     G ((&&[0 <= j < n](!stateA1[j]) && (!hmastlock || hburst0 || hburst1)) -> &&[0 <= j < n](X(!stateA1[j])))
+    );
+    
+    
+    G !hready -> X(!start);
+    
+    // gar G forall i in Int(0..IND) . (!stateG2[i] & !hmastlock) -> next(!stateG2[i]);	
+    &&[0 <= i < n]
+    (
+     G ((!stateG2[i] && !hmastlock) -> X(!stateG2[i]))
+    );    
+
+    // gar G forall i in Int(0..IND) . (!stateG2[i] & !start) -> next(!stateG2[i]);
+    &&[0 <= i < n]
+    (
+     G ((!stateG2[i] && !start) -> X(!stateG2[i]))
+    );
+    
+    // gar G forall i in Int(0..IND) . (!stateG2[i] & hburst0) -> next(!stateG2[i]);
+    &&[0 <= i < n]
+    (
+     G ((!stateG2[i] && hburst0) -> X(!stateG2[i]))
+    );
+
+    // gar G forall i in Int(0..IND) . (!stateG2[i] & hburst1) -> next(!stateG2[i]);	
+    &&[0 <= i < n]
+    (
+     G ((!stateG2[i] && hburst1) -> X(!stateG2[i]))
+    );
+    
+    // gar G forall i in Int(0..IND) . (!stateG2[i] & !hmaster[i]) -> next(!stateG2[i]);
+    &&[0 <= i < n]
+    (
+     G ((!stateG2[i] && !hmaster[i]) -> X(!stateG2[i]))
+    );
+            
+    // gar G forall i in Int(0..IND) . (!stateG2[i] & hmastlock & start & !hburst0 & !hburst1 & hmaster[i]) -> next(stateG2[i]);
+    &&[0 <= i < n]
+    (
+     G ((!stateG2[i] && hmastlock && start && !hburst0 && !hburst1 && hmaster[i]) -> X(stateG2[i]))
+    );
+        
+    // gar G forall i in Int(0..IND) . (stateG2[i] & !start & hbusreq[i]) -> next(stateG2[i]);
+    &&[0 <= i < n]
+    (
+     G ((stateG2[i] && !start && hbusreq[i]) -> X(stateG2[i]))
+    );
+        
+    // gar G forall i in Int(0..IND) . (stateG2[i] & start) -> FALSE;
+    &&[0 <= i < n]
+    (
+     G (!(stateG2[i] && start))
+    );
+    
+    // gar G forall i in Int(0..IND) . (stateG2[i] & !start & !hbusreq[i]) -> next(!stateG2[i]);
+    &&[0 <= i < n]
+    (
+     G ((stateG2[i] && !start && !hbusreq[i]) -> X(!stateG2[i]))
+    );
+    
+	G ((((!stateG3_0 && !stateG3_1 && !stateG3_2 && (!hmastlock || !start || (hburst0 || !hburst1))))->X((!stateG3_0 && !stateG3_1 && !stateG3_2))));
+
+	G ((((!stateG3_0 && !stateG3_1 && !stateG3_2 && (hmastlock && start && (!hburst0 && hburst1) && !hready)))->X((stateG3_0 && !stateG3_1 && !stateG3_2))));
+
+	G ((((!stateG3_0 && !stateG3_1 && !stateG3_2 && (hmastlock && start && (!hburst0 && hburst1) && hready)))->X((!stateG3_0 && stateG3_1 && !stateG3_2))));
+
+	G ((((stateG3_0 && !stateG3_1 && !stateG3_2 && (!start && !hready)))->X((stateG3_0 && !stateG3_1 && !stateG3_2))));
+
+	G ((((stateG3_0 && !stateG3_1 && !stateG3_2 && (!start && hready)))->X((!stateG3_0 && stateG3_1 && !stateG3_2))));
+
+	G (!(((stateG3_0 && !stateG3_1 && !stateG3_2 && (start)))));
+
+	G ((((!stateG3_0 && stateG3_1 && !stateG3_2 && (!start && !hready)))->X((!stateG3_0 && stateG3_1 && !stateG3_2))));
+
+	G ((((!stateG3_0 && stateG3_1 && !stateG3_2 && (!start && hready)))->X((stateG3_0 && stateG3_1 && !stateG3_2))));
+
+	G (!(((!stateG3_0 && stateG3_1 && !stateG3_2 && (start)))));
+
+	G ((((stateG3_0 && stateG3_1 && !stateG3_2 && (!start && !hready)))->X((stateG3_0 && stateG3_1 && !stateG3_2))));
+
+	G ((((stateG3_0 && stateG3_1 && !stateG3_2 && (!start && hready)))->X((!stateG3_0 && !stateG3_1 && stateG3_2))));
+
+	G (!(((stateG3_0 && stateG3_1 && !stateG3_2 && (start)))));
+
+	G ((((!stateG3_0 && !stateG3_1 && stateG3_2 && (!start && !hready)))->X((!stateG3_0 && !stateG3_1 && stateG3_2))));
+
+	G ((((!stateG3_0 && !stateG3_1 && stateG3_2 && (!start && hready)))->X((!stateG3_0 && !stateG3_1 && !stateG3_2))));
+
+	G (!(((!stateG3_0 && !stateG3_1 && stateG3_2 && (start)))));   
+    
+                
+    
+    // gar G forall i in Int(0..IND) . hready -> (hgrant[i] = next(hmaster[i]));
+    &&[0 <= i < n]
+    (
+     G (hready -> (hgrant[i] <-> X(hmaster[i])))
+    );
+    
+    G (hready -> (hlocked <-> X(hmastlock)));
+    
+    
+    // gar G forall i in Int(0..IND) . next(!start) -> (hmaster[i] = next(hmaster[i]));
+    &&[0 <= i < n]
+    (
+     G (X(!start) -> (hmaster[i] <-> X(hmaster[i])))
+    );
+    
+    G (X(!start) -> ((hmastlock) <-> X(hmastlock)));
+    
+    // gar G forall i in Int(0..IND) . (decide & hlock[i] & next(hgrant[i])) -> next(hlocked);
+    &&[0 <= i < n]
+    (
+     G ((decide && hlock[i] && X(hgrant[i])) -> X(hlocked))
+    );
+    
+    // gar G forall i in Int(0..IND) . (decide & !hlock[i] & next(hgrant[i])) -> next(!hlocked);
+    &&[0 <= i < n]
+    (
+     G ((decide && !hlock[i] && X(hgrant[i])) -> X(!hlocked))
+    );
+    
+    
+    // gar G (decide & (forall j in Int(0..IND) . !hbusreq[j])) -> next(hgrant[0]);
+    
+    G ((decide && (&&[0 <= j < n](!hbusreq[j]))) -> X(hgrant[0]));
+    
+    
+    // gar G forall i in Int(0..IND) . (!decide) -> (hgrant[i] = next(hgrant[i]));
+    &&[0 <= i < n]
+    (
+     G ((!decide) -> (hgrant[i] <-> X(hgrant[i])))
+    );
+    
+    
+    G (!decide) -> (hlocked <-> X(hlocked));
+    
+    // gar G forall i in Int(1..IND) . (!stateG10[i] & (hgrant[i] | hbusreq[i])) -> next(!stateG10[i]);
+    &&[1 <= i < n]
+    (
+     G ((!stateG10[i] && (hgrant[i] || hbusreq[i])) -> X(!stateG10[i]))
+    );    
+    
+    // gar G forall i in Int(1..IND) . (!stateG10[i] & !hgrant[i] & !hbusreq[i]) -> next(stateG10[i]);
+    &&[1 <= i < n]
+    (
+     G ((!stateG10[i] && !hgrant[i] && !hbusreq[i]) -> X(stateG10[i]))
+    ); 
+    
+    // gar G forall i in Int(1..IND) . (stateG10[i] & !hgrant[i] & !hbusreq[i]) -> next(stateG10[i]);
+    &&[1 <= i < n]
+    (
+     G ((stateG10[i] && !hgrant[i] && !hbusreq[i]) -> X(stateG10[i]))
+    ); 
+    
+    // gar G forall i in Int(1..IND) . (stateG10[i] & hgrant[i] & !hbusreq[i]) -> FALSE;
+    &&[1 <= i < n]
+    (
+     G (!(stateG10[i] && hgrant[i] && !hbusreq[i]))
+    ); 
+    
+    // gar G forall i in Int(1..IND) . (stateG10[i] & hbusreq[i]) -> next(!stateG10[i]);
+    &&[1 <= i < n]
+    (
+     G ((stateG10[i] && hbusreq[i]) -> X(!stateG10[i]))
+    ); 
+        
+    G !stateG10[0];
+    
+    
+    // gar G2_false{Int(0..IND) i}: GF !stateG2[i];
+    &&[0 <= i < n]
+    (
+     G F (!stateG2[i])
+    ); 
+    
+    G F (!stateG3_0 && !stateG3_1 && !stateG3_2);
+    
+    // gar master{Int(0..IND) i}: GF hmaster[i] | !hbusreq[i];
+    &&[0 <= i < n]
+    (
+     G F (hmaster[i] || !hbusreq[i])
+    );  
+  }
+  
+
+}
+
+

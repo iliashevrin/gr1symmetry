@@ -1,0 +1,15 @@
+﻿REQUIREMENTS file for artifact evaluation of TOSEM 25 submission
+
+
+"Leveraging Symmetry in GR(1) Synthesis"
+
+
+
+
+Software environment requirements to reproduce Spectra tests:
+
+
+Linux Operating System
+
+
+Java 11 (or higher) 64Bit

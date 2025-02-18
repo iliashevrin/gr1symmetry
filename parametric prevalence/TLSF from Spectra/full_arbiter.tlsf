@@ -1,0 +1,89 @@
+INFO {
+  TITLE: "full_arbiter"
+  DESCRIPTION: "Specification translated from Spectra"
+  SEMANTICS:Mealy
+  TARGET:Mealy
+}
+
+GLOBAL {
+  PARAMETERS { 
+n = 6;
+  }
+  
+  DEFINITIONS
+  {
+    // copied from the full arbiter
+    mutual_exclusion(bus) = mone(bus,0,(SIZEOF bus) - 1);
+    none(bus,i,j) = &&[i <= t <= j] !bus[t];
+    mone(bus,i,j) =
+    i > j : false
+    i == j : true
+    i < j :
+      (none(bus, i, m(i,j)) && mone(bus, m(i,j) + 1, j)) ||
+      (mone(bus, i, m(i,j)) && none(bus, m(i,j) + 1, j));
+    m(i,j) = (i + j) / 2;
+    
+    mutual(b) =
+	&&[i IN {0, 1 .. (SIZEOF b) - 1}]
+	&&[j IN {0, 1 .. (SIZEOF b) - 1} (\) {i}]
+	!(b[i] && b[j]);
+	
+  }
+}
+
+MAIN {
+  INPUTS  { 
+  request[n]; 
+  }
+  
+  OUTPUTS { 
+  grant[n]; 
+  bit0[n];
+  bit1[n];
+  }
+  
+
+  GUARANTEE {
+  
+
+    &&[0 <= i < n]
+    (
+      (!bit0[i] && !bit1[i])
+    );
+    
+
+    &&[0 <= i < n]
+    (
+      G F ((!bit0[i] && !bit1[i]) || (bit0[i] && bit1[i]))
+    );
+    
+
+    &&[1 <= i < n]
+    (
+     G ((
+          (((!bit0[i] && !bit1[i]) && (!request[i] && !grant[i])) -> X((!bit0[i] && !bit1[i]))) &&
+	  (((!bit0[i] && !bit1[i]) && (request[i] && !grant[i])) -> X((!bit0[i] && bit1[i]))) &&
+	  (((!bit0[i] && bit1[i]) && (!grant[i])) -> X((!bit0[i] && bit1[i]))) &&
+	  (((!bit0[i] && bit1[i]) && (grant[i])) -> X((bit0[i] && bit1[i]))) &&
+	  (((bit0[i] && !bit1[i]) && (!request[i] && !grant[i])) -> X((!bit0[i] && !bit1[i]))) &&
+	  (((bit0[i] && !bit1[i]) && (request[i] && !grant[i])) -> X((!bit0[i] && bit1[i]))) &&
+	  (((bit0[i] && !bit1[i]) && (!request[i] && grant[i])) -> X((bit0[i] && !bit1[i]))) &&
+	  (((bit0[i] && !bit1[i]) && (request[i] && grant[i])) -> X((bit0[i] && bit1[i]))) &&
+	  (((bit0[i] && bit1[i]) && (!request[i] && !grant[i])) -> X((!bit0[i] && !bit1[i]))) &&
+	  (((bit0[i] && bit1[i]) && (request[i] && !grant[i])) -> X((!bit0[i] && bit1[i]))) &&
+	  (((bit0[i] && bit1[i]) && (!request[i] && grant[i])) -> X((bit0[i] && !bit1[i]))) &&
+	  (((bit0[i] && bit1[i]) && (request[i] && grant[i])) -> X((bit0[i] && bit1[i])))
+     )) && 
+	  ((!bit0[i] && !bit1[i]) -> !grant[i])
+    );
+    
+
+    // gar mutex : G forall i in Int(0..IND) . forall j in Int(0..IND) . (i != j) -> !(grant[i] & grant[j]);
+    G mutual(grant);
+    
+  }
+  
+
+}
+
+

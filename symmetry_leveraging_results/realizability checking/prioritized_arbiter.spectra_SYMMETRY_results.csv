@@ -1,0 +1,106 @@
+Spec,Size,Remove,Prep.,Real. Check,Total
+specs/prioritized_arbiter.spectra,50,-1,4.658,1.795,6.452
+specs/prioritized_arbiter.spectra,50,0,3.975,12.857,16.832
+specs/prioritized_arbiter.spectra,50,1,4.552,2.001,6.554
+specs/prioritized_arbiter.spectra,50,2,4.493,1.718,6.211
+specs/prioritized_arbiter.spectra,50,3,4.495,1.81,6.305
+specs/prioritized_arbiter.spectra,50,4,4.468,1.761,6.229
+specs/prioritized_arbiter.spectra,50,5,4.628,1.81,6.438
+specs/prioritized_arbiter.spectra,50,6,4.609,1.798,6.407
+specs/prioritized_arbiter.spectra,50,7,4.056,1.723,5.779
+specs/prioritized_arbiter.spectra,50,8,4.514,1.632,6.146
+specs/prioritized_arbiter.spectra,50,9,4.575,1.714,6.289
+specs/prioritized_arbiter.spectra,50,10,4.558,1.767,6.325
+specs/prioritized_arbiter.spectra,50,11,4.533,1.626,6.159
+specs/prioritized_arbiter.spectra,50,12,4.526,1.633,6.159
+specs/prioritized_arbiter.spectra,50,113, class java.util.concurrent.TimeoutException,,
+specs/prioritized_arbiter.spectra,75,-1,16.123,11.395,27.518
+specs/prioritized_arbiter.spectra,75,0,14.27,72.482,86.752
+specs/prioritized_arbiter.spectra,75,1,16.336,6.507,22.843
+specs/prioritized_arbiter.spectra,75,2,16.522,11.906,28.428
+specs/prioritized_arbiter.spectra,75,3,15.639,5.83,21.47
+specs/prioritized_arbiter.spectra,75,4,15.885,5.875,21.76
+specs/prioritized_arbiter.spectra,75,5,17.269,6.72,23.989
+specs/prioritized_arbiter.spectra,75,6,16.945,6.643,23.588
+specs/prioritized_arbiter.spectra,75,7,13.97,5.618,19.588
+specs/prioritized_arbiter.spectra,75,8,16.512,6.42,22.932
+specs/prioritized_arbiter.spectra,75,9,16.444,11.928,28.372
+specs/prioritized_arbiter.spectra,75,10,16.658,12.231,28.889
+specs/prioritized_arbiter.spectra,75,11,16.08,9.872,25.953
+specs/prioritized_arbiter.spectra,75,12,15.896,9.459,25.355
+specs/prioritized_arbiter.spectra,75,163, class java.util.concurrent.TimeoutException,,
+specs/prioritized_arbiter.spectra,100,-1,49.039,24.105,73.144
+specs/prioritized_arbiter.spectra,100,0,42.952,221.535,264.487
+specs/prioritized_arbiter.spectra,100,1,45.771,17.008,62.779
+specs/prioritized_arbiter.spectra,100,2,46.395,23.29,69.685
+specs/prioritized_arbiter.spectra,100,3,53.066,37.578,90.644
+specs/prioritized_arbiter.spectra,100,4,53.75,19.852,73.602
+specs/prioritized_arbiter.spectra,100,5,46.504,33.583,80.087
+specs/prioritized_arbiter.spectra,100,6,46.555,34.552,81.108
+specs/prioritized_arbiter.spectra,100,7,41.853,32.018,73.87
+specs/prioritized_arbiter.spectra,100,8,48.436,22.032,70.467
+specs/prioritized_arbiter.spectra,100,9,47.148,23.431,70.579
+specs/prioritized_arbiter.spectra,100,10,47.244,23.466,70.71
+specs/prioritized_arbiter.spectra,100,11,47.352,19.267,66.619
+specs/prioritized_arbiter.spectra,100,12,47.073,21.562,68.635
+specs/prioritized_arbiter.spectra,100,213, class java.util.concurrent.TimeoutException,,
+specs/prioritized_arbiter.spectra,125,-1,179.176,59.196,238.372
+specs/prioritized_arbiter.spectra,125,0,146.804,126.274,273.078
+specs/prioritized_arbiter.spectra,125,1,194.061,39.158,233.219
+specs/prioritized_arbiter.spectra,125,2,201.447,67.355,268.802
+specs/prioritized_arbiter.spectra,125,3,195.649,67.657,263.306
+specs/prioritized_arbiter.spectra,125,4,191.558,68.519,260.077
+specs/prioritized_arbiter.spectra,125,5,174.506,62.958,237.464
+specs/prioritized_arbiter.spectra,125,6,166.827,59.595,226.422
+specs/prioritized_arbiter.spectra,125,7,174.455,65.935,240.39
+specs/prioritized_arbiter.spectra,125,8,196.154,57.615,253.769
+specs/prioritized_arbiter.spectra,125,9,186.5,60.984,247.484
+specs/prioritized_arbiter.spectra,125,10,175.2,58.769,233.969
+specs/prioritized_arbiter.spectra,125,11,173.238,78.67,251.908
+specs/prioritized_arbiter.spectra,125,12,169.031,50.017,219.048
+specs/prioritized_arbiter.spectra,125,263, class java.util.concurrent.TimeoutException,,
+specs/prioritized_arbiter.spectra,150,-1, class java.util.concurrent.TimeoutException,,
+specs/prioritized_arbiter.spectra,150,0, class java.util.concurrent.TimeoutException,,
+specs/prioritized_arbiter.spectra,150,1, class java.util.concurrent.TimeoutException,,
+specs/prioritized_arbiter.spectra,150,2, class java.util.concurrent.TimeoutException,,
+specs/prioritized_arbiter.spectra,150,3, class java.util.concurrent.TimeoutException,,
+specs/prioritized_arbiter.spectra,150,4, class java.util.concurrent.TimeoutException,,
+specs/prioritized_arbiter.spectra,150,5, class java.util.concurrent.TimeoutException,,
+specs/prioritized_arbiter.spectra,150,6, class java.util.concurrent.TimeoutException,,
+specs/prioritized_arbiter.spectra,150,7, class java.util.concurrent.TimeoutException,,
+specs/prioritized_arbiter.spectra,150,8, class java.util.concurrent.TimeoutException,,
+specs/prioritized_arbiter.spectra,150,9, class java.util.concurrent.TimeoutException,,
+specs/prioritized_arbiter.spectra,150,10, class java.util.concurrent.TimeoutException,,
+specs/prioritized_arbiter.spectra,150,11, class java.util.concurrent.TimeoutException,,
+specs/prioritized_arbiter.spectra,150,12, class java.util.concurrent.TimeoutException,,
+specs/prioritized_arbiter.spectra,150,313, class java.util.concurrent.TimeoutException,,
+specs/prioritized_arbiter.spectra,175,-1, class java.util.concurrent.TimeoutException,,
+specs/prioritized_arbiter.spectra,175,0, class java.util.concurrent.TimeoutException,,
+specs/prioritized_arbiter.spectra,175,1, class java.util.concurrent.TimeoutException,,
+specs/prioritized_arbiter.spectra,175,2, class java.util.concurrent.TimeoutException,,
+specs/prioritized_arbiter.spectra,175,3, class java.util.concurrent.TimeoutException,,
+specs/prioritized_arbiter.spectra,175,4, class java.util.concurrent.TimeoutException,,
+specs/prioritized_arbiter.spectra,175,5, class java.util.concurrent.TimeoutException,,
+specs/prioritized_arbiter.spectra,175,6, class java.util.concurrent.TimeoutException,,
+specs/prioritized_arbiter.spectra,175,7, class java.util.concurrent.TimeoutException,,
+specs/prioritized_arbiter.spectra,175,8, class java.util.concurrent.TimeoutException,,
+specs/prioritized_arbiter.spectra,175,9, class java.util.concurrent.TimeoutException,,
+specs/prioritized_arbiter.spectra,175,10, class java.util.concurrent.TimeoutException,,
+specs/prioritized_arbiter.spectra,175,11, class java.util.concurrent.TimeoutException,,
+specs/prioritized_arbiter.spectra,175,12, class java.util.concurrent.TimeoutException,,
+specs/prioritized_arbiter.spectra,175,363, class java.util.concurrent.TimeoutException,,
+specs/prioritized_arbiter.spectra,200,-1, class java.util.concurrent.TimeoutException,,
+specs/prioritized_arbiter.spectra,200,0, class java.util.concurrent.TimeoutException,,
+specs/prioritized_arbiter.spectra,200,1, class java.util.concurrent.TimeoutException,,
+specs/prioritized_arbiter.spectra,200,2, class java.util.concurrent.TimeoutException,,
+specs/prioritized_arbiter.spectra,200,3, class java.util.concurrent.TimeoutException,,
+specs/prioritized_arbiter.spectra,200,4, class java.util.concurrent.TimeoutException,,
+specs/prioritized_arbiter.spectra,200,5, class java.util.concurrent.TimeoutException,,
+specs/prioritized_arbiter.spectra,200,6, class java.util.concurrent.TimeoutException,,
+specs/prioritized_arbiter.spectra,200,7, class java.util.concurrent.TimeoutException,,
+specs/prioritized_arbiter.spectra,200,8, class java.util.concurrent.TimeoutException,,
+specs/prioritized_arbiter.spectra,200,9, class java.util.concurrent.TimeoutException,,
+specs/prioritized_arbiter.spectra,200,10, class java.util.concurrent.TimeoutException,,
+specs/prioritized_arbiter.spectra,200,11, class java.util.concurrent.TimeoutException,,
+specs/prioritized_arbiter.spectra,200,12, class java.util.concurrent.TimeoutException,,
+specs/prioritized_arbiter.spectra,200,413, class java.util.concurrent.TimeoutException,,

@@ -1,0 +1,31 @@
+Spec,Size,Remove,Time,Best?,
+specs/abcg_arbiter.spectra, 2, -1, 0.244,1.000,
+specs/abcg_arbiter.spectra, 2, 0, 0.710,1.000,
+specs/abcg_arbiter.spectra, 2, 1, 0.243,1.000,
+specs/abcg_arbiter.spectra, 2, 2, 0.230,1.000,
+specs/abcg_arbiter.spectra, 2, 3, 0.266,1.000,
+specs/abcg_arbiter.spectra, 2, 4, 0.254,1.000,
+specs/abcg_arbiter.spectra, 2, 5, 0.238,1.000,
+specs/abcg_arbiter.spectra, 2, 6, 0.227,1.000,
+specs/abcg_arbiter.spectra, 2, 7, 0.236,1.000,
+specs/abcg_arbiter.spectra, 2, 8, 0.239,1.000,
+specs/abcg_arbiter.spectra, 3, -1, 6.472,1.000,
+specs/abcg_arbiter.spectra, 3, 0, 107.040,1.000,
+specs/abcg_arbiter.spectra, 3, 1, 6.597,1.000,
+specs/abcg_arbiter.spectra, 3, 2, 6.540,1.000,
+specs/abcg_arbiter.spectra, 3, 3, 6.370,1.000,
+specs/abcg_arbiter.spectra, 3, 4, 6.913,1.000,
+specs/abcg_arbiter.spectra, 3, 5, 6.633,1.000,
+specs/abcg_arbiter.spectra, 3, 6, 6.569,1.000,
+specs/abcg_arbiter.spectra, 3, 7, 6.614,1.000,
+specs/abcg_arbiter.spectra, 3, 8, 6.688,1.000,
+specs/abcg_arbiter.spectra, 4, -1, class java.util.concurrent.TimeoutException
+specs/abcg_arbiter.spectra, 4, 0, class java.util.concurrent.TimeoutException
+specs/abcg_arbiter.spectra, 4, 1, class java.util.concurrent.TimeoutException
+specs/abcg_arbiter.spectra, 4, 2, class java.util.concurrent.TimeoutException
+specs/abcg_arbiter.spectra, 4, 3, class java.util.concurrent.TimeoutException
+specs/abcg_arbiter.spectra, 4, 4, class java.util.concurrent.TimeoutException
+specs/abcg_arbiter.spectra, 4, 5, class java.util.concurrent.TimeoutException
+specs/abcg_arbiter.spectra, 4, 6, class java.util.concurrent.TimeoutException
+specs/abcg_arbiter.spectra, 4, 7, class java.util.concurrent.TimeoutException
+specs/abcg_arbiter.spectra, 4, 8, class java.util.concurrent.TimeoutException

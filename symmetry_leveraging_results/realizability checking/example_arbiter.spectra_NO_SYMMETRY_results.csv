@@ -1,0 +1,50 @@
+Spec,Size,Remove,Prep.,Real. Check,Total,
+specs/example_arbiter.spectra, 50, -1, 0.764,3.466,4.230,
+specs/example_arbiter.spectra, 50, 0, 0.770,2.255,3.026,
+specs/example_arbiter.spectra, 50, 1, 0.765,3.735,4.501,
+specs/example_arbiter.spectra, 50, 51, 0.762,1.643,2.405,
+specs/example_arbiter.spectra, 50, 52, 0.710,0.372,1.082,
+specs/example_arbiter.spectra, 50, 53, 0.609,2.829,3.438,
+specs/example_arbiter.spectra, 50, 54, 0.797,0.123,0.920,
+specs/example_arbiter.spectra, 75, -1, 1.753,11.113,12.867,
+specs/example_arbiter.spectra, 75, 0, 1.586,13.772,15.357,
+specs/example_arbiter.spectra, 75, 1, 1.759,10.093,11.853,
+specs/example_arbiter.spectra, 75, 76, 1.750,8.439,10.189,
+specs/example_arbiter.spectra, 75, 77, 1.612,1.105,2.717,
+specs/example_arbiter.spectra, 75, 78, 1.107,15.086,16.193,
+specs/example_arbiter.spectra, 75, 79, 1.751,0.289,2.040,
+specs/example_arbiter.spectra, 100, -1, 3.231,65.525,68.756,
+specs/example_arbiter.spectra, 100, 0, 3.210,26.305,29.515,
+specs/example_arbiter.spectra, 100, 1, 3.231,60.792,64.023,
+specs/example_arbiter.spectra, 100, 101, 3.265,26.016,29.280,
+specs/example_arbiter.spectra, 100, 102, 2.774,3.078,5.852,
+specs/example_arbiter.spectra, 100, 103, 1.987,45.840,47.827,
+specs/example_arbiter.spectra, 100, 104, 3.207,0.701,3.908,
+specs/example_arbiter.spectra, 125, -1, 5.331,108.323,113.654,
+specs/example_arbiter.spectra, 125, 0, 5.220,101.205,106.425,
+specs/example_arbiter.spectra, 125, 1, 5.279,109.274,114.553,
+specs/example_arbiter.spectra, 125, 126, 5.241,93.131,98.372,
+specs/example_arbiter.spectra, 125, 127, 4.632,5.232,9.864,
+specs/example_arbiter.spectra, 125, 128, 3.430,133.065,136.495,
+specs/example_arbiter.spectra, 125, 129, 5.387,1.104,6.491,
+specs/example_arbiter.spectra, 150, -1, 9.533,488.008,497.540,
+specs/example_arbiter.spectra, 150, 0, 9.187,190.751,199.938,
+specs/example_arbiter.spectra, 150, 1, 9.607,502.446,512.053,
+specs/example_arbiter.spectra, 150, 151, 9.445,171.121,180.566,
+specs/example_arbiter.spectra, 150, 152, 8.689,9.196,17.884,
+specs/example_arbiter.spectra, 150, 153, 6.035,455.589,461.624,
+specs/example_arbiter.spectra, 150, 154, 9.558,1.675,11.234,
+specs/example_arbiter.spectra, 175, -1, class java.util.concurrent.TimeoutException
+specs/example_arbiter.spectra, 175, 0, class java.util.concurrent.TimeoutException
+specs/example_arbiter.spectra, 175, 1, class java.util.concurrent.TimeoutException
+specs/example_arbiter.spectra, 175, 176, class java.util.concurrent.TimeoutException
+specs/example_arbiter.spectra, 175, 177, 12.932,18.667,31.599,
+specs/example_arbiter.spectra, 175, 178, class java.util.concurrent.TimeoutException
+specs/example_arbiter.spectra, 175, 179, 14.500,2.318,16.818,
+specs/example_arbiter.spectra, 200, -1, class java.util.concurrent.TimeoutException
+specs/example_arbiter.spectra, 200, 0, class java.util.concurrent.TimeoutException
+specs/example_arbiter.spectra, 200, 1, class java.util.concurrent.TimeoutException
+specs/example_arbiter.spectra, 200, 201, class java.util.concurrent.TimeoutException
+specs/example_arbiter.spectra, 200, 202, 19.221,25.408,44.629,
+specs/example_arbiter.spectra, 200, 203, class java.util.concurrent.TimeoutException
+specs/example_arbiter.spectra, 200, 204, 22.464,4.169,26.633,

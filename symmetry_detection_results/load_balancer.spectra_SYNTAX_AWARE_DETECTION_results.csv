@@ -1,0 +1,32 @@
+Spec,Size,Remove,Time,Best?,
+specs/load_balancer.spectra, 2, -1, Time data not found
+specs/load_balancer.spectra, 2, 0, Time data not found
+specs/load_balancer.spectra, 2, 1, Time data not found
+specs/load_balancer.spectra, 2, 2, Time data not found
+specs/load_balancer.spectra, 2, 3, Time data not found
+specs/load_balancer.spectra, 2, 4, Time data not found
+specs/load_balancer.spectra, 2, 5, Time data not found
+specs/load_balancer.spectra, 2, 6, Time data not found
+specs/load_balancer.spectra, 2, 7, Time data not found
+specs/load_balancer.spectra, 2, 8, Time data not found
+specs/load_balancer.spectra, 2, 9, Time data not found
+specs/load_balancer.spectra, 3, -1, 0.098,0.000,
+specs/load_balancer.spectra, 3, 0, 0.101,0.000,
+specs/load_balancer.spectra, 3, 1, 0.097,0.000,
+specs/load_balancer.spectra, 3, 2, 0.105,0.000,
+specs/load_balancer.spectra, 3, 3, 0.112,0.000,
+specs/load_balancer.spectra, 3, 4, 0.095,1.000,
+specs/load_balancer.spectra, 3, 7, 0.097,0.000,
+specs/load_balancer.spectra, 3, 8, 0.103,0.000,
+specs/load_balancer.spectra, 3, 9, 0.105,0.000,
+specs/load_balancer.spectra, 3, 10, 0.098,0.000,
+specs/load_balancer.spectra, 4, -1, 0.225,0.000,
+specs/load_balancer.spectra, 4, 0, 0.223,0.000,
+specs/load_balancer.spectra, 4, 1, 0.236,0.000,
+specs/load_balancer.spectra, 4, 2, 0.223,0.000,
+specs/load_balancer.spectra, 4, 3, 0.235,0.000,
+specs/load_balancer.spectra, 4, 4, 0.186,1.000,
+specs/load_balancer.spectra, 4, 8, 0.212,0.000,
+specs/load_balancer.spectra, 4, 9, 0.219,0.000,
+specs/load_balancer.spectra, 4, 10, 0.235,0.000,
+specs/load_balancer.spectra, 4, 11, 0.223,0.000,

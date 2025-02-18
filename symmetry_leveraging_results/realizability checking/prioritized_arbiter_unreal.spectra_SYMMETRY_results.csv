@@ -1,0 +1,120 @@
+Spec,Size,Remove,Prep.,Real. Check,Total,
+specs/prioritized_arbiter_unreal.spectra, 10, -1, 0.823,1.279,2.102,
+specs/prioritized_arbiter_unreal.spectra, 10, 0, 0.763,0.848,1.611,
+specs/prioritized_arbiter_unreal.spectra, 10, 1, 0.791,0.033,0.824,
+specs/prioritized_arbiter_unreal.spectra, 10, 2, 0.787,2.864,3.651,
+specs/prioritized_arbiter_unreal.spectra, 10, 3, 0.796,0.481,1.277,
+specs/prioritized_arbiter_unreal.spectra, 10, 4, 0.827,1.281,2.108,
+specs/prioritized_arbiter_unreal.spectra, 10, 5, 0.845,1.319,2.163,
+specs/prioritized_arbiter_unreal.spectra, 10, 6, 0.813,0.996,1.809,
+specs/prioritized_arbiter_unreal.spectra, 10, 7, 0.800,1.541,2.341,
+specs/prioritized_arbiter_unreal.spectra, 10, 8, 0.790,1.536,2.326,
+specs/prioritized_arbiter_unreal.spectra, 10, 9, 0.815,1.195,2.010,
+specs/prioritized_arbiter_unreal.spectra, 10, 10, 0.875,0.790,1.664,
+specs/prioritized_arbiter_unreal.spectra, 10, 11, 0.828,1.358,2.186,
+specs/prioritized_arbiter_unreal.spectra, 10, 12, 0.820,1.494,2.314,
+specs/prioritized_arbiter_unreal.spectra, 10, 13, 0.792,1.226,2.018,
+specs/prioritized_arbiter_unreal.spectra, 10, 14, 0.782,1.452,2.234,
+specs/prioritized_arbiter_unreal.spectra, 10, 35, 0.804,0.964,1.767,
+specs/prioritized_arbiter_unreal.spectra, 15, -1, 1.022,7.040,8.061,
+specs/prioritized_arbiter_unreal.spectra, 15, 0, 1.037,3.088,4.125,
+specs/prioritized_arbiter_unreal.spectra, 15, 1, 0.861,0.065,0.926,
+specs/prioritized_arbiter_unreal.spectra, 15, 2, 1.021,16.811,17.833,
+specs/prioritized_arbiter_unreal.spectra, 15, 3, 0.929,2.127,3.056,
+specs/prioritized_arbiter_unreal.spectra, 15, 4, 0.997,7.989,8.986,
+specs/prioritized_arbiter_unreal.spectra, 15, 5, 0.944,7.349,8.293,
+specs/prioritized_arbiter_unreal.spectra, 15, 6, 0.914,6.008,6.922,
+specs/prioritized_arbiter_unreal.spectra, 15, 7, 0.969,7.328,8.296,
+specs/prioritized_arbiter_unreal.spectra, 15, 8, 0.950,7.473,8.423,
+specs/prioritized_arbiter_unreal.spectra, 15, 9, 0.916,6.927,7.842,
+specs/prioritized_arbiter_unreal.spectra, 15, 10, 0.927,4.633,5.560,
+specs/prioritized_arbiter_unreal.spectra, 15, 11, 1.063,7.327,8.390,
+specs/prioritized_arbiter_unreal.spectra, 15, 12, 0.975,8.173,9.148,
+specs/prioritized_arbiter_unreal.spectra, 15, 13, 1.007,7.100,8.108,
+specs/prioritized_arbiter_unreal.spectra, 15, 14, 0.984,9.944,10.927,
+specs/prioritized_arbiter_unreal.spectra, 15, 45, 0.968,5.911,6.879,
+specs/prioritized_arbiter_unreal.spectra, 20, -1, 1.413,26.231,27.644,
+specs/prioritized_arbiter_unreal.spectra, 20, 0, 1.170,12.370,13.540,
+specs/prioritized_arbiter_unreal.spectra, 20, 1, 1.099,0.124,1.224,
+specs/prioritized_arbiter_unreal.spectra, 20, 2, 1.380,59.852,61.233,
+specs/prioritized_arbiter_unreal.spectra, 20, 3, 1.448,6.798,8.246,
+specs/prioritized_arbiter_unreal.spectra, 20, 4, 1.323,26.569,27.891,
+specs/prioritized_arbiter_unreal.spectra, 20, 5, 1.380,22.157,23.537,
+specs/prioritized_arbiter_unreal.spectra, 20, 6, 1.391,21.913,23.304,
+specs/prioritized_arbiter_unreal.spectra, 20, 7, 1.383,26.545,27.928,
+specs/prioritized_arbiter_unreal.spectra, 20, 8, 1.368,25.409,26.777,
+specs/prioritized_arbiter_unreal.spectra, 20, 9, 1.362,27.432,28.794,
+specs/prioritized_arbiter_unreal.spectra, 20, 10, 1.352,16.096,17.447,
+specs/prioritized_arbiter_unreal.spectra, 20, 11, 1.319,23.162,24.480,
+specs/prioritized_arbiter_unreal.spectra, 20, 12, 1.384,26.598,27.982,
+specs/prioritized_arbiter_unreal.spectra, 20, 13, 1.377,25.292,26.669,
+specs/prioritized_arbiter_unreal.spectra, 20, 14, 1.416,42.018,43.434,
+specs/prioritized_arbiter_unreal.spectra, 20, 55, 1.410,18.668,20.078,
+specs/prioritized_arbiter_unreal.spectra, 25, -1, 1.844,60.052,61.895,
+specs/prioritized_arbiter_unreal.spectra, 25, 0, 1.616,27.693,29.309,
+specs/prioritized_arbiter_unreal.spectra, 25, 1, 1.389,0.213,1.602,
+specs/prioritized_arbiter_unreal.spectra, 25, 2, 1.891,242.381,244.272,
+specs/prioritized_arbiter_unreal.spectra, 25, 3, 1.928,22.536,24.464,
+specs/prioritized_arbiter_unreal.spectra, 25, 4, 1.887,64.387,66.274,
+specs/prioritized_arbiter_unreal.spectra, 25, 5, 1.904,73.124,75.028,
+specs/prioritized_arbiter_unreal.spectra, 25, 6, 1.923,65.380,67.303,
+specs/prioritized_arbiter_unreal.spectra, 25, 7, 1.913,64.245,66.158,
+specs/prioritized_arbiter_unreal.spectra, 25, 8, 1.924,63.196,65.121,
+specs/prioritized_arbiter_unreal.spectra, 25, 9, 1.918,76.364,78.282,
+specs/prioritized_arbiter_unreal.spectra, 25, 10, 1.880,57.255,59.135,
+specs/prioritized_arbiter_unreal.spectra, 25, 11, 1.929,69.888,71.817,
+specs/prioritized_arbiter_unreal.spectra, 25, 12, 1.869,74.871,76.740,
+specs/prioritized_arbiter_unreal.spectra, 25, 13, 1.926,78.721,80.647,
+specs/prioritized_arbiter_unreal.spectra, 25, 14, 1.894,140.801,142.695,
+specs/prioritized_arbiter_unreal.spectra, 25, 65, 1.846,78.156,80.001,
+specs/prioritized_arbiter_unreal.spectra, 30, -1, 2.889,210.307,213.196,
+specs/prioritized_arbiter_unreal.spectra, 30, 0, 2.382,71.912,74.293,
+specs/prioritized_arbiter_unreal.spectra, 30, 1, 2.140,0.711,2.851,
+specs/prioritized_arbiter_unreal.spectra, 30, 2, class java.util.concurrent.TimeoutException
+specs/prioritized_arbiter_unreal.spectra, 30, 3, 3.140,51.289,54.430,
+specs/prioritized_arbiter_unreal.spectra, 30, 4, 2.933,219.036,221.969,
+specs/prioritized_arbiter_unreal.spectra, 30, 5, 3.003,203.132,206.135,
+specs/prioritized_arbiter_unreal.spectra, 30, 6, class java.util.concurrent.TimeoutException
+specs/prioritized_arbiter_unreal.spectra, 30, 7, 2.899,150.736,153.635,
+specs/prioritized_arbiter_unreal.spectra, 30, 8, 2.862,192.423,195.285,
+specs/prioritized_arbiter_unreal.spectra, 30, 9, 2.933,312.696,315.629,
+specs/prioritized_arbiter_unreal.spectra, 30, 10, 2.953,120.917,123.870,
+specs/prioritized_arbiter_unreal.spectra, 30, 11, 2.943,170.602,173.545,
+specs/prioritized_arbiter_unreal.spectra, 30, 12, 2.946,234.186,237.132,
+specs/prioritized_arbiter_unreal.spectra, 30, 13, 2.943,260.854,263.797,
+specs/prioritized_arbiter_unreal.spectra, 30, 14, class java.util.concurrent.TimeoutException
+specs/prioritized_arbiter_unreal.spectra, 30, 75, 2.918,241.783,244.701,
+specs/prioritized_arbiter_unreal.spectra, 35, -1, 4.455,346.369,350.824,
+specs/prioritized_arbiter_unreal.spectra, 35, 0, 3.275,172.708,175.983,
+specs/prioritized_arbiter_unreal.spectra, 35, 1, 2.615,0.798,3.413,
+specs/prioritized_arbiter_unreal.spectra, 35, 2, class java.util.concurrent.TimeoutException
+specs/prioritized_arbiter_unreal.spectra, 35, 3, 4.366,165.335,169.701,
+specs/prioritized_arbiter_unreal.spectra, 35, 4, class java.util.concurrent.TimeoutException
+specs/prioritized_arbiter_unreal.spectra, 35, 5, class java.util.concurrent.TimeoutException
+specs/prioritized_arbiter_unreal.spectra, 35, 6, class java.util.concurrent.TimeoutException
+specs/prioritized_arbiter_unreal.spectra, 35, 7, 4.474,257.353,261.827,
+specs/prioritized_arbiter_unreal.spectra, 35, 8, class java.util.concurrent.TimeoutException
+specs/prioritized_arbiter_unreal.spectra, 35, 9, 4.494,361.064,365.558,
+specs/prioritized_arbiter_unreal.spectra, 35, 10, 4.356,278.410,282.766,
+specs/prioritized_arbiter_unreal.spectra, 35, 11, 4.402,315.457,319.859,
+specs/prioritized_arbiter_unreal.spectra, 35, 12, class java.util.concurrent.TimeoutException
+specs/prioritized_arbiter_unreal.spectra, 35, 13, 4.444,420.655,425.099,
+specs/prioritized_arbiter_unreal.spectra, 35, 14, class java.util.concurrent.TimeoutException
+specs/prioritized_arbiter_unreal.spectra, 35, 85, class java.util.concurrent.TimeoutException
+specs/prioritized_arbiter_unreal.spectra, 40, -1, class java.util.concurrent.TimeoutException
+specs/prioritized_arbiter_unreal.spectra, 40, 0, 4.962,290.352,295.314,
+specs/prioritized_arbiter_unreal.spectra, 40, 1, 3.850,1.471,5.321,
+specs/prioritized_arbiter_unreal.spectra, 40, 2, class java.util.concurrent.TimeoutException
+specs/prioritized_arbiter_unreal.spectra, 40, 3, 6.867,374.624,381.491,
+specs/prioritized_arbiter_unreal.spectra, 40, 4, class java.util.concurrent.TimeoutException
+specs/prioritized_arbiter_unreal.spectra, 40, 5, class java.util.concurrent.TimeoutException
+specs/prioritized_arbiter_unreal.spectra, 40, 6, class java.util.concurrent.TimeoutException
+specs/prioritized_arbiter_unreal.spectra, 40, 7, class java.util.concurrent.TimeoutException
+specs/prioritized_arbiter_unreal.spectra, 40, 8, class java.util.concurrent.TimeoutException
+specs/prioritized_arbiter_unreal.spectra, 40, 9, class java.util.concurrent.TimeoutException
+specs/prioritized_arbiter_unreal.spectra, 40, 10, class java.util.concurrent.TimeoutException
+specs/prioritized_arbiter_unreal.spectra, 40, 11, class java.util.concurrent.TimeoutException
+specs/prioritized_arbiter_unreal.spectra, 40, 12, class java.util.concurrent.TimeoutException
+specs/prioritized_arbiter_unreal.spectra, 40, 13, class java.util.concurrent.TimeoutException
+specs/prioritized_arbiter_unreal.spectra, 40, 14, class java.util.concurrent.TimeoutException
+specs/prioritized_arbiter_unreal.spectra, 40, 95, class java.util.concurrent.TimeoutException

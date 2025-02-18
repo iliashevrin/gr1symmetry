@@ -1,0 +1,60 @@
+module Full_arbiter
+
+define N := $PARAM$;
+define IND := N - 1;
+
+env boolean idle;
+env boolean[N] request;
+sys boolean[N] grant;
+
+aux boolean[N] next_grant;
+
+asm GF !idle;
+
+asm G (idle & (forall i in Int(0..IND) . next(!grant[i])) -> next(idle)); 
+
+asm idlePattern(grant[0], request[0], idle);
+
+gar G forall i in Int(0..IND) . !request[i] -> next(!grant[i]);
+
+gar G forall i in Int(1..IND) . request[0] -> next(!grant[i]);
+
+gar G (exists i in Int(0..IND) . next(grant[i])) -> idle;
+
+gar G forall i in Int(0..IND) . next_grant[i] <-> next(grant[i]);
+
+gar response{Int(0..IND) i}: GF !request[i] | next_grant[i];
+
+gar mutex : G forall i in Int(0..IND) . forall j in Int(0..IND) . (i != j) -> !(next(grant[i]) & next(grant[j]));
+
+
+
+pattern idlePattern(g,r,idle) {
+	
+	var {S99, S0, S1} state;
+
+  	state = S99;
+  	
+  	G state=S99 -> next(state=S0);
+  	
+  	G (state=S0 & g & !r & idle) -> next(state=S1);
+  	
+  	G (state=S0 & (g | (!r & idle))) -> next(state=S0);
+  	
+  	G (state=S1 & !r & idle) -> next(state=S0);
+  	
+  	G (state=S1 & !r & !idle) -> next(state=S1);
+  	
+  	G state=S0 -> !(g & r);
+  	
+  	G state=S1 -> !r;
+
+	GF state=S0;  	
+}
+
+
+
+@symmetry {
+	arrays: request, grant, next_grant;
+	indexes: 1..IND;
+}

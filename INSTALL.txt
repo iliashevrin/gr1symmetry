@@ -1,0 +1,33 @@
+﻿INSTALL file for artifact evaluation of TOSEM 25 submission
+
+
+"Leveraging Symmetry in GR(1) Synthesis"
+
+
+
+
+Download the zip file and extract it to a folder. The artifact (aside from the “parametric prevalence” folder) is ready to use, and allows you to:
+
+
+
+a.        Directly run the included JAR files realizability_evaluation.jar, cores_evaluation.jar, or detection_evaluation.jar according to the instructions in the README file.
+
+b.	  Run results_processor.jar to analyze and process output CSV files from the evaluation JARs (for symmetry leveraging evaluation).
+
+
+c.        To reproduce the parametric prevalence test, install strix and ltlsynt following instructions in the respective websites of the tools - https://github.com/meyerphi/strix, https://spot.lre.epita.fr/install.html.
+
+
+
+
+
+
+=============================
+       Important notes
+=============================
+
+
+a.        Reproducing the full results for all the benchmark specifications may take a very long time to complete (days or weeks). It is advisable to run the JAR separately for single executions.
+
+
+b.        The package was tested on Linux Ubuntu and Windows 11 operating systems. On Linux we need to set the LD_LIBRARY_PATH to recognize the libcudd.so CUDD library. Please refer to the README file. On Windows we need to run from the same folder where cudd.dll exists. Also, on Windows we need the Microsoft Visual C++ 2015 Redistributable (x64). Note that if the CUDD library fails to load, the JAR will use a Java implementation of CUDD which is less stable and even incorrect.

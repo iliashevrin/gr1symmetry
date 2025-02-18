@@ -1,0 +1,19 @@
+Spec,Size,Remove,Time,Best?,
+specs/prioritized_arbiter_unreal.spectra, 2, -1, 0.188,0.000,
+specs/prioritized_arbiter_unreal.spectra, 2, 0, 0.175,1.000,
+specs/prioritized_arbiter_unreal.spectra, 2, 1, 0.148,1.000,
+specs/prioritized_arbiter_unreal.spectra, 2, 2, 0.173,0.000,
+specs/prioritized_arbiter_unreal.spectra, 2, 3, 0.204,0.000,
+specs/prioritized_arbiter_unreal.spectra, 2, 8, 0.214,0.000,
+specs/prioritized_arbiter_unreal.spectra, 3, -1, 1.475,0.000,
+specs/prioritized_arbiter_unreal.spectra, 3, 0, 1.651,1.000,
+specs/prioritized_arbiter_unreal.spectra, 3, 1, 0.976,1.000,
+specs/prioritized_arbiter_unreal.spectra, 3, 2, 1.437,0.000,
+specs/prioritized_arbiter_unreal.spectra, 3, 3, 2.652,0.000,
+specs/prioritized_arbiter_unreal.spectra, 3, 10, 2.117,0.000,
+specs/prioritized_arbiter_unreal.spectra, 4, -1, class java.util.concurrent.TimeoutException
+specs/prioritized_arbiter_unreal.spectra, 4, 0, 265.138,1.000,
+specs/prioritized_arbiter_unreal.spectra, 4, 1, 64.114,1.000,
+specs/prioritized_arbiter_unreal.spectra, 4, 2, class java.util.concurrent.TimeoutException
+specs/prioritized_arbiter_unreal.spectra, 4, 3, class java.util.concurrent.TimeoutException
+specs/prioritized_arbiter_unreal.spectra, 4, 12, class java.util.concurrent.TimeoutException

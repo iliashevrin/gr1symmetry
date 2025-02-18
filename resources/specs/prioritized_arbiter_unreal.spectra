@@ -1,0 +1,59 @@
+import "DwyerPatterns.spectra"
+
+module Prioritized_arbiter
+
+define N := $PARAM$;
+define IND := N - 1;
+
+env boolean[N] request;
+env boolean request_master;
+sys boolean[N] grant;
+sys boolean grant_master;
+
+sys {S0, S1, S2}[N] state;
+
+
+aux boolean[N] prev_request;
+gar G forall i in Int(0..IND) . request[i] <-> next(prev_request[i]); 
+gar unreal: G forall i in Int(0..IND) . forall j in Int(0..IND) . (request[j] & prev_request[i]) -> next(grant[i] & grant[j]); 
+
+
+asm GF !request_master;
+
+gar response{Int(0..IND) i}: S_responds_to_P_globally(grant[i], request[i]);
+
+gar mutex: G forall i in Int(0..IND) . forall j in Int(0..IND) . (i != j) -> !(grant[i] & grant[j]);
+
+gar master_mutex: G forall i in Int(0..IND) . !(grant_master & grant[i]);
+
+
+gar forall i in Int(0..IND) . state[i] = S0;
+  	
+gar G forall i in Int(0..IND) . (state[i]=S0 & !request_master) -> next(state[i]=S0);
+  	
+gar G forall i in Int(0..IND) . (state[i]=S0 & request_master) -> next(state[i]=S1);
+  	
+gar G forall i in Int(0..IND) . (state[i]=S1 & !request_master & grant_master) -> next(state[i]=S0);
+  	
+gar G forall i in Int(0..IND) . (state[i]=S1 & request_master & grant_master) -> next(state[i]=S1);
+  	
+gar G forall i in Int(0..IND) . (state[i]=S1 & !grant[i] & !grant_master) -> next(state[i]=S2);
+  	
+gar G forall i in Int(0..IND) . state[i]=S1 -> (!grant[i] | grant_master);
+  	
+gar G forall i in Int(0..IND) . (state[i]=S2 & !request_master & grant_master) -> next(state[i]=S0);
+  	
+gar G forall i in Int(0..IND) . (state[i]=S2 & request_master & grant_master) -> next(state[i]=S1);
+  	
+gar G forall i in Int(0..IND) . (state[i]=S2 & !grant[i] & !grant_master) -> next(state[i]=S2);
+  	
+gar G forall i in Int(0..IND) . state[i]=S2 -> (!grant[i] | grant_master);
+
+gar master_first{Int(0..IND) i}: GF (state[i]=S0 | state[i]=S1);  	
+
+
+
+@symmetry {
+	arrays: request, grant, state, prev_request;
+	indexes: 0..IND;
+}

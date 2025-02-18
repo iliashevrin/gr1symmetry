@@ -1,0 +1,61 @@
+Spec,Size,Remove,Prep.,Real. Check,Total,
+specs/abcg_arbiter.spectra, 10, -1, 0.752,4.542,5.294,
+specs/abcg_arbiter.spectra, 10, 0, 1.172,0.140,1.312,
+specs/abcg_arbiter.spectra, 10, 1, 0.780,2.472,3.252,
+specs/abcg_arbiter.spectra, 10, 2, 0.708,4.117,4.825,
+specs/abcg_arbiter.spectra, 10, 3, 0.699,3.829,4.528,
+specs/abcg_arbiter.spectra, 10, 4, 0.809,0.633,1.442,
+specs/abcg_arbiter.spectra, 10, 5, 0.659,2.668,3.327,
+specs/abcg_arbiter.spectra, 10, 6, 0.709,0.528,1.237,
+specs/abcg_arbiter.spectra, 10, 7, 0.711,4.384,5.096,
+specs/abcg_arbiter.spectra, 10, 8, 0.737,4.053,4.790,
+specs/abcg_arbiter.spectra, 20, -1, 1.779,33.516,35.295,
+specs/abcg_arbiter.spectra, 20, 0, 1.273,0.367,1.640,
+specs/abcg_arbiter.spectra, 20, 1, 1.675,13.065,14.741,
+specs/abcg_arbiter.spectra, 20, 2, 1.722,38.960,40.681,
+specs/abcg_arbiter.spectra, 20, 3, 1.814,33.944,35.757,
+specs/abcg_arbiter.spectra, 20, 4, 1.961,3.412,5.373,
+specs/abcg_arbiter.spectra, 20, 5, 2.107,16.943,19.050,
+specs/abcg_arbiter.spectra, 20, 6, 1.663,4.192,5.855,
+specs/abcg_arbiter.spectra, 20, 7, 1.925,35.264,37.189,
+specs/abcg_arbiter.spectra, 20, 8, 1.982,32.899,34.880,
+specs/abcg_arbiter.spectra, 30, -1, 5.425,167.052,172.478,
+specs/abcg_arbiter.spectra, 30, 0, 2.545,1.307,3.852,
+specs/abcg_arbiter.spectra, 30, 1, 5.477,93.925,99.402,
+specs/abcg_arbiter.spectra, 30, 2, 6.143,169.912,176.055,
+specs/abcg_arbiter.spectra, 30, 3, 5.076,130.904,135.980,
+specs/abcg_arbiter.spectra, 30, 4, 7.346,11.076,18.422,
+specs/abcg_arbiter.spectra, 30, 5, 4.928,60.089,65.017,
+specs/abcg_arbiter.spectra, 30, 6, 4.936,13.432,18.368,
+specs/abcg_arbiter.spectra, 30, 7, 4.655,155.011,159.666,
+specs/abcg_arbiter.spectra, 30, 8, 4.720,151.081,155.801,
+specs/abcg_arbiter.spectra, 40, -1, 13.409,341.548,354.957,
+specs/abcg_arbiter.spectra, 40, 0, 7.932,3.337,11.269,
+specs/abcg_arbiter.spectra, 40, 1, 13.143,252.770,265.913,
+specs/abcg_arbiter.spectra, 40, 2, 14.202,347.717,361.918,
+specs/abcg_arbiter.spectra, 40, 3, 14.173,355.755,369.928,
+specs/abcg_arbiter.spectra, 40, 4, 14.537,36.120,50.657,
+specs/abcg_arbiter.spectra, 40, 5, 14.020,138.092,152.112,
+specs/abcg_arbiter.spectra, 40, 6, 13.862,30.509,44.371,
+specs/abcg_arbiter.spectra, 40, 7, 13.383,307.020,320.403,
+specs/abcg_arbiter.spectra, 40, 8, 13.099,325.693,338.792,
+specs/abcg_arbiter.spectra, 50, -1, class java.util.concurrent.TimeoutException
+specs/abcg_arbiter.spectra, 50, 0, 25.865,12.630,38.495,
+specs/abcg_arbiter.spectra, 50, 1, class java.util.concurrent.TimeoutException
+specs/abcg_arbiter.spectra, 50, 2, class java.util.concurrent.TimeoutException
+specs/abcg_arbiter.spectra, 50, 3, class java.util.concurrent.TimeoutException
+specs/abcg_arbiter.spectra, 50, 4, 25.763,116.074,141.837,
+specs/abcg_arbiter.spectra, 50, 5, 22.932,316.608,339.540,
+specs/abcg_arbiter.spectra, 50, 6, 22.810,69.075,91.884,
+specs/abcg_arbiter.spectra, 50, 7, class java.util.concurrent.TimeoutException
+specs/abcg_arbiter.spectra, 50, 8, class java.util.concurrent.TimeoutException
+specs/abcg_arbiter.spectra, 60, -1, class java.util.concurrent.TimeoutException
+specs/abcg_arbiter.spectra, 60, 0, 51.366,20.668,72.034,
+specs/abcg_arbiter.spectra, 60, 1, class java.util.concurrent.TimeoutException
+specs/abcg_arbiter.spectra, 60, 2, class java.util.concurrent.TimeoutException
+specs/abcg_arbiter.spectra, 60, 3, class java.util.concurrent.TimeoutException
+specs/abcg_arbiter.spectra, 60, 4, class java.util.concurrent.TimeoutException
+specs/abcg_arbiter.spectra, 60, 5, class java.util.concurrent.TimeoutException
+specs/abcg_arbiter.spectra, 60, 6, 91.392,318.133,409.526,
+specs/abcg_arbiter.spectra, 60, 7, class java.util.concurrent.TimeoutException
+specs/abcg_arbiter.spectra, 60, 8, class java.util.concurrent.TimeoutException

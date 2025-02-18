@@ -1,0 +1,113 @@
+Spec,Size,Remove,Prep.,Real. Check,Total,
+specs/full_arbiter_unreal.spectra, 10, -1, 1.032,0.163,1.195,
+specs/full_arbiter_unreal.spectra, 10, 0, 1.060,141.935,142.995,
+specs/full_arbiter_unreal.spectra, 10, 1, 0.981,8.789,9.770,
+specs/full_arbiter_unreal.spectra, 10, 2, 1.091,11.079,12.170,
+specs/full_arbiter_unreal.spectra, 10, 3, 0.914,0.141,1.056,
+specs/full_arbiter_unreal.spectra, 10, 4, 0.918,0.160,1.077,
+specs/full_arbiter_unreal.spectra, 10, 5, 0.949,0.185,1.134,
+specs/full_arbiter_unreal.spectra, 10, 6, 0.990,0.157,1.147,
+specs/full_arbiter_unreal.spectra, 10, 7, 0.991,0.159,1.150,
+specs/full_arbiter_unreal.spectra, 10, 8, 1.001,0.168,1.169,
+specs/full_arbiter_unreal.spectra, 10, 9, 1.051,0.397,1.448,
+specs/full_arbiter_unreal.spectra, 10, 10, 1.073,0.172,1.245,
+specs/full_arbiter_unreal.spectra, 10, 11, 0.949,0.117,1.067,
+specs/full_arbiter_unreal.spectra, 10, 12, 0.976,0.401,1.377,
+specs/full_arbiter_unreal.spectra, 10, 13, 0.963,0.242,1.206,
+specs/full_arbiter_unreal.spectra, 10, 14, 1.006,0.153,1.158,
+specs/full_arbiter_unreal.spectra, 15, -1, 1.781,25.439,27.220,
+specs/full_arbiter_unreal.spectra, 15, 0, class java.util.concurrent.TimeoutException
+specs/full_arbiter_unreal.spectra, 15, 1, 2.411,430.071,432.482,
+specs/full_arbiter_unreal.spectra, 15, 2, class java.util.concurrent.TimeoutException
+specs/full_arbiter_unreal.spectra, 15, 3, 1.882,4.415,6.297,
+specs/full_arbiter_unreal.spectra, 15, 4, 1.544,26.696,28.239,
+specs/full_arbiter_unreal.spectra, 15, 5, 1.749,8.817,10.566,
+specs/full_arbiter_unreal.spectra, 15, 6, 1.756,23.955,25.710,
+specs/full_arbiter_unreal.spectra, 15, 7, 1.880,66.468,68.349,
+specs/full_arbiter_unreal.spectra, 15, 8, 1.844,39.350,41.195,
+specs/full_arbiter_unreal.spectra, 15, 9, 1.662,6.480,8.142,
+specs/full_arbiter_unreal.spectra, 15, 10, 1.872,4.151,6.023,
+specs/full_arbiter_unreal.spectra, 15, 11, 1.848,0.441,2.289,
+specs/full_arbiter_unreal.spectra, 15, 12, 1.786,23.451,25.237,
+specs/full_arbiter_unreal.spectra, 15, 13, 1.798,7.579,9.377,
+specs/full_arbiter_unreal.spectra, 15, 14, 1.888,15.230,17.118,
+specs/full_arbiter_unreal.spectra, 20, -1, class java.util.concurrent.TimeoutException
+specs/full_arbiter_unreal.spectra, 20, 0, class java.util.concurrent.TimeoutException
+specs/full_arbiter_unreal.spectra, 20, 1, class java.util.concurrent.TimeoutException
+specs/full_arbiter_unreal.spectra, 20, 2, class java.util.concurrent.TimeoutException
+specs/full_arbiter_unreal.spectra, 20, 3, 3.015,73.480,76.495,
+specs/full_arbiter_unreal.spectra, 20, 4, 2.901,46.216,49.117,
+specs/full_arbiter_unreal.spectra, 20, 5, class java.util.concurrent.TimeoutException
+specs/full_arbiter_unreal.spectra, 20, 6, 3.334,16.219,19.553,
+specs/full_arbiter_unreal.spectra, 20, 7, 3.340,8.648,11.989,
+specs/full_arbiter_unreal.spectra, 20, 8, 3.149,11.353,14.502,
+specs/full_arbiter_unreal.spectra, 20, 9, 2.650,58.886,61.536,
+specs/full_arbiter_unreal.spectra, 20, 10, 3.478,13.976,17.454,
+specs/full_arbiter_unreal.spectra, 20, 11, class java.util.concurrent.TimeoutException
+specs/full_arbiter_unreal.spectra, 20, 12, 3.296,44.333,47.629,
+specs/full_arbiter_unreal.spectra, 20, 13, 3.031,496.304,499.335,
+specs/full_arbiter_unreal.spectra, 20, 14, class java.util.concurrent.TimeoutException
+specs/full_arbiter_unreal.spectra, 25, -1, 4.069,77.034,81.103,
+specs/full_arbiter_unreal.spectra, 25, 0, class java.util.concurrent.TimeoutException
+specs/full_arbiter_unreal.spectra, 25, 1, class java.util.concurrent.TimeoutException
+specs/full_arbiter_unreal.spectra, 25, 2, class java.util.concurrent.TimeoutException
+specs/full_arbiter_unreal.spectra, 25, 3, 4.228,406.312,410.540,
+specs/full_arbiter_unreal.spectra, 25, 4, class java.util.concurrent.TimeoutException
+specs/full_arbiter_unreal.spectra, 25, 5, class java.util.concurrent.TimeoutException
+specs/full_arbiter_unreal.spectra, 25, 6, 4.026,215.666,219.692,
+specs/full_arbiter_unreal.spectra, 25, 7, class java.util.concurrent.TimeoutException
+specs/full_arbiter_unreal.spectra, 25, 8, 3.894,267.649,271.543,
+specs/full_arbiter_unreal.spectra, 25, 9, class java.util.concurrent.TimeoutException
+specs/full_arbiter_unreal.spectra, 25, 10, 3.969,48.266,52.235,
+specs/full_arbiter_unreal.spectra, 25, 11, class java.util.concurrent.TimeoutException
+specs/full_arbiter_unreal.spectra, 25, 12, 3.959,67.804,71.764,
+specs/full_arbiter_unreal.spectra, 25, 13, class java.util.concurrent.TimeoutException
+specs/full_arbiter_unreal.spectra, 25, 14, 3.895,90.603,94.498,
+specs/full_arbiter_unreal.spectra, 30, -1, class java.util.concurrent.TimeoutException
+specs/full_arbiter_unreal.spectra, 30, 0, class java.util.concurrent.TimeoutException
+specs/full_arbiter_unreal.spectra, 30, 1, class java.util.concurrent.TimeoutException
+specs/full_arbiter_unreal.spectra, 30, 2, class java.util.concurrent.TimeoutException
+specs/full_arbiter_unreal.spectra, 30, 3, class java.util.concurrent.TimeoutException
+specs/full_arbiter_unreal.spectra, 30, 4, class java.util.concurrent.TimeoutException
+specs/full_arbiter_unreal.spectra, 30, 5, class java.util.concurrent.TimeoutException
+specs/full_arbiter_unreal.spectra, 30, 6, class java.util.concurrent.TimeoutException
+specs/full_arbiter_unreal.spectra, 30, 7, class java.util.concurrent.TimeoutException
+specs/full_arbiter_unreal.spectra, 30, 8, class java.util.concurrent.TimeoutException
+specs/full_arbiter_unreal.spectra, 30, 9, class java.util.concurrent.TimeoutException
+specs/full_arbiter_unreal.spectra, 30, 10, class java.util.concurrent.TimeoutException
+specs/full_arbiter_unreal.spectra, 30, 11, class java.util.concurrent.TimeoutException
+specs/full_arbiter_unreal.spectra, 30, 12, class java.util.concurrent.TimeoutException
+specs/full_arbiter_unreal.spectra, 30, 13, class java.util.concurrent.TimeoutException
+specs/full_arbiter_unreal.spectra, 30, 14, class java.util.concurrent.TimeoutException
+specs/full_arbiter_unreal.spectra, 35, -1, class java.util.concurrent.TimeoutException
+specs/full_arbiter_unreal.spectra, 35, 0, class java.util.concurrent.TimeoutException
+specs/full_arbiter_unreal.spectra, 35, 1, class java.util.concurrent.TimeoutException
+specs/full_arbiter_unreal.spectra, 35, 2, class java.util.concurrent.TimeoutException
+specs/full_arbiter_unreal.spectra, 35, 3, class java.util.concurrent.TimeoutException
+specs/full_arbiter_unreal.spectra, 35, 4, class java.util.concurrent.TimeoutException
+specs/full_arbiter_unreal.spectra, 35, 5, class java.util.concurrent.TimeoutException
+specs/full_arbiter_unreal.spectra, 35, 6, class java.util.concurrent.TimeoutException
+specs/full_arbiter_unreal.spectra, 35, 7, class java.util.concurrent.TimeoutException
+specs/full_arbiter_unreal.spectra, 35, 8, class java.util.concurrent.TimeoutException
+specs/full_arbiter_unreal.spectra, 35, 9, class java.util.concurrent.TimeoutException
+specs/full_arbiter_unreal.spectra, 35, 10, class java.util.concurrent.TimeoutException
+specs/full_arbiter_unreal.spectra, 35, 11, class java.util.concurrent.TimeoutException
+specs/full_arbiter_unreal.spectra, 35, 12, class java.util.concurrent.TimeoutException
+specs/full_arbiter_unreal.spectra, 35, 13, class java.util.concurrent.TimeoutException
+specs/full_arbiter_unreal.spectra, 35, 14, class java.util.concurrent.TimeoutException
+specs/full_arbiter_unreal.spectra, 40, -1, class java.util.concurrent.TimeoutException
+specs/full_arbiter_unreal.spectra, 40, 0, class java.util.concurrent.TimeoutException
+specs/full_arbiter_unreal.spectra, 40, 1, class java.util.concurrent.TimeoutException
+specs/full_arbiter_unreal.spectra, 40, 2, class java.util.concurrent.TimeoutException
+specs/full_arbiter_unreal.spectra, 40, 3, class java.util.concurrent.TimeoutException
+specs/full_arbiter_unreal.spectra, 40, 4, class java.util.concurrent.TimeoutException
+specs/full_arbiter_unreal.spectra, 40, 5, class java.util.concurrent.TimeoutException
+specs/full_arbiter_unreal.spectra, 40, 6, class java.util.concurrent.TimeoutException
+specs/full_arbiter_unreal.spectra, 40, 7, class java.util.concurrent.TimeoutException
+specs/full_arbiter_unreal.spectra, 40, 8, class java.util.concurrent.TimeoutException
+specs/full_arbiter_unreal.spectra, 40, 9, class java.util.concurrent.TimeoutException
+specs/full_arbiter_unreal.spectra, 40, 10, class java.util.concurrent.TimeoutException
+specs/full_arbiter_unreal.spectra, 40, 11, class java.util.concurrent.TimeoutException
+specs/full_arbiter_unreal.spectra, 40, 12, class java.util.concurrent.TimeoutException
+specs/full_arbiter_unreal.spectra, 40, 13, class java.util.concurrent.TimeoutException
+specs/full_arbiter_unreal.spectra, 40, 14, class java.util.concurrent.TimeoutException

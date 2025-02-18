@@ -1,0 +1,19 @@
+Spec,Size,Remove,Time,Best?,
+specs/generalized_arbiter.spectra, 2, -1, 0.204,0.000,
+specs/generalized_arbiter.spectra, 2, 0, 0.094,1.000,
+specs/generalized_arbiter.spectra, 2, 5, 0.192,0.000,
+specs/generalized_arbiter.spectra, 2, 6, 0.202,0.000,
+specs/generalized_arbiter.spectra, 2, 7, 0.181,0.000,
+specs/generalized_arbiter.spectra, 2, 12, 0.499,0.000,
+specs/generalized_arbiter.spectra, 3, -1, 12.077,0.000,
+specs/generalized_arbiter.spectra, 3, 0, 0.215,1.000,
+specs/generalized_arbiter.spectra, 3, 7, 12.202,0.000,
+specs/generalized_arbiter.spectra, 3, 8, 12.037,0.000,
+specs/generalized_arbiter.spectra, 3, 9, 12.049,0.000,
+specs/generalized_arbiter.spectra, 3, 16, class java.util.concurrent.TimeoutException
+specs/generalized_arbiter.spectra, 4, -1, class java.util.concurrent.TimeoutException
+specs/generalized_arbiter.spectra, 4, 0, 0.413,1.000,
+specs/generalized_arbiter.spectra, 4, 9, class java.util.concurrent.TimeoutException
+specs/generalized_arbiter.spectra, 4, 10, class java.util.concurrent.TimeoutException
+specs/generalized_arbiter.spectra, 4, 11, class java.util.concurrent.TimeoutException
+specs/generalized_arbiter.spectra, 4, 20, class java.util.concurrent.TimeoutException

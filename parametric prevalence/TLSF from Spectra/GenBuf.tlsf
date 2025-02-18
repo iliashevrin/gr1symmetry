@@ -1,0 +1,288 @@
+INFO {
+  TITLE: "SymmetryExample"
+  DESCRIPTION: "Specification translated from Spectra"
+  SEMANTICS:Mealy
+  TARGET:Mealy
+}
+
+GLOBAL {
+  PARAMETERS { 
+n = 3;
+  }
+  
+  DEFINITIONS
+  {
+  
+    // copied from the full arbiter
+    mutual_exclusion(bus) = mone(bus,0,(SIZEOF bus) - 1);
+    none(bus,i,j) = &&[i <= t <= j] !bus[t];
+    mone(bus,i,j) =
+    i > j : false
+    i == j : true
+    i < j :
+      (none(bus, i, m(i,j)) && mone(bus, m(i,j) + 1, j)) ||
+      (mone(bus, i, m(i,j)) && none(bus, m(i,j) + 1, j));
+    m(i,j) = (i + j) / 2;
+    
+    
+    mutual(b) =
+	&&[i IN {0, 1 .. (SIZEOF b) - 1}]
+	&&[j IN {0, 1 .. (SIZEOF b) - 1} (\) {i}]
+	!(b[i] && b[j]);
+    
+    
+     /* Checks whether a bus of size log(n) currently represents
+     * the numerical value v (encoded in binary).
+     */
+    value(bus,v) = value'(bus,v,0,SIZEOF bus);
+    value'(bus,v,i,j) =
+      i >= j        : true
+      bit(v,i) == 1 : value'(bus,v,i + 1,j) &&  bus[i]
+      otherwise     : value'(bus,v,i + 1,j) && !bus[i];
+
+    /* Returns the i-th bit of the numerical value v. */
+    bit(v,i) =
+      i <= 0     : v % 2
+      otherwise  : bit(v / 2,i - 1);
+
+    /* floor(log2) */
+    log2_dn(x) =
+      x <= 1    : 0
+      otherwise : 1 + log2_dn(x/2);
+
+    /* nbits(x): return the number of bits needed to encode x values
+     * This is similar to ceil(log2) except for value 1: nbits(1) = 1 while ceil(log2(1)) = 0
+    */
+    nbits(x) =
+      x == 0    : 0
+      otherwise : 1 + log2_dn(x-1);
+    
+  }
+}
+
+MAIN {
+  INPUTS  { 
+  
+  StoB_REQ[n]; 
+  RtoB_ACK[2];
+  FULL;
+  EMPTY;
+  }
+  
+  OUTPUTS { 
+  
+  BtoS_ACK[n]; 
+  BtoR_REQ[2];
+  stateG7[nbits(4)];
+  ENQ;
+  DEQ;
+  stateG12;
+  SLC[n];
+  }
+
+  ASSUME {
+  
+    // asm forall i in Int(0..IND) . !StoB_REQ[i];
+    &&[0 <= i < n]
+    (
+      !StoB_REQ[i]
+    );
+
+    // asm forall i in Int(0..1) . !RtoB_ACK[i];
+    &&[0 <= i < 2]
+    (
+      !RtoB_ACK[i]
+    );
+    
+    !FULL;
+    
+    !EMPTY;
+    
+    
+    // asm G forall i in Int(0..IND) . StoB_REQ[i] & !BtoS_ACK[i] -> next(StoB_REQ[i]);
+    &&[0 <= i < n]
+    (
+      G ((StoB_REQ[i] && !BtoS_ACK[i]) -> X(StoB_REQ[i]))
+    );
+    
+    
+    // asm G forall i in Int(0..IND) . BtoS_ACK[i] -> next(!StoB_REQ[i]);
+    &&[0 <= i < n]
+    (
+      G (BtoS_ACK[i] -> X(!StoB_REQ[i]))
+    );
+
+    // asm G forall i in Int(0..1) . !BtoR_REQ[i] -> !next(RtoB_ACK[i]);
+    &&[0 <= i < 2]
+    (
+      G (!BtoR_REQ[i] -> X(!RtoB_ACK[i]))
+    );
+
+    // asm G forall i in Int(0..1) . (BtoR_REQ[i] & RtoB_ACK[i]) -> next(RtoB_ACK[i]); 
+    &&[0 <= i < 2]
+    (
+      G ((BtoR_REQ[i] && RtoB_ACK[i]) -> X(RtoB_ACK[i]))
+    );
+    
+    G ((ENQ && !DEQ) -> X(!EMPTY));
+    
+    G ((DEQ && !ENQ) -> X(!FULL));
+    
+    G ((ENQ <-> DEQ) -> ((FULL <-> X(FULL)) && (EMPTY <-> X(EMPTY))));
+    
+    
+    // asm asmAck{Int(0..1) i} : GF BtoR_REQ[i] = RtoB_ACK[i];
+    &&[0 <= i < 2]
+    (
+      G F (BtoR_REQ[i] <-> RtoB_ACK[i])
+    );        
+  }
+
+  GUARANTEE {
+  
+    // gar forall i in Int(0..IND) . !BtoS_ACK[i];
+    &&[0 <= i < n]
+    (
+      !BtoS_ACK[i]
+    );
+    
+    // gar forall i in Int(0..1) . !BtoR_REQ[i];
+    &&[0 <= i < 2]
+    (
+      !BtoR_REQ[i]
+    );
+    
+    value(stateG7,1);
+    
+    !ENQ;
+    
+    !DEQ;
+    
+    !stateG12;
+    
+    // gar forall i in Int(0..IND) . !SLC[i];
+    &&[0 <= i < n]
+    (
+      !SLC[i]
+    );
+    
+    
+    // gar G forall i in Int(0..IND) . forall j in Int(0..IND) . (i != j) -> !(SLC[i] & SLC[j]);
+    G mutual(SLC);
+    
+
+    // gar G forall i in Int(0..IND) . (!StoB_REQ[i] & next(StoB_REQ[i])) -> next(!BtoS_ACK[i]);
+    &&[0 <= i < n]
+    (
+     G ((!StoB_REQ[i] && X(StoB_REQ[i])) -> X(!BtoS_ACK[i]))
+    );
+    
+    // gar G forall i in Int(0..IND) . (!BtoS_ACK[i] & !StoB_REQ[i]) -> next(!BtoS_ACK[i]);
+    &&[0 <= i < n]
+    (
+     G ((!BtoS_ACK[i] && !StoB_REQ[i]) -> X(!BtoS_ACK[i]))
+    );
+    
+    // gar G forall i in Int(0..IND) . (BtoS_ACK[i] & StoB_REQ[i]) -> next(BtoS_ACK[i]);
+    &&[0 <= i < n]
+    (
+     G ((BtoS_ACK[i] && StoB_REQ[i]) -> X(BtoS_ACK[i]))
+    );
+    
+    // gar G forall i in Int(0..IND) . forall j in Int(0..IND) . (i != j) -> !(BtoS_ACK[i] & BtoS_ACK[j]);
+    G mutual(BtoS_ACK);
+    
+    
+    // gar G forall i in Int(0..1) . (BtoR_REQ[i] & !RtoB_ACK[i]) -> next(BtoR_REQ[i]);
+    &&[0 <= i < 2]
+    (
+      G ((BtoR_REQ[i] && !RtoB_ACK[i]) -> X(BtoR_REQ[i]))
+    ); 
+    
+    // gar G forall i in Int(0..1) . RtoB_ACK[i] -> next(!BtoR_REQ[i]);
+    &&[0 <= i < 2]
+    (
+      G (RtoB_ACK[i] -> X(!BtoR_REQ[i]))
+    ); 
+    
+    
+    G !(BtoR_REQ[0] && BtoR_REQ[1]);
+    
+    G ((value(stateG7,1) || value(stateG7,3)) && BtoR_REQ[0] && !BtoR_REQ[1]) -> X(value(stateG7,0));
+    
+    G ((value(stateG7,0) || value(stateG7,2)) && !BtoR_REQ[0] && BtoR_REQ[1]) -> X(value(stateG7,1));
+    
+    G ((value(stateG7,0) || value(stateG7,2)) && !BtoR_REQ[0] && !BtoR_REQ[1]) -> X(value(stateG7,2));
+    
+    G ((value(stateG7,1) || value(stateG7,3)) && !BtoR_REQ[0] && !BtoR_REQ[1]) -> X(value(stateG7,3));
+    
+    G ((value(stateG7,0)) && BtoR_REQ[0] && !BtoR_REQ[1]) -> X(value(stateG7,0));
+    
+    G ((value(stateG7,1)) && !BtoR_REQ[0] && BtoR_REQ[1]) -> X(value(stateG7,1));
+    
+    G !((value(stateG7,2)) && BtoR_REQ[0]);
+    
+    G !((value(stateG7,3)) && BtoR_REQ[1]);
+    
+    
+    // gar G forall i in Int(0..IND) . (!BtoS_ACK[i] & next(BtoS_ACK[i])) -> next(ENQ);
+    &&[0 <= i < n]
+    (
+      G ((!BtoS_ACK[i] && X(BtoS_ACK[i])) -> X(ENQ))
+    );
+    
+    // gar G forall i in Int(0..IND) . (!BtoS_ACK[i] & next(BtoS_ACK[i])) -> next(SLC[i]);
+    &&[0 <= i < n]
+    (
+      G ((!BtoS_ACK[i] && X(BtoS_ACK[i])) -> X(SLC[i]))
+    );
+    
+    // gar G (forall i in Int(0..IND) . (BtoS_ACK[i] | next(!BtoS_ACK[i]))) -> next(!ENQ);
+    G (&&[0 <= i < n]
+    (
+      (BtoS_ACK[i] || X(!BtoS_ACK[i]))
+    )) -> X(!ENQ);
+    
+    
+    // gar G forall i in Int(0..1) . (RtoB_ACK[i] & next(!RtoB_ACK[i])) -> next(DEQ);
+    &&[0 <= i < 2]
+    (
+      G ((RtoB_ACK[i] && X(!RtoB_ACK[i])) -> X(DEQ))
+    );
+    
+    // gar G (forall i in Int(0..1) . (!RtoB_ACK[i] | next(RtoB_ACK[i]))) -> next(!DEQ);
+    G (&&[0 <= i < 2]
+    (
+      (!RtoB_ACK[i] || X(RtoB_ACK[i]))
+    )) -> X(!DEQ);
+    
+    
+    // gar garAck{Int(0..IND) i} : GF StoB_REQ[i] = BtoS_ACK[i];
+    &&[0 <= i < n]
+    (
+      G F (StoB_REQ[i] <-> BtoS_ACK[i])
+    ); 
+    
+    G F (!stateG12);
+    
+    G (FULL && !DEQ) -> !ENQ;
+    
+    G EMPTY -> !DEQ;
+    
+    
+    G (!stateG12 && EMPTY) -> X(!stateG12);
+    
+    G (!stateG12 && DEQ) -> X(!stateG12);
+    
+    G (!stateG12 && !EMPTY && !DEQ) -> X(stateG12);
+    
+    G (stateG12 && !DEQ) -> X(stateG12);
+    
+    G (stateG12 && DEQ) -> X(!stateG12);
+    
+  }
+  
+
+}
+
+
