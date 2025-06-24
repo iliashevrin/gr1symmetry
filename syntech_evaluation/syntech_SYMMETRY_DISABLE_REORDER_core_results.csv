@@ -1,0 +1,22 @@
+Spec,Time
+/home/ubuntu/evaluation_fse2025/syntech_filtered/team-8/variant-1.spectra, 1.663
+/home/ubuntu/evaluation_fse2025/syntech_filtered/team-8/variant-3.spectra, class java.util.concurrent.TimeoutException
+/home/ubuntu/evaluation_fse2025/syntech_filtered/team-4/variant-1.spectra, 0.696
+/home/ubuntu/evaluation_fse2025/syntech_filtered/team-4/variant-3.spectra, class java.util.concurrent.TimeoutException
+/home/ubuntu/evaluation_fse2025/syntech_filtered/team-3/variant-1.spectra, 0.864
+/home/ubuntu/evaluation_fse2025/syntech_filtered/team-3/Robot.spectra, 0.045
+/home/ubuntu/evaluation_fse2025/syntech_filtered/team-3/variant-3.spectra, class java.util.concurrent.TimeoutException
+/home/ubuntu/evaluation_fse2025/syntech_filtered/team-7/variant-1.spectra, 0.059
+/home/ubuntu/evaluation_fse2025/syntech_filtered/team-7/variant-3.spectra, 65.333
+/home/ubuntu/evaluation_fse2025/syntech_filtered/team-7/variant-2.spectra, 454.817
+/home/ubuntu/evaluation_fse2025/syntech_filtered/team-5/variant-1.spectra, 0.061
+/home/ubuntu/evaluation_fse2025/syntech_filtered/team-5/variant-3.spectra, class java.util.concurrent.TimeoutException
+/home/ubuntu/evaluation_fse2025/syntech_filtered/team-6/variant-1.spectra, 0.256
+/home/ubuntu/evaluation_fse2025/syntech_filtered/team-6/variant-3.spectra, class java.util.concurrent.TimeoutException
+/home/ubuntu/evaluation_fse2025/syntech_filtered/team-9/variant-1.spectra, 0.416
+/home/ubuntu/evaluation_fse2025/syntech_filtered/team-9/variant-3.spectra, 410.165
+/home/ubuntu/evaluation_fse2025/syntech_filtered/team-10/variant-1.spectra, 0.132
+/home/ubuntu/evaluation_fse2025/syntech_filtered/team-10/variant-3.spectra, 10.293
+/home/ubuntu/evaluation_fse2025/syntech_filtered/team-2/variant-1.spectra, 0.375
+/home/ubuntu/evaluation_fse2025/syntech_filtered/team-1/variant-1.spectra, 0.822
+/home/ubuntu/evaluation_fse2025/syntech_filtered/team-1/variant-3.spectra, 213.250

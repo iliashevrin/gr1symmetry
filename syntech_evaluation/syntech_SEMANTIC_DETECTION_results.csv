@@ -1,0 +1,101 @@
+Spec,Time,Best?,Annotation
+/home/ubuntu/evaluation_fse2025/syntech/Connect4NoDiagonal3X3.spectra, class java.util.concurrent.TimeoutException
+/home/ubuntu/evaluation_fse2025/syntech/SmartNeighborhood.spectra, class java.util.concurrent.TimeoutException
+/home/ubuntu/evaluation_fse2025/syntech/RobotsMPChangingGoals3.spectra, 1.405,true,,
+/home/ubuntu/evaluation_fse2025/syntech/team-8/variant-1.spectra, 0.996,false,@symmetry { ***  SYS_CONSTRAINT.S_responds_to_P_globally.state.1 -> SYS_CONSTRAINT.S_responds_to_P_globally.state.0 ***  tar2[1] -> tar1[1] ***  tar1[0] -> tar3[0] ***  tar3[1] -> tar2[1] ***  SYS_CONSTRAINT.S_responds_to_P_globally.state.2 -> SYS_CONSTRAINT.S_responds_to_P_globally.state.1 ***  tar1[1] -> tar3[1] ***  tar2[0] -> tar1[0] ***  tar3[0] -> tar2[0] ***  SYS_CONSTRAINT.S_responds_to_P_globally.state.0 -> SYS_CONSTRAINT.S_responds_to_P_globally.state.2 ***},
+/home/ubuntu/evaluation_fse2025/syntech/team-8/Robot.spectra, 0.076,true,,
+/home/ubuntu/evaluation_fse2025/syntech/team-8/variant-3.spectra, 10.849,false,@symmetry { ***  tar3[0] -> tar1[0] ***  SYS_CONSTRAINT.P_is_false_after_Q_until_R.state.3 -> SYS_CONSTRAINT.P_is_false_after_Q_until_R.state.4 ***  SYS_CONSTRAINT.P_is_false_after_Q_until_R.state.1 -> SYS_CONSTRAINT.P_is_false_after_Q_until_R.state.2 ***  sfa_states_9 -> sfa_states_7 ***  tar2red -> tar3red ***  tar2[1] -> tar3[1] ***  tar2[0] -> tar3[0] ***  tar3red -> tar1red ***  tar3[1] -> tar1[1] ***  SYS_CONSTRAINT.P_is_false_after_Q_until_R.state.4 -> SYS_CONSTRAINT.P_is_false_after_Q_until_R.state.5 ***  SYS_CONSTRAINT.P_is_false_after_Q_until_R.state.0 -> SYS_CONSTRAINT.P_is_false_after_Q_until_R.state.1 ***  SYS_CONSTRAINT.P_is_false_after_Q_until_R.state.2 -> SYS_CONSTRAINT.P_is_false_after_Q_until_R.state.0 ***  SYS_CONSTRAINT.P_is_false_after_Q_until_R.state.5 -> SYS_CONSTRAINT.P_is_false_after_Q_until_R.state.3 ***  sfa_states_7 -> sfa_states_8 ***  tar1[0] -> tar2[0] ***  tar1[1] -> tar2[1] ***  tar1red -> tar2red ***  sfa_states_8 -> sfa_states_9 ***},
+/home/ubuntu/evaluation_fse2025/syntech/team-8/Junction.spectra, class java.util.concurrent.TimeoutException
+/home/ubuntu/evaluation_fse2025/syntech/team-8/variant-2.spectra, 1.810,false,@symmetry { ***  SYS_CONSTRAINT.S_responds_to_P_globally.state.2 -> SYS_CONSTRAINT.S_responds_to_P_globally.state.0 ***  SYS_CONSTRAINT.P_is_false_after_Q_until_R.state.3 -> SYS_CONSTRAINT.P_is_false_after_Q_until_R.state.1 ***  SYS_CONSTRAINT.P_is_false_after_Q_until_R.state.5 -> SYS_CONSTRAINT.P_is_false_after_Q_until_R.state.3 ***  tar1[0] -> tar3[0] ***  tar2[0] -> tar1[0] ***  SYS_CONSTRAINT.S_responds_to_P_globally.state.4 -> SYS_CONSTRAINT.S_responds_to_P_globally.state.2 ***  SYS_CONSTRAINT.P_is_false_after_Q_until_R.state.1 -> SYS_CONSTRAINT.P_is_false_after_Q_until_R.state.5 ***  tar1[1] -> tar3[1] ***  tar3[0] -> tar2[0] ***  tar3[1] -> tar2[1] ***  SYS_CONSTRAINT.S_responds_to_P_globally.state.0 -> SYS_CONSTRAINT.S_responds_to_P_globally.state.4 ***  tar2[1] -> tar1[1] ***},
+/home/ubuntu/evaluation_fse2025/syntech/team-8/Cleaner.spectra, 0.226,false,,
+/home/ubuntu/evaluation_fse2025/syntech/CatsandMiceJealousSpec.spectra, 116.347,true,@symmetry { ***  indexes: 1..2 ***  arrays: boatmice***boatcats***miceA***miceB***catsA***catsB ***},
+/home/ubuntu/evaluation_fse2025/syntech/SmartHome2.spectra, class java.util.concurrent.TimeoutException
+/home/ubuntu/evaluation_fse2025/syntech/BusBossMain.spectra, class java.util.concurrent.TimeoutException
+/home/ubuntu/evaluation_fse2025/syntech/ElevatorLTL_386_Elevator.spectra, 0.052,true,,
+/home/ubuntu/evaluation_fse2025/syntech/RobotsMPFixedGoals3.spectra, 0.482,true,,
+/home/ubuntu/evaluation_fse2025/syntech/NationalPark.spectra, 0.307,true,,
+/home/ubuntu/evaluation_fse2025/syntech/SmartHome3.spectra, class java.util.concurrent.TimeoutException
+/home/ubuntu/evaluation_fse2025/syntech/RobotsMPFuel3.spectra, 0.526,false,,
+/home/ubuntu/evaluation_fse2025/syntech/Elevator_cmp_Elevator_321.spectra, 351.292,true,,
+/home/ubuntu/evaluation_fse2025/syntech/IrrigationSystem_BasicNoWaterSaving.spectra, class java.util.concurrent.TimeoutException
+/home/ubuntu/evaluation_fse2025/syntech/CatsandMiceSpec.spectra, 0.082,true,,
+/home/ubuntu/evaluation_fse2025/syntech/GyroLTLVar3_702_GyroAspect.spectra, 0.111,false,,
+/home/ubuntu/evaluation_fse2025/syntech/SmartAirportMain.spectra, class java.util.concurrent.TimeoutException
+/home/ubuntu/evaluation_fse2025/syntech/team-4/variant-1.spectra, 1.662,false,@symmetry { ***  needToVisitTargetA -> needToVisitTargetB ***  targetC_X -> targetA_X ***  needToVisitTargetB -> needToVisitTargetC ***  targetC_Y -> targetA_Y ***  targetA_Y -> targetB_Y ***  targetA_X -> targetB_X ***  targetB_Y -> targetC_Y ***  targetB_X -> targetC_X ***  needToVisitTargetC -> needToVisitTargetA ***},
+/home/ubuntu/evaluation_fse2025/syntech/team-4/Robot.spectra, 0.094,true,,
+/home/ubuntu/evaluation_fse2025/syntech/team-4/variant-3.spectra, 1.548,false,@symmetry { ***  sfa_states_1 -> sfa_states_0 ***  targetA_X -> targetC_X ***  sfa_states_0 -> sfa_states_2 ***  targetB_X -> targetA_X ***  targetA_Y -> targetC_Y ***  sfa_states_2 -> sfa_states_1 ***  targetC_X -> targetB_X ***  targetB_Y -> targetA_Y ***  targetC_Y -> targetB_Y ***},
+/home/ubuntu/evaluation_fse2025/syntech/team-4/Junction.spectra, class java.util.concurrent.TimeoutException
+/home/ubuntu/evaluation_fse2025/syntech/team-4/variant-2.spectra, 1.887,false,,
+/home/ubuntu/evaluation_fse2025/syntech/team-4/Cleaner.spectra, class java.util.concurrent.TimeoutException
+/home/ubuntu/evaluation_fse2025/syntech/HumanoidLTLVar3_872_Humanoid.spectra, 0.192,true,,
+/home/ubuntu/evaluation_fse2025/syntech/roboticarm_Robot_313.spectra, 0.863,false,,
+/home/ubuntu/evaluation_fse2025/syntech/ColorSortLTLTAG_792_ColorSort.spectra, 0.155,false,,
+/home/ubuntu/evaluation_fse2025/syntech/AirportControlTower.spectra, 503.487,false,,
+/home/ubuntu/evaluation_fse2025/syntech/SmartHome1.spectra, 0.134,false,@symmetry { ***  father -> mother ***  mother -> father ***},
+/home/ubuntu/evaluation_fse2025/syntech/Elevator.spectra, class java.util.concurrent.TimeoutException
+/home/ubuntu/evaluation_fse2025/syntech/team-3/variant-1.spectra, 0.798,false,@symmetry { ***  C_X -> B_X ***  C_Y -> B_Y ***  A_Y -> C_Y ***  B_X -> A_X ***  B_Y -> A_Y ***  A_X -> C_X ***},
+/home/ubuntu/evaluation_fse2025/syntech/team-3/Robot.spectra, 2.069,false,@symmetry { ***  B_Y -> A_Y ***  C_X -> B_X ***  B -> A ***  SYS_CONSTRAINT.P_is_true_before_R.state.2 -> SYS_CONSTRAINT.P_is_true_before_R.state.1 ***  A_Y -> C_Y ***  B_X -> A_X ***  SYS_CONSTRAINT.P_is_true_before_R.state.1 -> SYS_CONSTRAINT.P_is_true_before_R.state.0 ***  C_Y -> B_Y ***  C -> B ***  A -> C ***  SYS_CONSTRAINT.P_is_true_before_R.state.0 -> SYS_CONSTRAINT.P_is_true_before_R.state.2 ***  A_X -> C_X ***},
+/home/ubuntu/evaluation_fse2025/syntech/team-3/variant-3.spectra, 1.644,false,@symmetry { ***  RTC -> RTA ***  C_Y -> A_Y ***  C_X -> A_X ***  A_X -> B_X ***  RTA -> RTB ***  B_X -> C_X ***  B_Y -> C_Y ***  RTB -> RTC ***  A_Y -> B_Y ***},
+/home/ubuntu/evaluation_fse2025/syntech/team-3/Junction.spectra, class java.util.concurrent.TimeoutException
+/home/ubuntu/evaluation_fse2025/syntech/team-3/variant-2.spectra, 3.060,false,,
+/home/ubuntu/evaluation_fse2025/syntech/team-3/Cleaner.spectra, class java.util.concurrent.TimeoutException
+/home/ubuntu/evaluation_fse2025/syntech/AirportShuttleProject_AirportShuttle1_AirportShuttle_242.spectra, 145.557,false,,
+/home/ubuntu/evaluation_fse2025/syntech/team-7/variant-1.spectra, 0.613,false,@symmetry { ***  tar1X -> tar3X ***  tar1Y -> tar3Y ***  tar2X -> tar1X ***  tar3Y -> tar2Y ***  tar2Y -> tar1Y ***  tar3X -> tar2X ***},
+/home/ubuntu/evaluation_fse2025/syntech/team-7/Robot.spectra, 0.073,true,,
+/home/ubuntu/evaluation_fse2025/syntech/team-7/variant-3.spectra, 2.172,false,@symmetry { ***  tar3Y -> tar2Y ***  sfa_states_1 -> sfa_states_0 ***  can_visit3 -> can_visit2 ***  sfa_states_2 -> sfa_states_1 ***  tar1Y -> tar3Y ***  tar2X -> tar1X ***  tar2Y -> tar1Y ***  tar3X -> tar2X ***  can_visit1 -> can_visit3 ***  sfa_states_0 -> sfa_states_2 ***  can_visit2 -> can_visit1 ***  tar1X -> tar3X ***},
+/home/ubuntu/evaluation_fse2025/syntech/team-7/Junction.spectra, class java.util.concurrent.TimeoutException
+/home/ubuntu/evaluation_fse2025/syntech/team-7/variant-2.spectra, 0.950,false,@symmetry { ***  visited1 -> visited2 ***  tar1X -> tar3X ***  tar3X -> tar1X ***  tar1Y -> tar3Y ***  visited2 -> visited1 ***  tar3Y -> tar1Y ***},
+/home/ubuntu/evaluation_fse2025/syntech/team-7/Cleaner.spectra, Time data not found
+/home/ubuntu/evaluation_fse2025/syntech/CoronaDriveInMain.spectra, class java.util.concurrent.TimeoutException
+/home/ubuntu/evaluation_fse2025/syntech/team-5/variant-1.spectra, 0.641,false,@symmetry { ***  targetC[0] -> targetB[0] ***  targetA[0] -> targetC[0] ***  targetB[0] -> targetA[0] ***  targetB[1] -> targetA[1] ***  targetA[1] -> targetC[1] ***  targetC[1] -> targetB[1] ***},
+/home/ubuntu/evaluation_fse2025/syntech/team-5/Robot.spectra, 0.078,true,,
+/home/ubuntu/evaluation_fse2025/syntech/team-5/variant-3.spectra, 1.887,false,@symmetry { ***  targetC[1] -> targetB[1] ***  sfa_states_1 -> sfa_states_0 ***  targetC_color -> targetB_color ***  sfa_states_2 -> sfa_states_1 ***  targetA[1] -> targetC[1] ***  targetB[0] -> targetA[0] ***  targetB[1] -> targetA[1] ***  targetC[0] -> targetB[0] ***  targetA_color -> targetC_color ***  sfa_states_0 -> sfa_states_2 ***  targetB_color -> targetA_color ***  targetA[0] -> targetC[0] ***},
+/home/ubuntu/evaluation_fse2025/syntech/team-5/Junction.spectra, class java.util.concurrent.TimeoutException
+/home/ubuntu/evaluation_fse2025/syntech/team-5/variant-2.spectra, 0.212,true,,
+/home/ubuntu/evaluation_fse2025/syntech/team-5/Cleaner.spectra, 0.171,true,,
+/home/ubuntu/evaluation_fse2025/syntech/RobotsMPUnlabelled3.spectra, 0.442,true,@symmetry { ***  goalsX[0] -> goalsX[2] ***  goalsX[2] -> goalsX[0] ***  goalsY[2] -> goalsY[0] ***  goalsY[0] -> goalsY[2] ***},
+/home/ubuntu/evaluation_fse2025/syntech/team-6/variant-1.spectra, 0.717,false,@symmetry { ***  indexes: 0..2 ***  arrays: goalsX***goalsY ***},
+/home/ubuntu/evaluation_fse2025/syntech/team-6/Robot.spectra, 0.088,true,,
+/home/ubuntu/evaluation_fse2025/syntech/team-6/variant-3.spectra, 3.946,false,@symmetry { ***  sfa_states_4 -> sfa_states_2 ***  red1 -> red2 ***  goalsX[2] -> goalsX[0] ***  sfa_states_3 -> sfa_states_4 ***  red2 -> red3 ***  goalsX[1] -> goalsX[2] ***  goalsY[2] -> goalsY[0] ***  sfa_states_2 -> sfa_states_3 ***  goalsX[0] -> goalsX[1] ***  goalsY[0] -> goalsY[1] ***  red3 -> red1 ***  goalsY[1] -> goalsY[2] ***},
+/home/ubuntu/evaluation_fse2025/syntech/team-6/Junction.spectra, class java.util.concurrent.TimeoutException
+/home/ubuntu/evaluation_fse2025/syntech/team-6/variant-2.spectra, class java.util.concurrent.TimeoutException
+/home/ubuntu/evaluation_fse2025/syntech/team-6/Cleaner.spectra, 0.118,false,,
+/home/ubuntu/evaluation_fse2025/syntech/PCarLTL_V_2.0_868_PCar_fixed.spectra, class java.util.concurrent.TimeoutException
+/home/ubuntu/evaluation_fse2025/syntech/Junction3.spectra, class java.util.concurrent.TimeoutException
+/home/ubuntu/evaluation_fse2025/syntech/BeachLifeMain.spectra, class java.util.concurrent.TimeoutException
+/home/ubuntu/evaluation_fse2025/syntech/ATM8.spectra, 0.092,true,,
+/home/ubuntu/evaluation_fse2025/syntech/team-9/variant-1.spectra, 0.761,false,@symmetry { ***  SYS_CONSTRAINT.S_responds_to_P_globally.state.zeroAfterA.0 -> SYS_CONSTRAINT.S_responds_to_P_globally.state.zeroAfterB.1 ***  targetsX[0] -> targetsX[1] ***  targetsX[1] -> targetsX[2] ***  targetsY[1] -> targetsY[2] ***  targetsY[0] -> targetsY[1] ***  SYS_CONSTRAINT.S_responds_to_P_globally.state.zeroAfterC.2 -> SYS_CONSTRAINT.S_responds_to_P_globally.state.zeroAfterA.0 ***  targetsX[2] -> targetsX[0] ***  SYS_CONSTRAINT.S_responds_to_P_globally.state.zeroAfterB.1 -> SYS_CONSTRAINT.S_responds_to_P_globally.state.zeroAfterC.2 ***  targetsY[2] -> targetsY[0] ***},
+/home/ubuntu/evaluation_fse2025/syntech/team-9/Robot.spectra, 0.079,true,,
+/home/ubuntu/evaluation_fse2025/syntech/team-9/variant-3.spectra, 1.447,false,@symmetry { ***  BisGreen -> AisGreen ***  sfa_states_4 -> sfa_states_3 ***  targetsY[0] -> targetsY[2] ***  targetsY[2] -> targetsY[1] ***  sfa_states_3 -> sfa_states_2 ***  targetsX[2] -> targetsX[1] ***  targetsX[1] -> targetsX[0] ***  sfa_states_2 -> sfa_states_4 ***  targetsY[1] -> targetsY[0] ***  CisGreen -> BisGreen ***  AisGreen -> CisGreen ***  targetsX[0] -> targetsX[2] ***},
+/home/ubuntu/evaluation_fse2025/syntech/team-9/Junction.spectra, class java.util.concurrent.TimeoutException
+/home/ubuntu/evaluation_fse2025/syntech/team-9/variant-2.spectra, 0.648,false,,
+/home/ubuntu/evaluation_fse2025/syntech/team-9/Cleaner.spectra, 0.087,false,,
+/home/ubuntu/evaluation_fse2025/syntech/DeliveryDroneMain.spectra, class java.util.concurrent.TimeoutException
+/home/ubuntu/evaluation_fse2025/syntech/ConvoyCar_ConvoyCarSpec_311.spectra, 0.125,false,,
+/home/ubuntu/evaluation_fse2025/syntech/SimpleVehicle_VehicleSpec_272.spectra, 16.246,false,,
+/home/ubuntu/evaluation_fse2025/syntech/Junction2.spectra, class java.util.concurrent.TimeoutException
+/home/ubuntu/evaluation_fse2025/syntech/team-10/variant-1.spectra, 0.625,false,@symmetry { ***  target1Y -> target3Y ***  target3X -> target2X ***  target2Y -> target1Y ***  target3Y -> target2Y ***  target1X -> target3X ***  target2X -> target1X ***},
+/home/ubuntu/evaluation_fse2025/syntech/team-10/Robot.spectra, 0.078,true,,
+/home/ubuntu/evaluation_fse2025/syntech/team-10/variant-3.spectra, 1.252,false,@symmetry { ***  sfa_states_1 -> sfa_states_0 ***  target2X -> target1X ***  sfa_states_2 -> sfa_states_1 ***  target2Y -> target1Y ***  target1Y -> target3Y ***  target3Y -> target2Y ***  sfa_states_0 -> sfa_states_2 ***  target3X -> target2X ***  target1X -> target3X ***},
+/home/ubuntu/evaluation_fse2025/syntech/team-10/Junction.spectra, class java.util.concurrent.TimeoutException
+/home/ubuntu/evaluation_fse2025/syntech/team-10/variant-2.spectra, 0.731,false,,
+/home/ubuntu/evaluation_fse2025/syntech/team-10/Cleaner.spectra, 0.209,false,,
+/home/ubuntu/evaluation_fse2025/syntech/ATM6.spectra, 0.131,true,,
+/home/ubuntu/evaluation_fse2025/syntech/Connect4WithDiagonals3X3.spectra, class java.util.concurrent.TimeoutException
+/home/ubuntu/evaluation_fse2025/syntech/ParkingLot2.spectra, Time data not found
+/home/ubuntu/evaluation_fse2025/syntech/ShoppingMallCovidMain.spectra, class java.util.concurrent.TimeoutException
+/home/ubuntu/evaluation_fse2025/syntech/team-2/variant-1.spectra, 0.740,false,@symmetry { ***  cellA[0] -> cellC[0] ***  cellA[1] -> cellC[1] ***  cellB[0] -> cellA[0] ***  cellC[1] -> cellB[1] ***  cellB[1] -> cellA[1] ***  cellC[0] -> cellB[0] ***},
+/home/ubuntu/evaluation_fse2025/syntech/team-2/Robot.spectra, 117.179,true,,
+/home/ubuntu/evaluation_fse2025/syntech/team-2/variant-3.spectra, 1.798,false,,
+/home/ubuntu/evaluation_fse2025/syntech/team-2/Junction.spectra, class java.util.concurrent.TimeoutException
+/home/ubuntu/evaluation_fse2025/syntech/team-2/variant-2.spectra, 0.723,false,,
+/home/ubuntu/evaluation_fse2025/syntech/team-2/Cleaner.spectra, 241.180,false,,
+/home/ubuntu/evaluation_fse2025/syntech/team-1/variant-1.spectra, 0.654,false,@symmetry { ***  targetA[0] -> targetC[0] ***  targetB[0] -> targetA[0] ***  targetC[0] -> targetB[0] ***  targetB[1] -> targetA[1] ***  targetA[1] -> targetC[1] ***  targetC[1] -> targetB[1] ***},
+/home/ubuntu/evaluation_fse2025/syntech/team-1/Robot.spectra, 0.084,true,,
+/home/ubuntu/evaluation_fse2025/syntech/team-1/variant-3.spectra, 2.383,false,@symmetry { ***  targetC[0] -> targetB[0] ***  targetB[1] -> targetC[1] ***  sfa_states_3 -> sfa_states_1 ***  targetCIsRed -> targetBIsRed ***  targetB[0] -> targetC[0] ***  targetBIsRed -> targetCIsRed ***  sfa_states_2 -> sfa_states_3 ***  sfa_states_1 -> sfa_states_2 ***  targetC[1] -> targetB[1] ***},
+/home/ubuntu/evaluation_fse2025/syntech/team-1/Junction.spectra, class java.util.concurrent.TimeoutException
+/home/ubuntu/evaluation_fse2025/syntech/team-1/variant-2.spectra, 2.011,false,,
+/home/ubuntu/evaluation_fse2025/syntech/team-1/Cleaner.spectra, 0.115,false,,
+/home/ubuntu/evaluation_fse2025/syntech/ParkingLot1.spectra, class java.util.concurrent.TimeoutException
+/home/ubuntu/evaluation_fse2025/syntech/ATMupdated.spectra, 0.081,true,,
+/home/ubuntu/evaluation_fse2025/syntech/AutonomousVehicle.spectra, class java.util.concurrent.TimeoutException
