@@ -1,0 +1,180 @@
+
+spec CoronaDriveInMain
+
+define numOfLanes:= 4; 			//Number of Lanes
+define maxNumOfTestKits:= 10; 	//Number of testKits
+define carTurns:= 3; 			// number of turns car stays in lane
+define infectedTurns:= 4; 		// number of turn lane stays infected
+
+type Vehicles = {REDCAR ,GREENCAR, REDMOTORCYCLE ,GREENMOTORCYCLE, NONE}; // vehicle types
+
+//predicates:
+// true if there are no test kits in lane i, false otherwise
+predicate noTestKits (Int(0..(numOfLanes-1)) i):
+	testKits[i] = 0;
+
+// true if 'v' is not NONE, false otherwise.
+predicate isUsed (Vehicles v):
+	v != NONE;
+ 
+// true if 'v' is a motorcycle, false otherwise.
+predicate isMotor (Vehicles v):
+ v = REDMOTORCYCLE | v = GREENMOTORCYCLE;
+
+// true if 'v' is car, false otherwise. 
+predicate isCar(Vehicles v):
+ 	v = REDCAR | v = GREENCAR;
+	
+// true if 'v' is red vehicle, false otherwise. 		
+predicate isRed(Vehicles v):
+	v = REDCAR | v = REDMOTORCYCLE;
+	
+
+//counters:
+//count auto raining turns
+counter RainingTurns (1..13) {
+  RainingTurns = 1;
+  inc: isRaining;
+  reset: !isRaining | RainingTurns = 13;
+  overflow: false;
+}
+
+//count the turns when there is a car in lane 1
+counter Lane1_turns (1..carTurns) {
+	Lane1_turns = 1;
+	inc: isCar(Vil[0]) & !noTestKits(0);
+	overflow: modulo;
+}
+//count the turns when there is a car in lane 2
+counter Lane2_turns (1..carTurns) {
+	Lane2_turns = 1;
+	inc: isCar(Vil[1]) & !noTestKits(1);
+	overflow: modulo;
+}
+//count the turns when there is a car in lane 3
+counter Lane3_turns (1..carTurns) {
+	Lane3_turns = 1;
+	inc: isCar(Vil[2]) & !noTestKits(2);
+	overflow: modulo;
+}
+//count the turns when there is a car in lane 4
+counter Lane4_turns (1..carTurns) {
+	Lane4_turns = 1;
+	inc: isCar(Vil[3]) & !noTestKits(3);
+	overflow: modulo;
+}
+
+// monitors
+// lane 1 can accept when it is not infected & active & have test kits & empty
+monitor boolean canAccept1{
+	canAccept1;
+	G canAccept1 = (!infected[0] & activeLanes[0] & !needSupply[0] & !isUsed(Vil[0]));
+}
+
+// lane 2 can accept when it is not infected & active & have test kits & empty
+monitor boolean canAccept2{
+	canAccept2;
+	G canAccept2 = (!infected[1] & activeLanes[1] & !needSupply[1] & !isUsed(Vil[1]));
+}
+
+// lane 3 can accept when it is not infected & active & have test kits & empty
+monitor boolean canAccept3{
+	canAccept3;
+	G canAccept3 = (!infected[2] & activeLanes[2] & !needSupply[2] & !isUsed(Vil[2]));
+}
+
+// lane 4 can accept when it is not infected & active & have test kits & empty
+monitor boolean canAccept4{
+	canAccept4;
+	G canAccept4 = (!infected[3] & activeLanes[3] & !needSupply[3] & !isUsed(Vil[3]));
+}
+
+
+//environment parameters: 
+env Vehicles firstInQueue; 							// type of the first vehicle in the queue who wish to get tested.
+env boolean queueIsEmpty; 							// true if vehicles queue is empty, false otherwise.
+env Vehicles newVehicle; 							// type of the new vehicle go into the queue.
+env boolean manualRain; 							// true if it is manual raining, false otherwise.
+env boolean isRaining; 								// true if it is raining(auto), false otherwise.
+env Int(0..maxNumOfTestKits)[numOfLanes] testKits;  // testKits[i] = amount of test kits left in lane i.
+env boolean[numOfLanes] activeLanes; 				// activeLanes[i] = true if lane i is active, false otherwise.
+
+
+//assumptions:
+//starting assumptions:
+asm forall i in Int(0..(numOfLanes-1)). testKits[i] = maxNumOfTestKits; // in the begging all lanes are full with test kits
+asm forall i in Int(0..(numOfLanes-1)). activeLanes[i]; // in the begging all lanes are active
+// in the begging the queue is not empty.
+asm !queueIsEmpty; 
+asm firstInQueue != NONE; 
+// in the begging there is no rain
+asm !isRaining; 
+asm !manualRain; 
+
+//liveness assumptions:
+// auto rain is last for 12 turns
+asm G RainingTurns = 12 -> next(!isRaining); 
+asm G RainingTurns < 12 & isRaining -> next(isRaining);
+asm G isRaining | manualRain -> !isMotor(next(newVehicle)); // when it is raining there are no new motorcycles.
+
+//system parameters: 
+sys boolean[numOfLanes] canAccept; 	// canAccept[i] = true if can accept new car from the queue to the i-th lane, false otherwise.
+sys boolean[numOfLanes] infected; 	//infected[i] = true if the i-th lane is infected, false otherwise.
+sys Vehicles[numOfLanes] Vil; 		// Vil[i] = NONE if no vehicle in lane, other option from Vehicles otherwise.
+sys boolean[numOfLanes] needSupply; // needSupply[i] = true if lane i need new supply of test kits, false otherwise
+sys Int(0..(numOfLanes)) goTo; 		// which lane the first in queue should go to to be tested.
+
+
+//guarantees: 
+//starting guarantees:
+gar forall i in Int(0..(numOfLanes-1)). !infected[i]; 	// in the begging all lanes are not infected.
+gar forall i in Int(0..(numOfLanes-1)). Vil[i] = NONE; 	// in the begging all lanes are empty.
+gar forall i in Int(0..(numOfLanes-1)). canAccept[i]; 	// in the begging all lanes can accept.
+gar forall i in Int(0..(numOfLanes-1)). !needSupply[i]; // in the begging all lanes don't need supply.
+gar goTo != 4; 
+
+//liveness guarantees:
+//canAccept related 
+gar G exists i in Int(0..(numOfLanes-1)). canAccept[i] <-> goTo = i; 	// if any lane can accept goTo = i 
+gar G forall i in Int(0..(numOfLanes-1)). !(goTo = i & !canAccept[i]);	// if lane i cannot accept goTo != i
+//fill the canAccept array according to the monitors' status
+gar G canAccept[0] <-> canAccept1;
+gar G canAccept[1] <-> canAccept2;
+gar G canAccept[2] <-> canAccept3;
+gar G canAccept[3] <-> canAccept4;
+
+//Vil related
+gar G forall i in Int(0..(numOfLanes-1)). goTo = i & canAccept[i] -> next(Vil[i]) = firstInQueue; // if goTo = i  and lane i can accept, first in queue goes into lane i
+gar G forall i in Int(0..(numOfLanes-1)). goTo != i & canAccept[i] -> next(Vil[i]) = Vil[i]; // if lane i can accept but goTo != i - Vil[i] is not changed.
+gar G forall i in Int(0..(numOfLanes-1)). !canAccept[i] -> next(Vil[i]) = NONE | next(Vil[i]) = Vil[i];
+gar G forall i in Int(0..(numOfLanes-1)). isMotor(Vil[i]) -> next(Vil[i]) = NONE; // motorcycle stays in lane for 1 turn only
+//car stays in lane for 3 turns
+gar G isCar(Vil[0]) & Lane1_turns = carTurns -> next(Vil[0]) = NONE;
+gar G isCar(Vil[0]) & Lane1_turns < carTurns -> next(Vil[0]) = Vil[0];
+gar G isCar(Vil[1]) & Lane2_turns = carTurns -> next(Vil[1]) = NONE;
+gar G isCar(Vil[1]) & Lane2_turns < carTurns -> next(Vil[1]) = Vil[1];
+gar G isCar(Vil[2]) & Lane3_turns = carTurns -> next(Vil[2]) = NONE;
+gar G isCar(Vil[2]) & Lane3_turns < carTurns -> next(Vil[2]) = Vil[2];
+gar G isCar(Vil[3]) & Lane4_turns = carTurns -> next(Vil[3]) = NONE;
+gar G isCar(Vil[3]) & Lane4_turns < carTurns -> next(Vil[3]) = Vil[3];
+
+//infected related
+//lane i is infected after red vehicle finished testing
+gar G forall i in Int(0..(numOfLanes-1)). isMotor(Vil[i]) & isRed(Vil[i]) -> next(infected[i]);
+gar G isCar(Vil[0]) & isRed(Vil[0]) & Lane1_turns = carTurns -> next(infected[0]);
+gar G isCar(Vil[1]) & isRed(Vil[1]) & Lane2_turns = carTurns -> next(infected[1]);
+gar G isCar(Vil[2]) & isRed(Vil[2]) & Lane3_turns = carTurns -> next(infected[2]);
+gar G isCar(Vil[3]) & isRed(Vil[3]) & Lane4_turns = carTurns -> next(infected[3]);
+gar G forall i in Int(0..(numOfLanes-1)). !infected[i] & !isRed(Vil[i]) -> next(!infected[i]); // if lane i is not infected and no red vehicle in it, it remains not infected
+// lanes are infected for 3 turns
+
+//lanes are infected for 4 turns
+gar trig [true]*[!infected[0]][infected[0]] |=> [infected[0]]{3}[!infected[0]];
+gar trig [true]*[!infected[1]][infected[1]] |=> [infected[1]]{3}[!infected[1]];
+gar trig [true]*[!infected[2]][infected[2]] |=> [infected[2]]{3}[!infected[2]];
+gar trig [true]*[!infected[3]][infected[3]] |=> [infected[3]]{3}[!infected[3]];
+gar G forall i in Int(0..(numOfLanes-1)). isUsed(Vil[i]) -> !infected[i]; // if there is a vehicle in lane, the lane is no infected.
+
+//testKits related
+gar G forall i in Int(0..(numOfLanes-1)). noTestKits(i) <-> needSupply[i]; // needSupply[i] = true if there are no test kits in lane i, false otherwise
+ 

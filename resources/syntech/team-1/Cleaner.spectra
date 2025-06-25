@@ -1,0 +1,220 @@
+import "DwyerPatterns.spectra"
+
+spec Cleaner
+
+
+define DX := 7;
+define DY := 7;
+define start := robotX = 0 and robotY = 0;
+define NumObstacles := 12;
+
+type DimX = Int(0..DX);
+type DimY = Int(0..DY);
+ 
+sys DimX robotX;
+sys DimY robotY;
+sys boolean shouldStay;
+
+env boolean greenLight;
+env boolean cleaningRequest;
+env Int(0..DX)[2] target;
+env boolean hasTarget;
+env boolean tankEmptied;
+
+//obstacles definition
+define
+	obsX[NumObstacles] := {1, 2, 3, 4, 5, 1, 2, 3, 4, 5, 1, 4};
+	obsY[NumObstacles] := {1, 1, 1, 1, 1, 4, 4, 4, 4, 4, 7, 7};
+	
+//orange Zone definition
+define
+	orangeZone :=
+		(robotX = 0 and (robotX <6 and robotX > 0)) or
+		(robotX = 2 and (robotX <6 and robotX > 0)) or
+		(robotX = 3 and (robotX <6 and robotX > 0)) or
+		(robotX = 5 and (robotX <6 and robotX > 0)) or
+		(robotX = 6 and (robotX <6 and robotX > 0));
+		
+define robotStays := robotX = next(robotX) and robotY = next(robotY);
+define atTarget := robotX = target[0] and robotY = target[1];// and cleaningRequest and !tankIsFull;
+
+define tankIsFull := targetsCleaned = 5;
+
+//How many targets cleaned
+counter targetsCleaned(0..5){
+	targetsCleaned = 0;
+	//inc while tank is not full and target cleaned or while tank is full and on start
+	inc: atTarget;// or (start and tankIsFull);
+	overflow: modulo;
+}
+
+
+// *********************************************
+// ***      General Task Requirements        ***
+// *********************************************
+
+//The robot starts at cell (0,0) with an empty tank. (counter will take care of empty tank).
+gar ini start; //and !tankIsFull;
+
+//ROBOT MOVES
+//The robot can move to adjacent cells horizontally or vertically, but not diagonally.
+gar alw ((right(robotX) | left(robotX)) -> stayY(robotY)) and
+		((up(robotY) | down(robotY)) -> stayX(robotX));
+
+predicate right(DimX cord):
+	next(cord) - cord = 1;
+	
+predicate left(DimX cord):
+	next(cord) - cord = -1;
+	
+predicate stayX(DimX cord):
+	next(cord) = cord;
+
+predicate up(DimY cord):
+	next(cord) - cord = 1;
+	
+predicate down(DimY cord):
+	next(cord) - cord = -1;
+
+predicate stayY(DimY cord):
+	next(cord) = cord;
+
+//*******
+//CLEANING REQUEST
+
+//Cleaning request turns off when visiting cell to be cleaned
+gar alw (cleaningRequest and atTarget and !tankIsFull) -> next(cleaningRequest) = false;
+
+//If there is a cleaning request from a target, the robot should eventually visit it.
+asm alwEv !cleaningRequest;
+
+//A cleaning request remains true until the robot visits the target and cleans it.
+asm alw (cleaningRequest and (!atTarget or tankIsFull)) -> next(cleaningRequest) = true;
+
+//A cleaning target can be any cell that is not (0,0) and not an obstacle.
+asm alw target[0] = 0 -> target[1] != 0;
+asm alw forall i in DimX. target[0] = obsX[i] -> target[1] != obsY[i];
+
+//The environment controls a “green light” signal which it sets to be true infinitely often in every run.  
+asm alwEv greenLight;
+
+
+
+// *********************************************
+// ***          Property #1                  ***
+// *********************************************
+
+type facing = {UP, RIGHT, DOWN, LEFT};
+sys facing robotFaces;
+
+//robot starts facing up
+gar ini robotFaces = UP;
+
+//robot doesn't rotate while not in orange Zone
+gar alw !orangeZone -> (robotFaces = next(robotFaces));
+
+//robot rotates when in orange Zone
+gar alw (orangeZone and robotFaces = UP )-> next(robotFaces) = RIGHT;
+gar alw (orangeZone and robotFaces = RIGHT )-> next(robotFaces) = DOWN;
+gar alw (orangeZone and robotFaces = DOWN )-> next(robotFaces) = LEFT;
+gar alw (orangeZone and robotFaces = LEFT )-> next(robotFaces) = UP;
+
+// *********************************************
+// ***          Property #2                  ***
+// *********************************************
+
+//After every 5 consecutive states in the orange zone,
+//the robot should stay in place for at least 2 states
+//and then wait for a “green light” before it continues to move.
+
+gar P_is_true_After_Q_until_R(robotStays, shouldStay, !shouldStay);
+
+gar trig [start]*[orangeZone]{5} |=> [shouldStay]{2,}[!shouldStay -> greenLight];
+
+
+// *********************************************
+// ***          Property #3                  ***
+// *********************************************
+
+//When the robot visits a target location,
+//it should stay there for at least 5 states (for cleaning)
+//before it may move to another cell. 
+
+gar trig [start]*[atTarget] |=> [shouldStay]{5,};
+
+
+
+// *********************************************
+// ***          Property #4                  ***
+// *********************************************
+//Implement w.o triggers
+
+//When robot arrives at (0,0) with a full tank,
+//the robot should wait for the environment to report that the tank has been emptied,
+//and then wait at least 2 more states before it moves.
+gar alw start and !robotCanMoveWithEmptyTank -> next(start);
+
+define robotCanMoveWithEmptyTank := startTankCounter > 2; 
+
+counter startTankCounter(0..3){
+	startTankCounter = 0;
+	//inc while still at start and tank already emptied
+	inc: start;// and tankAlreadyEmptied;
+	overflow: keep;
+}
+
+monitor boolean tankAlreadyEmptied{
+	!tankAlreadyEmptied;
+	alw next(tankAlreadyEmptied) = (start and (tankEmptied or tankAlreadyEmptied));
+}
+
+asm alwEv tankEmptied;
+// *********************************************
+// ***          Property #5                  ***
+// *********************************************
+sys boolean shouldSleep;
+
+//when leaving orange zone after shouldLeaveOrangeZone, stay until 2 states after has target
+gar alw ((!orangeZone SINCE shouldLeaveOrangeZone) and (sleepMode < 2)) -> robotStays;
+gar alw (!orangeZone SINCE shouldLeaveOrangeZone) and hasTarget -> next(shouldSleep);
+
+counter sleepMode(0..2) {
+	sleepMode = 0;
+	inc: shouldSleep;
+	overflow: modulo;
+	reset: !orangeZone SINCE shouldLeaveOrangeZone;
+}
+
+counter noTargetEightStates(0..8){
+	noTargetEightStates = 0;
+	inc: orangeZone & !hasTarget;
+	overflow: keep;
+	reset: !orangeZone or hasTarget;
+}
+
+//while no targets seen at least 8 states in a row and on orange zone
+define shouldLeaveOrangeZone := orangeZone and noTargetEightStates > 7 and !hasTarget;
+
+
+// *********************************************
+// ***          Property #6                  ***
+// *********************************************
+
+//The robot should not move in the first 8 states of its execution.
+//Then it should start moving only when there is “green light”. 
+
+//gar alw start and !robotCanMoveAfterStart -> next(start);
+gar alw next(!start) -> PREV(robotCanMoveAfterStart);
+
+define robotCanMoveAfterStart := startMovesCounter > 7 and greenLight; 
+
+counter startMovesCounter(0..8){
+	startTankCounter = 0;
+	//inc while still at start
+	inc: start;
+	overflow: keep;
+}
+
+
+
+

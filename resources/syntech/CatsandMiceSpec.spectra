@@ -1,0 +1,79 @@
+spec CatsandMiceSpec
+
+
+
+define M := 3; 		// Constant number of Mice in the game 
+define C := 3; 		// Constant number of Cats in the game 
+define B := 2; 		// Constant number of seats in the boat
+
+/* Env variables */
+env Int(0..M) miceA; // number of mice on island 1
+env Int(0..M) miceB; // number of mice on island 2
+env Int(0..C) catsA; // number of cats on island 1
+env Int(0..C) catsB; // number of cats on island 2
+env boolean source;  // False : island 1 to island 2, True : island 2 to island 1
+
+/*System variables  */
+//Together represents one boat ride 
+sys Int(0..B) boatmice; // Number of mice to carry on the boat from 0 to B  
+sys Int(0..B) boatcats; // Number of cats to carry on the boat from 0 to B 
+
+
+/*
+ In this spec we have 2 islands A, B
+ The goal is to move all cats and mice from island A to island B using the boat 
+ under one constrain : The number of cats is never higher than the number of mice on each island and on a boat 
+ */
+
+
+// assumptions
+
+asm StartAllOnLeft: 
+    miceA = M & catsA = C & miceB = 0 & catsB = 0;  // Set all mice and all cats on island 1, no cats and mice on island 2
+    
+asm StartboatOnLeft: 
+    source=false; 									// Set the boat  next to island 1
+
+asm TotalsAreFixed: 
+    G catsA + catsB = C & miceA + miceB = M; 		// The total number of cats and mice is fixed during the game
+
+asm MoveBoat: G (boatcats + boatmice = 0) <-> (source = next(source)); // Empty boat does not move, non-empty boat moves 
+    
+asm FromLeftToRight: 													// Moves cats and mice from Island 1 to Island 2
+    G  ((source=false & boatmice<=miceA & boatcats<=catsA) 
+	             -> (next(miceA)=miceA-boatmice &              	//update the number of mice on island 1 
+  					 next(miceB)=miceB+boatmice &             	// update the number of mice on island 2
+  					 next(catsA)=catsA-boatcats &             	// update the number of cats on island 1
+  					 next(catsB)=catsB+boatcats)) ;           	// update the number of cats on island 2
+  					 
+asm FromRightToLeft: 													//Moves cats and mice from Island 2 to Island 1
+    G  ((source=true & boatmice<=miceB & boatcats<=catsB) 
+				 -> (next(miceA)=miceA+boatmice & 				// update the number of mice on island 1 
+  					 next(miceB)=miceB-boatmice &				// update the number of mice on island 2
+  					 next(catsA)=catsA+boatcats &				// update the number of cats on island 1
+  					 next(catsB)=catsB-boatcats))	;			// update the number of cats on island 2
+
+
+// guarantees
+
+gar NoMoreThanBOnTheboat: 										//The number of cats and mice on a boat is never more than allow 
+    G (boatcats + boatmice) <= B;
+
+																						
+gar MoveAllowA: G (source=false) -> (boatmice <= miceA & boatcats <= catsA);	// Never moves more than there are on island 1
+gar MoveAllowB: G (source=true) -> (boatmice <= miceB & boatcats <= catsB);     // Never moves move than there are on island 2
+
+
+gar NowhereMorecatsThanmiceUnlessNomice:						//On every location the number of cats is always lower or equal to the number of mice, if mice is 0 then any amount is fine 
+    G (catsA <= miceA | miceA=0) & 
+      (catsB <= miceB | miceB=0)& 
+      (boatcats <= boatmice | boatmice=0);
+
+gar FinalTarget: 												// Final target is that all cats and all mice on island 2
+    GF catsB = C & miceB = M;
+
+gar StayingForeverInTarget: 									//	If the goal is reached no need to move any more the cats and mice 
+    G  (catsB = C & miceB = M) -> (boatcats=0 & boatmice=0);
+    
+gar NotOver: 												//If the goal wsan't reach make sure the boat in each round isn't empty
+G (catsA > 0 | miceA > 0 ) -> (boatcats != 0 | boatmice != 0);

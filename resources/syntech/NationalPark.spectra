@@ -1,0 +1,132 @@
+import "DwyerPatterns.spectra"
+
+ 
+module NationalPark
+
+type Range = Int(0..3);
+
+env Range goatPop;
+env Range wolfPop;
+env Range plantPop;
+env Range bugPop;
+
+env boolean winter;
+env boolean fire;
+env boolean flood;
+env boolean tornado;
+env Range rain;
+env Range waterLv;
+
+sys boolean fertilize;
+sys Range hunting;
+sys Range tours;
+sys boolean damOpen;
+sys boolean pestControl;
+
+define
+	disaster := (tornado or fire or flood);
+	parkClosed := tours = 0 and hunting = 0;
+	entrance := tours + hunting;
+
+
+// Once a population dies it never returns
+asm G goatPop = 0 -> next(goatPop = 0);
+asm G wolfPop = 0 -> next(wolfPop = 0);
+asm G plantPop = 0 -> next(plantPop = 0);
+asm G bugPop = 0 -> next(bugPop = 0);
+
+// Assumptions regarding random parameters
+asm GF fire;
+asm GF tornado;
+asm GF !disaster;
+asm GF rain = 0;
+asm GF rain = 1;
+asm GF rain = 2;
+asm GF rain = 3;
+asm G next(!winter -> rain < 2);
+
+// Initial State
+asm goatPop = 2;
+asm wolfPop = 2;
+asm plantPop = 2;
+asm bugPop = 2;
+asm !winter and !disaster;
+asm rain = 0 and waterLv = 0;
+gar !fertilize and !damOpen and !pestControl;
+gar parkClosed;
+
+
+// risk of not opening the dam
+asm G (waterLv = 3) -> (next(flood) and next(rain) > 0 and (!damOpen)) or next(!flood);
+asm G (waterLv = 2) -> (next(flood) and next(rain) > 1 and (!damOpen)) or next(!flood);
+asm G (waterLv = 1) -> (next(flood) and next(rain) > 2 and (!damOpen)) or next(!flood);
+asm G (!((waterLv=3) or (((waterLv=2)  or  (waterLv=1)) and (winter)))) -> next(!flood);
+//asm G (waterLv = 0 and !flood) -> next(!flood);
+asm G next(flood -> waterLv = 0);
+asm G damOpen -> next(waterLv = 0);
+asm G flood -> next(!flood);
+asm G (!flood and !damOpen) -> (next(waterLv)>=waterLv or next(flood));
+asm G !(flood and PREV(damOpen));
+
+
+// animal balancing
+monitor Int(0..7) wolfBalancing
+{
+	G !damOpen -> (wolfBalancing = (7 - entrance));
+	G damOpen -> (wolfBalancing = (6 - entrance));
+}
+monitor Int(0..7) goatBalancing
+{
+	G goatBalancing = 7 - wolfBalancing + plantBalancing; // if entrance is 6, we might find that we have 6 + plantBalancing. We won't be in danger since then we won't fertilize/pestControl
+}
+monitor Int(0..3) plantBalancing
+{
+	G (!fertilize and pestControl) -> (plantBalancing  = 1);
+	G (!fertilize and !pestControl) -> (plantBalancing  = 0);
+	G (fertilize and pestControl) -> (plantBalancing  = 2);
+	G (fertilize and !pestControl) -> (plantBalancing  = 1);
+}
+
+
+gar G (goatPop > 2 and !disaster and !parkClosed) -> (next(goatBalancing) <= goatBalancing); // if the goatPop is too high, we try to decrease it
+gar G (goatPop < 2 and !disaster and !parkClosed) -> (next(goatBalancing) >= goatBalancing); // if the goatPop is too low, we try to increase it
+gar G (wolfPop < 2) -> next(wolfBalancing) > 3;
+gar G (plantPop < 2 and !disaster) -> (plantBalancing) >= 1;
+gar G (bugPop < 2) -> !pestControl;
+
+
+// park balancing
+gar G disaster -> parkClosed;
+gar G next(damOpen -> entrance <= 2);
+gar G winter -> tours <= 2;
+//gar GF hunting >= 2;
+//gar GF tours >= 2;
+//gar GF entrance >= 4; // eventually achieves maximal entrance
+gar G next(entrance <= 4);
+
+counter noEntrance(0..3) {
+	inc: !disaster and !damOpen and entrance < 2;
+	reset: entrance >= 2;
+	overflow: keep;
+}
+
+// water balancing
+gar G fire and !flood -> damOpen;
+gar G flood -> !damOpen;
+
+
+// general managment
+gar G disaster -> (!fertilize and !pestControl);
+gar G (fertilize or pestControl) -> entrance < 4;
+
+/*
+// we don't want to open the dam, but a flood is worse
+weight -1
+	damOpen and !fire and !flood;
+weight -1
+	flood and PREV(!flood) and !damOpen;
+weight 5 // if the system opened the dam at a POSSIBLY correct moment (that turned out to be wrong), we get enough points to cover the dam opening
+	damOpen and PREV(((waterLv=3)) or (((waterLv=2)  or  (waterLv=1)) and (winter)));
+weight -3 // it is not good to have high no-entrance
+	noEntrance > 3 and !disaster and !damOpen;
+*/

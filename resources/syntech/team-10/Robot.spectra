@@ -1,0 +1,52 @@
+import "DwyerPatterns.spectra"
+
+spec Robot
+
+//define NumObstacles := 14;
+define DX := 7;
+define DY := 7;
+define inStart := robotX = 0 & robotY = 0;
+define inEnd := robotX = DX & robotY = DY;
+
+type DimX = Int(0..DX);
+type DimY = Int(0..DY);
+
+sys DimX robotX;
+sys DimY robotY;
+sys {UP, DOWN, LEFT, RIGHT, UPRIGHT, UPLEFT, DOWNRIGHT, DOWNLEFT, STAY} move;
+
+env DimY obstacle1Y;
+env DimY obstacle2Y;
+
+asm alw obstacle1Y = DY - 1;
+asm alw obstacle2Y = 1;
+
+gar alw robotX = 2 implies robotY > obstacle1Y;
+gar alw robotX = 5 implies robotY < obstacle2Y;
+
+gar ini inStart;
+gar alwEv inEnd;
+gar alw inEnd implies next(inEnd);
+
+gar alw move=DOWN implies plusOneY(robotY) & fixX(robotX);
+gar alw move=UP implies minusOneY(robotY) & fixX(robotX);
+gar alw move=LEFT implies minusOneX(robotX) & fixY(robotY);
+gar alw move=RIGHT implies plusOneX(robotX) & fixY(robotY);
+gar alw move=DOWNRIGHT implies plusOneX(robotX) & plusOneY(robotY);
+gar alw move=DOWNLEFT implies minusOneX(robotX) & plusOneY(robotY);
+gar alw move=UPRIGHT implies plusOneX(robotX) & minusOneY(robotY);
+gar alw move=UPLEFT implies minusOneX(robotX) & minusOneY(robotY);
+gar alw move=STAY implies fixX(robotX) & fixY(robotY);
+
+predicate plusOneX (DimX x):
+ x + 1 = next(x) | (x = DX & next(x)=x);
+predicate plusOneY (DimY y):
+ y + 1 = next(y) | (y = DY & next(y)=y);
+predicate minusOneX (DimX x):
+ x - 1 = next(x) | (x = 0 & next(x)=x);
+predicate minusOneY (DimY y):
+ y - 1 = next(y) | (y = 0 & next(y)=y);
+predicate fixX (DimX x):
+ next(x)=x;
+predicate fixY (DimY y):
+ next(y)=y;

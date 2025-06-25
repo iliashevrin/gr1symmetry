@@ -1,0 +1,71 @@
+import "DwyerPatterns.spectra"
+
+spec Robot
+define DX := 4;
+define DY := 4;
+
+type DimX = Int(0..DX);
+type DimY = Int(0..DY);
+
+predicate isValidGoal(DimX x, DimY y):
+	((x >= 0) & (x <= DX) & (y >= 0) & (y <= DY) & 
+		!((x = 0) & (y = 0)) &
+		(x != 1 | y != 1) &
+		(x != 2 | y != 1) &
+		(x != 0 | y != 3) &
+		(x != 3 | y != 3) &
+		(x != 3 | y != 4));
+
+// receive the goal points coordinates as inputs
+env DimX[3] goalsX;
+env DimY[3] goalsY;
+
+define atBase := ((robotX = 0) & (robotY = 0));
+define atGoal1 := ((robotX = goalsX[0]) & (robotY = goalsY[0]));
+define atGoal2 := ((robotX = goalsX[1]) & (robotY = goalsY[1]));
+define atGoal3 := ((robotX = goalsX[2]) & (robotY = goalsY[2]));
+
+sys DimX robotX;
+sys DimY robotY;
+sys {UP, DOWN, LEFT, RIGHT, STAY} move;
+gar alw move=UP implies (next(robotY) = robotY - 1) & (next(robotX) = robotX);
+gar alw move=DOWN implies (next(robotY) = robotY + 1) & (next(robotX) = robotX);
+gar alw move=LEFT implies (next(robotY) = robotY) & (next(robotX) = robotX - 1);
+gar alw move=RIGHT implies (next(robotY) = robotY) & (next(robotX) = robotX + 1);
+gar alw move=STAY implies (next(robotY) = robotY) & (next(robotX) = robotX);
+
+// initial state
+gar ini (robotX=0) & (robotY=0);
+
+// only move inside the board
+gar alw (robotX=0 implies move!=LEFT) &
+		(robotX=DX implies move!=RIGHT) &
+		(robotY=0 implies move!=UP) &
+		(robotY=DY implies move!=DOWN);
+		
+// stay away from the obstacles
+gar stayOffObstacles:
+	alw (robotX != 1 | robotY != 1) &
+		(robotX != 2 | robotY != 1) &
+		(robotX != 0 | robotY != 3) &
+		(robotX != 3 | robotY != 3) &
+		(robotX != 3 | robotY != 4);
+		
+// checks that the goals are valid
+asm alw isValidGoal(goalsX[0], goalsY[0]) & isValidGoal(goalsX[1], goalsY[1]) & isValidGoal(goalsX[2], goalsY[2]);
+
+// checks that the goals never change
+asm alw (goalsX[0] = next(goalsX[0])) & 
+		(goalsX[1] = next(goalsX[1])) & 
+		(goalsX[2] = next(goalsX[2])) & 
+		(goalsY[0] = next(goalsY[0])) & 
+		(goalsY[1] = next(goalsY[1])) & 
+		(goalsY[2] = next(goalsY[2]));
+										
+// make sure we keep reaching our goal points and returning to the base point (0, 0)
+gar alwEv atGoal1;
+gar alwEv atGoal2;
+gar alwEv atGoal3;
+gar alwEv atBase;
+
+

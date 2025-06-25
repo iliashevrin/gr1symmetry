@@ -1,0 +1,361 @@
+spec Cleaner
+
+define DX := 7;
+define DY := 7;
+
+type DimX = Int(0..DX);
+type DimY = Int(0..DY);
+
+sys DimX robotX;
+sys DimY robotY;
+
+
+env DimX tarX;
+env DimY tarY;
+env boolean cleaningRequest;
+env boolean greenLight;
+
+// ********************************************
+// ***             Predicates               ***
+// ********************************************
+predicate robotAt(DimX x, DimY y):
+	robotX=x & robotY=y;
+	
+predicate step(DimX posX, DimY posY):
+ 	(posX = next(posX) & posY = next(posY))       |
+ 	(posX = next(posX) & (posY - 1) = next(posY)) |
+ 	(posX = next(posX) & (posY + 1) = next(posY)) |
+ 	((posX + 1) = next(posX) & posY = next(posY)) |
+ 	((posX - 1) = next(posX) & posY = next(posY));
+ 	
+predicate is_diff_point(DimX a, DimY b, DimX x, DimY y):
+	(a != x) | (b != y);
+
+predicate is_at_point(DimX a, DimY b, DimX x, DimY y):
+	(a = x) & (b = y);
+  
+predicate target_not_obs(DimX tarX, DimY tarY):
+	is_diff_point(tarX, tarY, 1, 1) & 
+	is_diff_point(tarX, tarY, 2, 1) &
+	is_diff_point(tarX, tarY, 3, 1) &
+	is_diff_point(tarX, tarY, 4, 1) &
+	is_diff_point(tarX, tarY, 5, 1) &
+	is_diff_point(tarX, tarY, 1, 4) &
+	is_diff_point(tarX, tarY, 2, 4) &
+	is_diff_point(tarX, tarY, 3, 4) &
+	is_diff_point(tarX, tarY, 4, 4) &
+	is_diff_point(tarX, tarY, 5, 4) &
+	is_diff_point(tarX, tarY, 1, 7) &
+	is_diff_point(tarX, tarY, 4, 7);
+	
+predicate target_not_start(DimX tarX, DimY tarY):
+	is_diff_point(tarX, tarY, 0, 0);
+	
+predicate not_at_obs(DimX x, DimY y):
+	is_diff_point(x, y, 1, 1) & 
+	is_diff_point(x, y, 2, 1) &
+	is_diff_point(x, y, 3, 1) &
+	is_diff_point(x, y, 4, 1) &
+	is_diff_point(x, y, 5, 1) &
+	is_diff_point(x, y, 1, 4) &
+	is_diff_point(x, y, 2, 4) &
+	is_diff_point(x, y, 3, 4) &
+	is_diff_point(x, y, 4, 4) &
+	is_diff_point(x, y, 5, 4) &
+	is_diff_point(x, y, 1, 7) &
+	is_diff_point(x, y, 4, 7);
+	
+predicate is_orange(DimX x, DimY y):
+	is_at_point(x, y, 1, 0) |
+	is_at_point(x, y, 2, 0) |
+	is_at_point(x, y, 3, 0) |
+	is_at_point(x, y, 4, 0) |
+	is_at_point(x, y, 5, 0) |
+	is_at_point(x, y, 1, 2) |
+	is_at_point(x, y, 2, 2) |
+	is_at_point(x, y, 3, 2) |
+	is_at_point(x, y, 4, 2) |
+	is_at_point(x, y, 5, 2) |	
+	is_at_point(x, y, 1, 3) |
+	is_at_point(x, y, 2, 3) |
+	is_at_point(x, y, 3, 3) |
+	is_at_point(x, y, 4, 3) |
+	is_at_point(x, y, 5, 3) |
+	is_at_point(x, y, 1, 5) |
+	is_at_point(x, y, 2, 5) |
+	is_at_point(x, y, 3, 5) |
+	is_at_point(x, y, 4, 5) |
+	is_at_point(x, y, 5, 5) |
+	is_at_point(x, y, 1, 6) |
+	is_at_point(x, y, 2, 6) |
+	is_at_point(x, y, 3, 6) |
+	is_at_point(x, y, 4, 6) |
+	is_at_point(x, y, 5, 6);
+
+predicate target_stays():
+	tarX = next(tarX) & tarY = next(tarY);
+
+	
+predicate cleaning_request_stays():
+	cleaningRequest = next(cleaningRequest);
+	
+
+predicate robot_stays():
+	robotX = next(robotX) & robotY = next(robotY);
+
+// *********************************************
+// ***      General Task Requirements        ***
+// *********************************************
+
+/// ROBOT RELATED REQUIRMENTS ///
+// The robot starts at (0,0)
+gar ini robotAt(0,0);
+// The robot moves horizontally or vertically 
+gar alw step(robotX, robotY);
+// Robot not at obstacles
+gar alw not_at_obs(robotX, robotY);
+
+
+/// TARGET RELATED REQUIRMENTS ///
+// Target not at obstacles or (0,0)
+asm alw target_not_obs(tarX, tarY);
+asm alw target_not_start(tarX, tarY);
+
+/// CLEANING REQ AND GREEN LIGHT ///
+// Cleaning request and target don't change until cleaned
+asm alw tar_req_dont_change -> target_stays();
+asm alw tar_req_dont_change -> next(cleaningRequest);
+ 
+// If there is a cleaning request, the robot should eventually visit the target and clean it.
+gar  [true]*[cleaningRequest] |=> [true]*[at_target & targets_cleaned < 5];
+
+
+// CleaningRequest set to be infinitely often in every run
+asm alwEv cleaningRequest;
+
+// Green light signal is set to be infinitely often in every run
+asm alwEv greenLight;  
+
+
+/// VARIABLES NEEDED FOR GUI ///
+// always at_target = T iff robot at Target
+sys boolean at_target;
+gar alw robotAt(tarX, tarY) <-> at_target;
+
+// at_orange = T iff robot at orange zone
+sys boolean at_orange;
+gar alw is_orange(robotX, robotY) <-> at_orange;
+
+ 
+sys boolean robot_is_red;
+gar alw robot_is_red <-> (!first_green_light & states_from_start = 8) | (states_in_orange = 7 & !greenLight);
+
+sys boolean robot_is_green;
+gar alw robot_is_green <-> (cleaningRequest & at_target & (targets_cleaned < 5));
+
+sys boolean robot_is_yellow;
+gar alw robot_is_yellow <-> (targets_cleaned = 5);
+
+sys boolean robot_is_grey;
+gar alw robot_is_grey <-> (!at_orange & (steps_without_request = 8));
+
+// *********************************************
+// ***          Property #1                  ***
+// *********************************************
+
+// Whenever the robot is in the orange zone, it should rotate 90 degrees to the right repeatedly until it leaves the orange zone
+
+type Direction = Int(0..3);
+// 0 = Up, 1 = RIGHT, 2 = DOWN, 3 = LEFT
+sys Direction direction;
+
+// robot at the orange zone should change its direction by +90 deg at each step 
+gar alw at_orange & direction = 0 -> next(direction) = 1;
+gar alw at_orange & direction = 1 -> next(direction) = 2;
+gar alw at_orange & direction = 2 -> next(direction) = 3;
+gar alw at_orange & direction = 3 -> next(direction) = 0;
+ 
+// *********************************************
+// ***          Property #2                  ***
+// *********************************************
+
+// After every 5 consecutive states in the orange zone, the robot should stay in place for at least 2 states 
+// and then wait for a green light before it continues to move. 
+
+////// DEINITION AND UPDATING COUNTER //////
+
+// "manual" counter - how many consecutive states the robot spends at orange zone
+sys Int(0..7) states_in_orange;
+
+// If robot not at orange zone, counter should be zero.
+gar alw !at_orange -> states_in_orange = 0;
+
+// Updating counter when its value is: 0,..,6
+// If at the next state the robot will be at orange zone, we want the counter to be + 1, 
+// if the robot leaves orange zone we want the counter to be 0
+gar alw states_in_orange < 7 & next(at_orange) -> next(states_in_orange) = states_in_orange + 1;
+gar alw states_in_orange < 7 & !next(at_orange) -> next(states_in_orange) = 0;
+
+// Updating counter when its value is: 7
+// Note that we need to use prev because we check green light in the current step
+// If in the previous step the counter was 7, and we don't see a green light at the current step 
+// -> the counter should stay 7 and the robot should still be waiting for red light
+gar alw PREV(states_in_orange = 7) & !greenLight -> states_in_orange = 7; // (*)
+// If in the previous step the counter was 7, and we see a green light the robot can move
+// If it currently at orange zone, the counter should be 1, 0 otherwise
+gar alw PREV(states_in_orange = 7) & greenLight & at_orange -> states_in_orange = 1;
+gar alw PREV(states_in_orange = 7) & greenLight & !at_orange -> states_in_orange = 0;
+
+
+////// USING COUNTER //////
+// If counter = 5 or 6, the robot should not move in the next state
+gar alw states_in_orange = 5 | states_in_orange = 6 -> robot_stays();
+// Assume we are at step i. 
+// If the light is not green, AND the counter at step i-1 was 7 (we spent 5 consecutive states in the orange zone and waited for another two)
+// We want the robot to stay in the cell he was at step i-1
+// But our robot_stays() predicate is making sure in the *next step* the robot will stay in place
+// At i-1 step we don't know if there will be green light at step i, 
+// but we do know because of gar (*) that if in the next state there will be green light, the counter will be 7. so we use it
+gar alw next(states_in_orange = 7) -> robot_stays();
+
+
+// *********************************************
+// ***          Property #3                  ***
+// *********************************************
+
+// When the robot visits a target location, it should stay there for at least 5 states 
+
+////// DEINITION AND UPDATING COUNTER //////
+
+// "manual" counter - how many consecutive states the robot spends at target
+sys Int(0..5) states_at_target;
+
+// Initiate and reset counter states_at_target to 0 if it is not at target or has no cleaning request
+gar alw !at_target | !cleaningRequest -> states_at_target = 0;
+
+// Update of counter when its value is: 0,...,4
+// if on the next state the robot will be at target and the counter is less than 5 the counter will inc by 1
+// we use cleaning req = T to make sure that target values wont change at the next step, and therefore we can use it on the right side of ->
+gar alw states_at_target < 5 & cleaningRequest & next(at_target) -> next(states_at_target) = states_at_target + 1;
+
+// Update of counter when its value is: 5
+// In that case, in the next step the robot can either visit a regular cell, which means states_at_target should be 0,
+// or in case the next target moved one step from current target, it can land on it and the states_at_target should be 1  
+gar alw states_at_target = 5 -> (next(states_at_target) = 1 | next(states_at_target) = 0);
+
+////// USING COUNTER //////
+
+// If the robot visited target for less than 5 steps, it should stay in place
+gar alw (states_at_target > 0) & (states_at_target < 5) implies robot_stays();
+
+// MAKING SURE THE ENV WONT MOVE THE TARGET
+
+// tar_req_dont_change indicates when the env should randomize cleaning request and target.
+// it should not randomize iff there is a cleaning request that has not been fully cleaned yet 
+// meaning the robot did not stay for 5 consecutive states or it will also stay on target for the next state
+sys boolean tar_req_dont_change;
+gar alw tar_req_dont_change <-> (cleaningRequest & (states_at_target < 5));
+
+
+// *********************************************
+// ***          Property #4                  ***
+// *********************************************
+////// ENV EMPTYING THE TANK //////
+env boolean empty_tank;
+asm alwEv empty_tank;
+
+
+////// DEINITION AND UPDATING COUNTER //////
+// Counter counts targets cleaned
+sys Int(0..6) targets_cleaned;
+gar ini targets_cleaned = 0;
+// Counter update for values 0,...,4 when at target
+// If first time at tar - update
+gar alw PREV(targets_cleaned = 0) & PREV(!at_target) & at_target -> targets_cleaned = 1;
+gar alw PREV(targets_cleaned = 1) & PREV(!at_target) & at_target -> targets_cleaned = 2;
+gar alw PREV(targets_cleaned = 2) & PREV(!at_target) & at_target -> targets_cleaned = 3;
+gar alw PREV(targets_cleaned = 3) & PREV(!at_target) & at_target -> targets_cleaned = 4;
+gar alw PREV(targets_cleaned = 4) & PREV(!at_target) & at_target -> targets_cleaned = 5;
+// I not first time at tar - keep
+gar alw PREV(targets_cleaned = 0) & PREV(at_target) & at_target -> targets_cleaned = 0;
+gar alw PREV(targets_cleaned = 1) & PREV(at_target) & at_target -> targets_cleaned = 1;
+gar alw PREV(targets_cleaned = 2) & PREV(at_target) & at_target -> targets_cleaned = 2;
+gar alw PREV(targets_cleaned = 3) & PREV(at_target) & at_target -> targets_cleaned = 3;
+gar alw PREV(targets_cleaned = 4) & PREV(at_target) & at_target -> targets_cleaned = 4;
+// Counter update for values 0,...,4 when at !target
+// If not at target - don't update
+gar alw PREV(targets_cleaned = 0) & !at_target -> targets_cleaned = 0;
+gar alw PREV(targets_cleaned = 1) & !at_target -> targets_cleaned = 1;
+gar alw PREV(targets_cleaned = 2) & !at_target -> targets_cleaned = 2;
+gar alw PREV(targets_cleaned = 3) & !at_target -> targets_cleaned = 3;
+gar alw PREV(targets_cleaned = 4) & !at_target -> targets_cleaned = 4;
+// Counter update for value 5
+gar alw PREV(targets_cleaned = 5) & !(robotAt(0,0) & empty_tank) -> targets_cleaned = 5;
+gar alw PREV(targets_cleaned = 5) & robotAt(0,0) & empty_tank -> targets_cleaned = 6 & robot_stays();
+gar alw targets_cleaned = 6 -> robot_stays() & next(targets_cleaned) = 0;
+
+////// USING COUNTER //////
+// If robot at 00 and next step targets_cleaned = 5, the robot should stay
+gar alw robotAt(0,0) & next(targets_cleaned = 5) -> robot_stays();
+
+
+// *********************************************
+// ***          Property #5                  ***
+// *********************************************
+
+////// DEINITION AND UPDATING COUNTER //////
+
+sys Int(0..8) steps_without_request;
+
+gar ini steps_without_request = 0;
+
+// UPDATING COUNTER
+gar alw cleaningRequest -> steps_without_request = 0;
+
+gar alw !cleaningRequest & PREV(steps_without_request = 0) -> steps_without_request = 1;
+gar alw !cleaningRequest & PREV(steps_without_request = 1) -> steps_without_request = 2;
+gar alw !cleaningRequest & PREV(steps_without_request = 2) -> steps_without_request = 3;
+gar alw !cleaningRequest & PREV(steps_without_request = 3) -> steps_without_request = 4;
+gar alw !cleaningRequest & PREV(steps_without_request = 4) -> steps_without_request = 5;  
+gar alw !cleaningRequest & PREV(steps_without_request = 5) -> steps_without_request = 6;  
+gar alw !cleaningRequest & PREV(steps_without_request = 6) -> steps_without_request = 7;  
+gar alw !cleaningRequest & PREV(steps_without_request = 7) -> steps_without_request = 8;  
+
+gar alw !cleaningRequest & PREV(steps_without_request = 8) -> steps_without_request = 8;
+
+// USING COUNTER
+// When in orange and tank is full - will get to white or get cleaning request
+gar  [true]*[(steps_without_request = 8) & at_orange] |=> [true]*[!at_orange | (steps_without_request = 0)];
+// If at white and no cleaning request - stays
+gar alw steps_without_request = 8 & !at_orange -> robot_stays();
+// If at white and cleaning req - waits one more step
+gar alw PREV(steps_without_request = 8) & !at_orange & cleaningRequest -> robot_stays(); // TODO: make him stay 2 steps
+
+// *********************************************
+// ***          Property #6                  ***
+// *********************************************
+
+// The robot should not move in the first 8 states of its execution. 
+// Then it should start moving only when there is green light
+
+counter states_from_start(0..8){
+	states_from_start = 0;
+	inc: true;
+	overflow: keep;
+}
+
+sys boolean first_green_light;
+
+gar ini first_green_light = false;
+
+// the robot has to stay at (0,0) for the first 8 states, and first_green_light stays false
+gar alw states_from_start < 8 implies (robot_stays() & next(first_green_light) = first_green_light); 
+
+// after 8 states the robot has to wait for green light to start moving
+gar alw (states_from_start = 8 & first_green_light = false & greenLight = false) implies (robot_stays() & next(first_green_light) = first_green_light); 
+gar alw (states_from_start = 8 & first_green_light = false & greenLight = true) implies (next(first_green_light) != first_green_light);
+
+// after receiving the first green light first_green_light stays true
+gar alw first_green_light = true implies (next(first_green_light) = first_green_light);
+
+

@@ -1,0 +1,124 @@
+spec CatsandMiceJealousSpec
+
+define D := 3; 			// Constant number of couples. 3 means 3 cats and 3 mice 
+define B := 2; 			// Constant number of seats in the boat
+
+define DMinusOne := D-1;
+
+/* Env variables */
+env Int(0..1)[D]miceA; // number of mice on island 1 
+env Int(0..1)[D]miceB; // number of mice on island 2 
+env Int(0..1)[D]catsA; // number of cats on island 1
+env Int(0..1)[D]catsB; // number of cats on island 2
+env boolean source;  // False : island 1 to island 2, True : island 2 to island 1
+
+/*System variables  */
+//Together represents one boat ride 
+sys Int(0..1)[D] boatmice; // Number of mice to move when each cell is for a mouse to move, 1 to move, 0 not to move each time in this turn
+sys Int(0..1)[D] boatcats; // Number of cats to move when each cell is for a cat to move, 1 to move, 0 not to move each time in this turn
+
+/*
+ * The design is as follow :
+ * 
+ * The number of islands = 2 
+ * 
+ * D is the number of couples 
+ * 
+ * Each island has 2 arrays : mice and cats and in each cell you get 0,1, the indexes of the arrays are the couples, so the arrays are of size D the amount of couples.
+ * 
+ * For example Island 1 : 				
+ * 
+ * miceA[0] = 1 and catsA[0] = 1 -> both mouse 0 and cats 0 are on the island 
+ * 
+ * miceA[1] = 0 and catsA[1] = 1 -> mouse 1 isn't on the island, cat 1 is on the island
+ * 
+ * miceA[2] = 0 and catsA[2] = 0  -> both mouse 2 and cat 2 are not on the island 
+ *
+ * It is not allow that a mouse of index i will be in the same island / boat with a cat from index j when i != j if cat i isn't there too. 
+ * 
+ */
+
+// assumptions
+asm StartAllOnLeftMice:
+forall i in Int(0..DMinusOne). 
+    miceA[i] = 1 & miceB[i] = 0; // Set all the couples on island 1
+    
+asm StartAllOnLeftCats:
+  forall i in Int(0..DMinusOne). // Set all others to 0 on island 2
+	catsA[i] = 1 & catsB[i] = 0;
+	
+asm StartboatOnLeft: 
+    source=true; 				// Set the boat on next to island 1
+
+asm TotalsAreFixed: 
+    alw catsA.sum + catsB.sum = D & miceA.sum + miceB.sum = D; 					// The total number of cats and mice is fixed during the game
+    
+
+asm MoveBoat: G  (boatcats.sum + boatmice.sum = 0) <-> (source = next(source)); // Empty boat does not move, non-empty boat moves 
+
+asm FromLeftToRight: 													// Moves cats and mice from Island 1 to Island 2
+    G forall i in Int(0..DMinusOne) .
+    ((source=true & boatmice[i]<=miceA[i] & boatcats[i]<=catsA[i]) 
+	             -> (next(miceA[i])=miceA[i]-boatmice[i] &              //update the mice in couples of mice on island 1 
+  					 next(miceB[i])=miceB[i]+boatmice[i] &             // update the mice in couples of mice on island 2
+  					 next(catsA[i])=catsA[i]-boatcats[i] &             // update the cats in couples of cats on island 1
+  					 next(catsB[i])=catsB[i]+boatcats[i])); 		  // update the  cats in couples of cats on island 2
+
+asm FromRightToLeft:													//Moves cats and mice from Island 2 to Island 1 					 
+    G forall i in Int(0..DMinusOne) .
+    ((source=false & boatmice[i]<=miceB[i] & boatcats[i]<=catsB[i]) 
+				 -> (next(miceA[i])=miceA[i]+boatmice[i] & 			//update the mice in couples of mice on island 1 
+  					 next(miceB[i])=miceB[i]-boatmice[i] &			// update the mice in couples of mice on island 2
+  					 next(catsA[i])=catsA[i]+boatcats[i] &			// update the cats in couples of cats on island 1
+  					 next(catsB[i])=catsB[i]-boatcats[i]))	;		// update the  cats in couples of cats on island 2
+
+
+
+
+// guarantees
+
+gar NoMoreThanBOnTheboat: 											//The number of cats and mice on a boat is never more than allow 
+   alw (boatcats.sum + boatmice.sum ) <= B ;
+
+
+gar NeverMoveMoreThanThereIsLeftRight:						   	// Never moves more than there are on island 1
+G (source=true) -> 
+(forall i in Int(0..DMinusOne). 	
+		boatcats[i] <= catsA[i] & boatmice[i] <= miceA[i]);  
+
+gar NeverMoveMoreThanThereIsRightLeft:							// Never moves more than there are on island 1
+G  (source=false) -> 
+(forall i in Int(0..DMinusOne). 	
+		boatcats[i] <= catsB[i] & boatmice[i] <= miceB[i]);
+		
+
+gar FinalTarget: 												// Final target is that all cats and all mice on island 2
+	GF catsB.sum = D & miceB.sum = D; 
+	//GF catsB[0]+catsB[1]+catsB[2] = 3 & miceB[0]+miceB[1]+miceB[2]=3;
+	
+
+gar StayingForeverInTarget:										//	If the goal is reached no need to move any more the cats and mice 
+G (catsB.sum = D & miceB.sum = D) -> (boatcats.sum = 0 & boatmice.sum = 0 );  
+ 
+ gar NotSame:
+	G forall i in Int(0..DMinusOne).                            // mouse/cat i can only be on Island 0 / Island 1 but not in the same time on both
+		catsA[i] != catsB[i] & miceA[i] != miceB[i]; 
+
+gar NotOver:													//If the goal wsan't reach make sure the boat in each round isn't empty
+	G catsB.sum < D & miceB.sum < D -> (boatcats.sum > 0 | boatmice.sum > 0);
+	
+																// mouse i is on island 1 <=> cat i is there / there no cats on the island 1	
+gar onlyCouplesA:
+G forall i in Int(0..DMinusOne).
+	forall j in Int(0..DMinusOne).
+	miceA[i] = catsA[i] | (miceA[i] = 1 & catsA[j] = 0) | miceA[i] = 0;
+
+gar onlyCouplesB:												// mouse i is on island 2 <=> cat i is there / there no cats on the island 2
+G forall i in Int(0..DMinusOne).
+	forall j in Int(0..DMinusOne).
+	miceB[i] = catsB[i] | (miceB[i] = 1 & catsB[j] = 0) | miceB[i] = 0;
+	
+gar onlyCouplesBoat:											// mouse i is on boat <=> cat i is there / there no cats on the boat
+G forall i in Int(0..DMinusOne).
+	forall j in Int(0..DMinusOne).
+	boatmice[i] = boatcats[i] | (boatmice[i] = 1 & boatcats[j] = 0 | boatcats[i] = 1 & boatmice[j] = 0); 	

@@ -1,0 +1,465 @@
+
+import "DwyerPatterns.spectra"
+
+spec JunctionModule
+
+
+// #############################################
+// ***   		      VARs      			 ***
+// *********************************************
+
+//  define type of all possible vehicles
+type Vehicle = {NONE, CAR, EMERGENCY};
+
+// cars arrays env variables, index 0 - right , index 1 - straight , index 2 - left
+env Vehicle[3] vehiclesNorth;
+env Vehicle[3] vehiclesSouth;
+
+// pedestrians arrays env variables
+// for south and north: index 0 - west , index 1 - east
+// for east and west: index 0 - north , index 1 - south
+env boolean[2] pedestriansNorthPressed;
+env boolean[2] pedestriansSouthPressed;
+env boolean[2] pedestriansEastPressed;
+env boolean[2] pedestriansWestPressed;
+
+// special climate heavy fog env variable
+env boolean foggy;
+
+// north road constructions env variable
+env boolean roadConstructions;
+
+// special modes
+env boolean freezeMode;
+//env boolean manualMode;
+
+
+// cars traffic lights arrays sys variables, index 0 - right , index 1 - straight , index 2 - left
+sys boolean[3] greenNorthVehicles;
+sys boolean[3] greenSouthVehicles;
+
+// pedestrians traffic lights arrays sys variables
+// for south and north: index 0 - west , index 1 - east
+// for east and west: index 0 - north , index 1 - south
+sys boolean[2] greenNorthPedestrians;
+sys boolean[2] greenSouthPedestrians;
+sys boolean[2] greenEastPedestrians;
+sys boolean[2] greenWestPedestrians;
+
+
+// #############################################
+// ***   	       AUX OBJECTS  			 ***
+// *********************************************
+
+define
+	north_left_lane_vehicle   := vehiclesNorth[0];
+	north_middle_lane_vehicle := vehiclesNorth[1];
+	north_right_lane_vehicle  := vehiclesNorth[2];
+	south_left_lane_vehicle   := vehiclesSouth[2];
+	south_middle_lane_vehicle := vehiclesSouth[1];
+	south_right_lane_vehicle  := vehiclesSouth[0];
+
+define
+	light_for_north_left_lane   := greenNorthVehicles[0];
+	light_for_north_middle_lane := greenNorthVehicles[1];
+	light_for_north_right_lane  := greenNorthVehicles[2];
+	light_for_south_left_lane   := greenSouthVehicles[2];
+	light_for_south_middle_lane := greenSouthVehicles[1];
+	light_for_south_right_lane  := greenSouthVehicles[0];
+
+define
+	vehicle_at_north_left_lane   := (north_left_lane_vehicle   = CAR) | (north_left_lane_vehicle   = EMERGENCY);
+	vehicle_at_north_middle_lane := (north_middle_lane_vehicle = CAR) | (north_middle_lane_vehicle = EMERGENCY);
+	vehicle_at_north_right_lane  := (north_right_lane_vehicle  = CAR) | (north_right_lane_vehicle  = EMERGENCY);
+	vehicle_at_south_left_lane   := (south_left_lane_vehicle   = CAR) | (south_left_lane_vehicle   = EMERGENCY);
+	vehicle_at_south_middle_lane := (south_middle_lane_vehicle = CAR) | (south_middle_lane_vehicle = EMERGENCY);
+	vehicle_at_south_right_lane  := (south_right_lane_vehicle  = CAR) | (south_right_lane_vehicle  = EMERGENCY);
+
+define
+	pedestrians_at_north_left_crosswalk  := pedestriansNorthPressed[0];
+	pedestrians_at_north_right_crosswalk := pedestriansNorthPressed[1];
+	pedestrians_at_south_left_crosswalk  := pedestriansSouthPressed[0];
+	pedestrians_at_south_right_crosswalk := pedestriansSouthPressed[1];
+	pedestrians_at_west_upper_crosswalk  := pedestriansWestPressed[0];
+	pedestrians_at_west_lower_crosswalk  := pedestriansWestPressed[1];
+	pedestrians_at_east_upper_crosswalk  := pedestriansEastPressed[0];
+	pedestrians_at_east_lower_crosswalk  := pedestriansEastPressed[1];
+
+define
+	light_for_north_left_crosswalk   := greenNorthPedestrians[0];
+	light_for_north_right_crosswalk  := greenNorthPedestrians[1];
+	light_for_south_left_crosswalk   := greenSouthPedestrians[0];
+	light_for_south_right_crosswalk  := greenSouthPedestrians[1];
+	light_for_west_upper_crosswalk   := greenWestPedestrians[0];
+	light_for_west_lower_crosswalk	 := greenWestPedestrians[1];
+	light_for_east_upper_crosswalk   := greenEastPedestrians[0];
+	light_for_east_lower_crosswalk   := greenEastPedestrians[1];
+
+
+// #############################################
+// ***              General ASMs             ***
+// *********************************************
+
+///*
+
+// vehicle type do not change (meaning vehicle keep waiting until granted enter to junction)
+asm alw ( (north_left_lane_vehicle   = CAR)   	  & !light_for_north_left_lane   ) -> next(north_left_lane_vehicle   = CAR);
+asm alw ( (north_left_lane_vehicle   = EMERGENCY) & !light_for_north_left_lane   ) -> next(north_left_lane_vehicle   = EMERGENCY);
+asm alw ( (north_middle_lane_vehicle = CAR)  	  & !light_for_north_middle_lane ) -> next(north_middle_lane_vehicle = CAR);
+asm alw ( (north_middle_lane_vehicle = EMERGENCY) & !light_for_north_middle_lane ) -> next(north_middle_lane_vehicle = EMERGENCY);
+asm alw ( (north_right_lane_vehicle  = CAR)       & !light_for_north_right_lane  ) -> next(north_right_lane_vehicle  = CAR);
+asm alw ( (north_right_lane_vehicle  = EMERGENCY) & !light_for_north_right_lane  ) -> next(north_right_lane_vehicle  = EMERGENCY);
+asm alw ( (south_left_lane_vehicle   = CAR)  	  & !light_for_south_left_lane   ) -> next(south_left_lane_vehicle   = CAR);
+asm alw ( (south_left_lane_vehicle   = EMERGENCY) & !light_for_south_left_lane   ) -> next(south_left_lane_vehicle   = EMERGENCY);
+asm alw ( (south_middle_lane_vehicle = CAR)  	  & !light_for_south_middle_lane ) -> next(south_middle_lane_vehicle = CAR);
+asm alw ( (south_middle_lane_vehicle = EMERGENCY) & !light_for_south_middle_lane ) -> next(south_middle_lane_vehicle = EMERGENCY);
+asm alw ( (south_right_lane_vehicle  = CAR)  	  & !light_for_south_right_lane  ) -> next(south_right_lane_vehicle  = CAR);
+asm alw ( (south_right_lane_vehicle  = EMERGENCY) & !light_for_south_right_lane  ) -> next(south_right_lane_vehicle  = EMERGENCY);
+
+// vehicle will enter junction when granted green light
+asm alw (vehicle_at_north_left_lane   & light_for_north_left_lane  ) -> next(!vehicle_at_north_left_lane);
+asm alw (vehicle_at_north_middle_lane & light_for_north_middle_lane) -> next(!vehicle_at_north_middle_lane);
+asm alw (vehicle_at_north_right_lane  & light_for_north_right_lane ) -> next(!vehicle_at_north_right_lane);
+asm alw (vehicle_at_south_left_lane   & light_for_south_left_lane  ) -> next(!vehicle_at_south_left_lane);
+asm alw (vehicle_at_north_middle_lane & light_for_south_middle_lane) -> next(!vehicle_at_south_middle_lane);
+asm alw (vehicle_at_north_right_lane  & light_for_south_right_lane ) -> next(!vehicle_at_south_right_lane);
+
+// pedestrians keep waiting until granted green light
+asm alw (pedestrians_at_north_left_crosswalk  & !light_for_north_left_crosswalk ) -> next(pedestrians_at_north_left_crosswalk);
+asm alw (pedestrians_at_north_right_crosswalk & !light_for_north_right_crosswalk) -> next(pedestrians_at_north_right_crosswalk);
+asm alw (pedestrians_at_south_left_crosswalk  & !light_for_south_left_crosswalk ) -> next(pedestrians_at_south_left_crosswalk);
+asm alw (pedestrians_at_south_right_crosswalk & !light_for_south_right_crosswalk) -> next(pedestrians_at_south_right_crosswalk);
+asm alw (pedestrians_at_west_upper_crosswalk  & !light_for_west_upper_crosswalk ) -> next(pedestrians_at_west_upper_crosswalk);
+asm alw (pedestrians_at_west_lower_crosswalk  & !light_for_west_lower_crosswalk ) -> next(pedestrians_at_west_lower_crosswalk);
+asm alw (pedestrians_at_east_upper_crosswalk  & !light_for_east_upper_crosswalk ) -> next(pedestrians_at_east_upper_crosswalk);
+asm alw (pedestrians_at_east_lower_crosswalk  & !light_for_east_lower_crosswalk ) -> next(pedestrians_at_east_lower_crosswalk);
+
+// pedestrians will cross cross-walk when granted green light
+asm alw (pedestrians_at_north_left_crosswalk  & light_for_north_left_crosswalk ) -> next(!pedestrians_at_north_left_crosswalk);
+asm alw (pedestrians_at_north_right_crosswalk & light_for_north_right_crosswalk) -> next(!pedestrians_at_north_right_crosswalk);
+asm alw (pedestrians_at_south_left_crosswalk  & light_for_south_left_crosswalk ) -> next(!pedestrians_at_south_left_crosswalk);
+asm alw (pedestrians_at_south_right_crosswalk & light_for_south_right_crosswalk) -> next(!pedestrians_at_south_right_crosswalk);
+asm alw (pedestrians_at_west_upper_crosswalk  & light_for_west_upper_crosswalk ) -> next(!pedestrians_at_west_upper_crosswalk);
+asm alw (pedestrians_at_west_lower_crosswalk  & light_for_west_lower_crosswalk ) -> next(!pedestrians_at_west_lower_crosswalk);
+asm alw (pedestrians_at_east_upper_crosswalk  & light_for_east_upper_crosswalk ) -> next(!pedestrians_at_east_upper_crosswalk);
+asm alw (pedestrians_at_east_lower_crosswalk  & light_for_east_lower_crosswalk ) -> next(!pedestrians_at_east_lower_crosswalk);
+
+//*/
+
+
+// #############################################
+// ***              General GARs             ***
+// *********************************************
+
+///*
+
+//~~~~~~ AUX OBJECTS FOR GARs ~~~~~
+
+define
+	n_north_left_lane_green_freeze   := next(freezeMode) & light_for_north_left_lane;
+	n_north_middle_lane_green_freeze := next(freezeMode) & light_for_north_middle_lane;
+	n_north_right_lane_green_freeze  := next(freezeMode) & light_for_north_right_lane;
+	n_south_left_lane_green_freeze   := next(freezeMode) & light_for_south_left_lane;
+	n_south_middle_lane_green_freeze := next(freezeMode) & light_for_south_middle_lane;
+	n_south_right_lane_green_freeze  := next(freezeMode) & light_for_south_right_lane;
+	
+define 
+	n_north_left_lane_red_freeze   := next(freezeMode) & !light_for_north_left_lane;
+	n_north_middle_lane_red_freeze := next(freezeMode) & !light_for_north_middle_lane;
+	n_north_right_lane_red_freeze  := next(freezeMode) & !light_for_north_right_lane;
+	n_south_left_lane_red_freeze   := next(freezeMode) & !light_for_south_left_lane;
+	n_south_middle_lane_red_freeze := next(freezeMode) & !light_for_south_middle_lane;
+	n_south_right_lane_red_freeze  := next(freezeMode) & !light_for_south_right_lane;
+
+
+// unless freezeMode, no reason for light to be granted for no one & traffic lights are green for only 1 turn
+gar alw ( next(north_left_lane_vehicle   = NONE) | light_for_north_left_lane   ) -> ( next(!light_for_north_left_lane)   | n_north_left_lane_green_freeze   );
+gar alw ( next(north_middle_lane_vehicle = NONE) | light_for_north_middle_lane ) -> ( next(!light_for_north_middle_lane) | n_north_middle_lane_green_freeze );
+gar alw ( next(north_right_lane_vehicle  = NONE) | light_for_north_right_lane  ) -> ( next(!light_for_north_right_lane)  | n_north_right_lane_green_freeze  );
+gar alw ( next(south_left_lane_vehicle   = NONE) | light_for_south_left_lane   ) -> ( next(!light_for_south_left_lane)   | n_south_left_lane_green_freeze   );
+gar alw ( next(south_middle_lane_vehicle = NONE) | light_for_south_middle_lane ) -> ( next(!light_for_south_middle_lane) | n_south_middle_lane_green_freeze );
+gar alw ( next(south_right_lane_vehicle  = NONE) | light_for_south_right_lane  ) -> ( next(!light_for_south_right_lane)  | n_south_right_lane_green_freeze  );
+
+
+// vehicles_are_eventually_granted_green_light (unless fog/freezeMode/constructions, and then we give no promises): 
+gar alwEv next(vehicle_at_north_left_lane)   -> ( next( light_for_north_left_lane   | foggy ) | n_north_left_lane_red_freeze   );
+gar alwEv next(vehicle_at_north_middle_lane) -> ( next( light_for_north_middle_lane | foggy ) | n_north_middle_lane_red_freeze );
+gar alwEv next(vehicle_at_north_right_lane)  -> ( next( light_for_north_right_lane  | foggy ) | n_north_right_lane_red_freeze  );
+gar alwEv next(vehicle_at_south_left_lane)   -> ( next( light_for_south_left_lane   | foggy ) | n_south_left_lane_red_freeze   );
+gar alwEv next(vehicle_at_south_middle_lane) -> ( next( light_for_south_middle_lane | foggy | roadConstructions) | n_south_middle_lane_red_freeze );
+gar alwEv next(vehicle_at_south_right_lane)  -> ( next( light_for_south_right_lane  | foggy ) | n_south_right_lane_red_freeze );
+
+
+//~~~~~ PEDESTRIANS GENERAL GARs ~~~~~
+
+define 
+	n_north_left_crosswalk_green_freeze  := next(freezeMode) & light_for_north_left_crosswalk;
+	n_north_right_crosswalk_green_freeze := next(freezeMode) & light_for_north_right_crosswalk;
+	n_south_left_crosswalk_green_freeze  := next(freezeMode) & light_for_south_left_crosswalk;
+	n_south_right_crosswalk_green_freeze := next(freezeMode) & light_for_south_right_crosswalk;
+	n_west_upper_crosswalk_green_freeze  := next(freezeMode) & light_for_west_upper_crosswalk;
+	n_west_lower_crosswalk_green_freeze  := next(freezeMode) & light_for_west_lower_crosswalk;
+	n_east_upper_crosswalk_green_freeze  := next(freezeMode) & light_for_east_upper_crosswalk;
+	n_east_lower_crosswalk_green_freeze  := next(freezeMode) & light_for_east_lower_crosswalk;
+
+define
+	n_north_left_crosswalk_red_freeze  := next(freezeMode) & !light_for_north_left_crosswalk;
+	n_north_right_crosswalk_red_freeze := next(freezeMode) & !light_for_north_right_crosswalk;
+	n_south_left_crosswalk_red_freeze  := next(freezeMode) & !light_for_south_left_crosswalk;
+	n_south_right_crosswalk_red_freeze := next(freezeMode) & !light_for_south_right_crosswalk;
+	n_west_upper_crosswalk_red_freeze  := next(freezeMode) & !light_for_west_upper_crosswalk;
+	n_west_lower_crosswalk_red_freeze  := next(freezeMode) & !light_for_west_lower_crosswalk;
+	n_east_upper_crosswalk_red_freeze  := next(freezeMode) & !light_for_east_upper_crosswalk;
+	n_east_lower_crosswalk_red_freeze  := next(freezeMode) & !light_for_east_lower_crosswalk;
+
+// unless freezeMode, no reason for light to be granted for no one & cross-walks traffic lights are green for only 1 turn
+gar alw ( next(!pedestrians_at_north_left_crosswalk)  | light_for_north_left_crosswalk ) 
+		 -> ( next(!light_for_north_left_crosswalk)   | n_north_left_crosswalk_green_freeze );
+gar alw ( next(!pedestrians_at_north_right_crosswalk) | light_for_north_right_crosswalk) 
+		 -> ( next(!light_for_north_right_crosswalk)  | n_north_right_crosswalk_green_freeze);
+gar alw ( next(!pedestrians_at_south_left_crosswalk)  | light_for_south_left_crosswalk ) 
+		 -> ( next(!light_for_south_left_crosswalk)   | n_south_left_crosswalk_green_freeze );
+gar alw ( next(!pedestrians_at_south_right_crosswalk) | light_for_south_right_crosswalk) 
+		 -> ( next(!light_for_south_right_crosswalk)  | n_south_right_crosswalk_green_freeze);
+gar alw ( next(!pedestrians_at_west_upper_crosswalk)  | light_for_west_upper_crosswalk ) 
+		 -> ( next(!light_for_west_upper_crosswalk)   | n_west_upper_crosswalk_green_freeze );
+gar alw ( next(!pedestrians_at_west_lower_crosswalk)  | light_for_west_lower_crosswalk ) 
+		 -> ( next(!light_for_west_lower_crosswalk)   | n_west_lower_crosswalk_green_freeze );
+gar alw ( next(!pedestrians_at_east_upper_crosswalk)  | light_for_east_upper_crosswalk ) 
+		 -> ( next(!light_for_east_upper_crosswalk)   | n_east_upper_crosswalk_green_freeze );
+gar alw ( next(!pedestrians_at_east_lower_crosswalk)  | light_for_east_lower_crosswalk ) 
+		 -> ( next(!light_for_east_lower_crosswalk)   | n_east_lower_crosswalk_green_freeze );
+
+
+// pedestrians_are_eventually_granted_green_light (unless fog/freezeMode/constructions, and then we give no promises):  
+gar alwEv next(pedestrians_at_north_left_crosswalk)  -> ( next(light_for_north_left_crosswalk)  | n_north_left_crosswalk_red_freeze);
+gar alwEv next(pedestrians_at_north_right_crosswalk) -> ( next(light_for_north_right_crosswalk) | n_north_right_crosswalk_red_freeze);
+gar alwEv next(pedestrians_at_south_left_crosswalk)  -> ( next(light_for_south_left_crosswalk)  | n_south_left_crosswalk_red_freeze);
+gar alwEv next(pedestrians_at_south_right_crosswalk) -> ( next(light_for_south_right_crosswalk) | n_south_right_crosswalk_red_freeze);
+gar alwEv next(pedestrians_at_west_upper_crosswalk)  -> ( next(light_for_west_upper_crosswalk)  | n_west_upper_crosswalk_red_freeze);
+gar alwEv next(pedestrians_at_west_lower_crosswalk)  -> ( next(light_for_west_lower_crosswalk)  | n_west_lower_crosswalk_red_freeze);
+gar alwEv next(pedestrians_at_east_upper_crosswalk)  -> ( next(light_for_east_upper_crosswalk)  | n_east_upper_crosswalk_red_freeze);
+gar alwEv next(pedestrians_at_east_lower_crosswalk)  -> ( next(light_for_east_lower_crosswalk)  | n_east_lower_crosswalk_red_freeze);
+
+
+//~~~~~~~~ NO CRASHING GARs ~~~~~~~~~~
+
+define
+	can_allow_light_for_north_left_lane   := 
+		!(light_for_north_left_crosswalk  | light_for_west_upper_crosswalk);
+	can_allow_light_for_north_middle_lane := 
+		!(light_for_north_left_crosswalk  | light_for_south_left_crosswalk  | light_for_south_left_lane);
+	can_allow_light_for_north_right_lane  := 
+		!(light_for_north_left_crosswalk  | light_for_east_lower_crosswalk  | light_for_south_middle_lane);
+	can_allow_light_for_south_left_lane   := 
+		!(light_for_south_right_crosswalk | light_for_west_upper_crosswalk  | light_for_north_middle_lane);
+	can_allow_light_for_south_middle_lane := 
+		!(light_for_south_right_crosswalk | light_for_north_right_crosswalk | light_for_north_right_lane | roadConstructions);
+	can_allow_light_for_south_right_lane  := 
+		!(light_for_south_right_crosswalk | light_for_east_lower_crosswalk);
+
+// only allow a vehicle to enter junction if aforementioned conditions hold  
+gar alw light_for_north_left_lane   -> can_allow_light_for_north_left_lane;
+gar alw light_for_north_middle_lane -> can_allow_light_for_north_middle_lane;
+gar alw light_for_north_right_lane  -> can_allow_light_for_north_right_lane;
+gar alw light_for_south_left_lane   -> can_allow_light_for_south_left_lane;
+gar alw light_for_south_middle_lane -> can_allow_light_for_south_middle_lane;
+gar alw light_for_south_right_lane  -> can_allow_light_for_south_right_lane;
+
+define
+	can_allow_light_for_north_left_crosswalk := 
+		!(light_for_north_left_lane | light_for_north_middle_lane | light_for_north_right_lane);
+	can_allow_light_for_north_right_crosswalk := !light_for_south_middle_lane;
+	can_allow_light_for_south_left_crosswalk := !light_for_north_middle_lane;
+	can_allow_light_for_south_right_crosswalk :=
+		!(light_for_south_left_lane | light_for_south_middle_lane | light_for_south_right_lane);
+		
+	can_allow_light_for_west_upper_crosswalk := !(light_for_north_left_lane  | light_for_south_left_lane);
+	can_allow_light_for_west_lower_crosswalk := true;
+	can_allow_light_for_east_upper_crosswalk := true;
+	can_allow_light_for_east_lower_crosswalk := !(light_for_north_right_lane | light_for_south_right_lane);
+	
+// only allow pedestrians to cross a cross-walk if aforementioned conditions hold  
+gar alw light_for_north_left_crosswalk  -> can_allow_light_for_north_left_crosswalk;
+gar alw light_for_north_right_crosswalk -> can_allow_light_for_north_right_crosswalk;
+gar alw light_for_south_left_crosswalk  -> can_allow_light_for_south_left_crosswalk;
+gar alw light_for_south_right_crosswalk -> can_allow_light_for_south_right_crosswalk;
+gar alw light_for_west_upper_crosswalk  -> can_allow_light_for_west_upper_crosswalk;
+gar alw light_for_west_lower_crosswalk  -> can_allow_light_for_west_lower_crosswalk;
+gar alw light_for_east_upper_crosswalk  -> can_allow_light_for_east_upper_crosswalk;
+gar alw light_for_east_lower_crosswalk  -> can_allow_light_for_east_lower_crosswalk;
+
+//*/ 
+
+
+// #############################################
+// ***              Property #1              *** // top priority for emergencies.
+// *********************************************
+
+///*
+
+// when emergency arrives to a left/right lane, we try to grant it immediate passage
+
+define
+	north_left_lane_emergency_trig  := !light_for_north_left_lane  & (north_left_lane_vehicle  = EMERGENCY) & !n_north_left_lane_red_freeze;
+	south_right_lane_emergency_trig := !light_for_south_right_lane & (south_right_lane_vehicle = EMERGENCY) & !n_south_right_lane_red_freeze;
+	north_right_lane_emergency_trig := !light_for_north_right_lane & (north_right_lane_vehicle = EMERGENCY) & !n_north_right_lane_red_freeze;
+	south_left_lane_emergency_trig  := !light_for_south_left_lane  & (south_left_lane_vehicle  = EMERGENCY) & !n_south_left_lane_red_freeze;
+
+// when emergency arrives to a middle lane, we try to grant it immediate passage, unless it hinders an opposite emergency
+define 
+	north_middle_lane_emergency_trig := 
+		!light_for_north_middle_lane & 
+		(north_middle_lane_vehicle = EMERGENCY) & 
+		!south_left_lane_emergency_trig &
+		!n_north_middle_lane_red_freeze;
+		
+	south_middle_lane_emergency_trig := 
+		!light_for_south_middle_lane & 
+		(south_middle_lane_vehicle = EMERGENCY) & 
+		!north_right_lane_emergency_trig &
+		!roadConstructions & 
+		!n_south_middle_lane_red_freeze;	
+
+// if we just give emergencies higher priority in all 3 north lanes,
+// we a priori create a possibility for 'starving' the north-left cross-walk pedestrians.
+// therefore, we decide that if pedestrians are still waiting after 3 emergencies, we annul emergencies priority until they pass
+counter north_left_crosswalk_fairness_counter(0..3) {
+	north_left_crosswalk_fairness_counter = 0;
+	inc: (north_left_lane_emergency_trig | north_middle_lane_emergency_trig | north_right_lane_emergency_trig) & 
+		 pedestrians_at_north_left_crosswalk;
+	reset: !pedestrians_at_north_left_crosswalk;
+	overflow: keep;
+}
+
+// same as above, but for south cross-walk
+counter south_right_crosswalk_fairness_counter(0..3) {
+	south_right_crosswalk_fairness_counter = 0;
+	inc: (south_left_lane_emergency_trig | south_middle_lane_emergency_trig | south_right_lane_emergency_trig) & 
+		 pedestrians_at_south_right_crosswalk;
+	reset: !pedestrians_at_south_right_crosswalk;
+	overflow: keep;
+}
+
+define
+	fairness_for_north_left_crosswalk  := (north_left_crosswalk_fairness_counter  = 3);
+	fairness_for_south_right_crosswalk := (south_right_crosswalk_fairness_counter = 3);
+
+define
+	handle_north_left_lane_emergency_trig   := light_for_north_left_lane   | fairness_for_north_left_crosswalk;
+	handle_north_right_lane_emergency_trig  := light_for_north_right_lane  | fairness_for_north_left_crosswalk;
+	handle_south_right_lane_emergency_trig  := light_for_south_right_lane  | fairness_for_south_right_crosswalk;
+	handle_south_left_lane_emergency_trig   := light_for_south_left_lane   | fairness_for_south_right_crosswalk;
+	handle_north_middle_lane_emergency_trig := light_for_north_middle_lane | fairness_for_north_left_crosswalk;
+	handle_south_middle_lane_emergency_trig := light_for_south_middle_lane | fairness_for_south_right_crosswalk | roadConstructions;
+
+
+// we implement emergencies higher priority here:
+gar alw north_left_lane_emergency_trig   -> ( next(handle_north_left_lane_emergency_trig)   | n_north_left_lane_red_freeze   ); 
+gar alw north_middle_lane_emergency_trig -> ( next(handle_north_middle_lane_emergency_trig) | n_north_middle_lane_red_freeze );
+gar alw north_right_lane_emergency_trig  -> ( next(handle_north_right_lane_emergency_trig)  | n_north_right_lane_red_freeze  );
+gar alw south_left_lane_emergency_trig   -> ( next(handle_south_left_lane_emergency_trig)   | n_south_left_lane_red_freeze   );
+gar alw south_middle_lane_emergency_trig -> ( next(handle_south_middle_lane_emergency_trig) | n_south_middle_lane_red_freeze );
+gar alw south_right_lane_emergency_trig  -> ( next(handle_south_right_lane_emergency_trig)  | n_south_right_lane_red_freeze  );
+
+//*/
+
+
+// #############################################
+// ***              Property #2              *** // foggy mode (only emergency vehicles enter junction when foggy)
+// *********************************************
+
+///*
+
+define
+	cars_do_not_cross_junction_in_fog :=
+		( (north_left_lane_vehicle   = CAR) -> !light_for_north_left_lane   ) &
+		( (north_middle_lane_vehicle = CAR) -> !light_for_north_middle_lane ) &
+		( (north_right_lane_vehicle  = CAR) -> !light_for_north_right_lane  ) &
+		( (south_left_lane_vehicle   = CAR) -> !light_for_south_left_lane   ) &
+		( (south_middle_lane_vehicle = CAR) -> !light_for_south_middle_lane ) &
+		( (south_right_lane_vehicle  = CAR) -> !light_for_south_right_lane  )
+		;
+
+// when foggy, regular cars do not enter junction
+gar alw foggy -> cars_do_not_cross_junction_in_fog;
+
+//*/
+
+
+// #############################################
+// ***              Property #3              *** // road constructions means no ingoing traffic to north direction
+// *********************************************
+
+///*
+
+// when road constructions, traffic lane ingoing to constructions' light is red
+gar alw roadConstructions -> !light_for_south_middle_lane;
+
+//*/
+
+
+// #############################################
+// ***              Property #4              *** // freeze mode
+// *********************************************
+
+///*
+
+define
+	traffic_lights_in_freeze_mode :=
+		( next(light_for_north_left_lane)       = light_for_north_left_lane   	  ) &
+		( next(light_for_north_middle_lane)     = light_for_north_middle_lane 	  ) &
+		( next(light_for_north_right_lane)      = light_for_north_right_lane  	  ) &
+		( next(light_for_south_left_lane)       = light_for_south_left_lane   	  ) &
+		( next(light_for_south_middle_lane)     = light_for_south_middle_lane 	  ) &
+		( next(light_for_south_right_lane)  	= light_for_south_right_lane  	  ) &
+		( next(light_for_north_left_crosswalk)  = light_for_north_left_crosswalk  ) &
+		( next(light_for_north_right_crosswalk) = light_for_north_right_crosswalk ) &
+		( next(light_for_south_left_crosswalk)  = light_for_south_left_crosswalk  ) &
+		( next(light_for_south_right_crosswalk) = light_for_south_right_crosswalk ) &
+		( next(light_for_west_upper_crosswalk)  = light_for_west_upper_crosswalk  ) &
+		( next(light_for_west_lower_crosswalk)  = light_for_west_lower_crosswalk  ) &
+		( next(light_for_east_upper_crosswalk)  = light_for_east_upper_crosswalk  ) &
+		( next(light_for_east_lower_crosswalk)  = light_for_east_lower_crosswalk  )
+		;
+
+// when in freezeMode, and until getting out of freezeMode, traffic lights persist  
+gar alw next(freezeMode) -> traffic_lights_in_freeze_mode;
+
+// no foggy & freezeMode together 
+asm alw freezeMode -> !foggy;
+
+// no roadConstructions & freezeMode together 
+asm alw freezeMode -> !roadConstructions;
+
+//*/
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

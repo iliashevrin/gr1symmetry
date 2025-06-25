@@ -1,0 +1,125 @@
+import "DwyerPatterns.spectra"
+
+/**
+ * Fixed goals variant with limited fuel - for ControlPanel
+ * Hard coded for three robots due to some bugs in Spectra with predicates
+ */
+ 
+ 
+ spec RobotsMPFuel3
+ 
+ define NumRobots := 3;
+ define NumObstacles := 4;
+ define DX := 3;
+ define DY := 3;
+ define fuel0 := 4; // Couldn't use this in fuelLimit0 instead of hard coded 8 (won't compile)
+ define fuel1 := 3; // Couldn't use this in fuelLimit1 instead of hard coded 8 (won't compile)
+ define fuel2 := 1; // Couldn't use this in fuelLimit2 instead of hard coded 8 (won't compile)
+ 
+ 
+ 
+type DimX = Int(0..DX);
+type DimY = Int(0..DY);
+ 
+ sys DimX[NumRobots] robotsX;
+ sys DimY[NumRobots] robotsY;
+ sys boolean move0; // indicates that robot0 has moved - to avoid using next statements in fuelLimit0
+ sys boolean move1; // indicates that robot1 has moved - to avoid using next statements in fuelLimit1
+ sys boolean move2; // indicates that robot2 has moved - to avoid using next statements in fuelLimit2
+ 
+ 
+ 
+ define
+  startX[NumRobots] := {0, 2, 3};
+  startY[NumRobots] := {0, 2, 3};
+  obstaclesX[NumObstacles] := {0, 1, 3, 1};
+  obstaclesY[NumObstacles] := {2, 2, 2, 0};
+  goalsX[NumRobots] := {3, 0, 2};
+  goalsY[NumRobots] := {1, 1, 3};
+  	
+  predicate moveXOnly(DimX Xpos, DimY Ypos):
+	(Xpos+1 = next(Xpos) |
+	Xpos   = next(Xpos) |
+	Xpos-1 = next(Xpos) ) &   
+	Ypos   = next(Ypos);
+  
+  predicate moveYOnly(DimX Xpos, DimY Ypos):
+	(Ypos+1 = next(Ypos) |
+	Ypos   = next(Ypos) |
+	Ypos-1 = next(Ypos) ) &   
+	Xpos   = next(Xpos);
+	
+	
+//Buggy	- can't access array of defines with predicate parameter
+//  predicate CollisionRobotObstacle(Int(0.. (NumRobots-1)) i, Int(0.. (NumObstacles-1)) j):
+//  	robotsX[i] = obstaclesX[j] & robotsY[i] = obstaclesY[j];
+//
+//  predicate reachGoal(Int(0.. (NumRobots-1)) i):
+// 	robotsX[i] = goalsX[i] & robotsY[i] = goalsY[i];
+//  	
+//  predicate validMove(Int(0.. (NumRobots-1)) i):
+//  	moveXOnly(robotsX[i], robotsY[i]) | moveYOnly(robotsX[i], robotsY[i]);
+	
+  predicate swap(Int(0.. (NumRobots-1)) i, Int(0.. (NumRobots-1)) j):
+  	(i != j) & ((next(robotsX[i]) = robotsX[j] & next(robotsY[i]) = robotsY[j]) | (next(robotsX[j]) = robotsX[i] & next(robotsY[j]) = robotsY[i]));
+  	  	
+  predicate CollisionBetweenRobots(Int(0.. (NumRobots-1)) i, Int(0.. (NumRobots-1)) j):
+  	(i != j) & (robotsX[i] = robotsX[j] & robotsY[i] = robotsY[j]);
+
+  predicate reachGoals():
+  	robotsX[0] = goalsX[0] & robotsY[0] = goalsY[0] & robotsX[1] = goalsX[1] & robotsY[1] = goalsY[1] &
+  	 robotsX[2] = goalsX[2] & robotsY[2] = goalsY[2];
+  	
+  gar startPositions:
+  	forall i in Int(0..(NumRobots-1)).robotsX[i] = startX[i] & robotsY[i] = startY[i];
+  
+  gar noCollisionsWithObstacles:
+  	G forall i in Int(0..(NumRobots-1)).forall j in Int(0..(NumObstacles-1)).!(robotsX[i] = obstaclesX[j] & robotsY[i] = obstaclesY[j]);
+   
+  gar noCollisionsBetweenRobots:
+  	G forall i in Int(0..(NumRobots-1)).forall j in Int(0..(NumRobots-1)).!CollisionBetweenRobots(i, j);
+  	
+  gar noSwaps:
+  	G forall i in Int(0..(NumRobots-1)).forall j in Int(0..(NumRobots-1)).!swap(i, j);
+  	
+  gar validMoves:
+    G forall i in Int(0..(NumRobots-1)).(moveXOnly(robotsX[i], robotsY[i]) | moveYOnly(robotsX[i], robotsY[i]));
+    
+// can't use this with gar trig since it uses next statements (fails to compile)
+//  predicate move(Int(0.. (NumRobots-1)) i):
+//  	next(robotsX[i]) != robotsX[i] | next(robotsY[i]) != robotsY[i];
+    
+  gar move0consistency:
+  	G (next(robotsX[0]) != robotsX[0] | next(robotsY[0]) != robotsY[0]) <-> move0;
+  	
+  gar move1consistency:
+  	G (next(robotsX[1]) != robotsX[1] | next(robotsY[1]) != robotsY[1]) <-> move1;
+  	
+  gar move2consistency:
+  	G (next(robotsX[2]) != robotsX[2] | next(robotsY[2]) != robotsY[2]) <-> move2;
+    
+    
+// Not working
+//  predicate fuelLimit_i(Int(0.. (NumRobots-1)) i):
+//    trig [true]* |=> ([!move(i)]*[move(i)]){0,fuel}[reachGoal(i)];
+//  gar fuelLimit: 
+//  	forall i in Int(0..(NumRobots-1)).fuelLimit_i(i);
+  	
+// hard coded workaround - still not compiling
+//  gar fuelLimit0:
+//  	trig [true]* |=> ([!move(0)]*[move(0)]){0,8}[reachGoal(0) & reachGoal(1)];
+// 
+//   gar fuelLimit1:
+//  	trig [true]* |=> ([!move(1)]*[move(1)]){0,8}[reachGoal(1) & reachGoal(1)];
+
+  gar stayAtGoals:
+  	G reachGoals() -> !move0 & !move1 & !move2;
+  	    
+  gar fuelLimit0:
+    trig [true]* |=> ([!move0]*[move0][!move0]*){0,4}[reachGoals()];
+  
+  gar fuelLimit1:
+    trig [true]* |=> ([!move1]*[move1][!move1]*){0,3}[reachGoals()];
+    
+  gar fuelLimit2:
+    trig [true]* |=> ([!move2]*[move2][!move2]*){0,1}[reachGoals()];

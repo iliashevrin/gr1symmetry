@@ -1,0 +1,271 @@
+import "DwyerPatterns.spectra"
+spec SmartAirport			
+			
+define N := 2 ; 
+define doubleN := 4 ; 
+
+type Aircraft = {NONE, COMMERCIAL, PRIVATE, CARGO};
+
+// ****************************************************************************************
+// ***                Environment Controlled input variables                            ***
+// ****************************************************************************************
+env Aircraft[N] landingAircrafts;
+env Aircraft[N] takeoffAircrafts;
+
+env boolean[N] emergencyLanding;
+env boolean[N] mechanicalProblem;
+env boolean[doubleN] slipperyRunway;
+
+
+// ****************************************************************************************
+// ***                System Controlled output variables                                ***
+// ****************************************************************************************
+sys boolean[doubleN] landingAllowed;
+sys boolean[doubleN] takeoffAllowed;
+
+sys boolean[N] repairTruck;
+sys boolean[N] rescueTeam;
+sys boolean[doubleN] cleanTruck;
+
+
+//sys boolean[N] ambulance;
+
+
+// ********************************************************************************************
+// *** Whenever aircrafts are coming, they have to stay there until they are allowed to cross ***
+// ********************************************************************************************
+
+// Asm 1- planes will stay in their respective waiting area until they'll get the permission to takeoff or land 
+asm consistentAssertionlanding:
+	G forall i in Int(0..(N-1)) . consistentAssertion(landingAircrafts[i], landingAllowed[(2*i)] , landingAllowed[(2*i+1)]);
+
+asm consistentAssertiontakeoff:
+	G forall i in Int(0..(N-1)) . consistentAssertion(takeoffAircrafts[i], takeoffAllowed[(2*i)],takeoffAllowed[(2*i+1)]);
+
+
+// **************************************************************************
+// *** Whenever aircraft is coming, it will eventually land / take off  ***
+// **************************************************************************
+
+// Gar 1 - Plane that is waiting to takeoff or land will eventually get the permission to perform the action
+gar Eventuallylanding{Int(0..(N-1)) i}:
+	S_responds_to_P_globally((landingAllowed[(2*i)] |landingAllowed[(2*i+1)]), landingAircrafts[i]!=NONE);
+	
+gar Eventuallytakeoff{Int(0..(N-1)) i}:
+	S_responds_to_P_globally((takeoffAllowed[(2*i)] | takeoffAllowed[(2*i+1)]), takeoffAircrafts[i]!=NONE);
+
+// Gar 2 - Each runway may be used only by one plane at a time for either take off or landing 
+gar oneWayRunwayOnly:
+	G forall i in Int(0..(N-1)) . !(next(landingAllowed[i]) & next(takeoffAllowed[i]));
+	
+// Note - we added this gar for the initial state of the controller to assure its completeness (since we used next in our main gar2) 	
+gar oneWayRunwayOnlyBegining:
+	forall i in Int(0..(N-1)) . !((landingAllowed[i]) & (takeoffAllowed[i]));
+		
+// **************************************************************************
+// ***                          Mechanical Problem                        ***
+// **************************************************************************	
+////
+
+//Asm 2 - In the first state of the controller we wouldn't like to have mechanical issues 
+asm !mechanicalProblem[0] & !mechanicalProblem[1];	
+ 
+ //Asm 3 - Plane that is waiting for take off and experiencing mechanical problem will have this issue until a repair truck comes to fix it. 
+asm consistentAssertionMechProblem:
+	G forall i in Int(0..(N-1)) . consistentAssertionStillNotRepaired(takeoffAircrafts[i],mechanicalProblem[i],repairTruck[i]);
+	
+// Asm 4 - If repair truck comes to fix a plane in the next state of the controller the mechanical problem disappear 
+// Also mechanical problem can't occur on a none object
+asm RepairedAircraft:
+	G forall i in Int(0..(N-1)) . (repairTruck[i] -> next(!mechanicalProblem[i]));
+	
+asm NoneObjectCantHaveMechProblem:
+	G forall i in Int(0..(N-1)) . next (!(mechanicalProblem[i] & takeoffAircrafts[i] = NONE ));
+	
+asm NoneObjectCantHaveMechProblemBegin:
+	forall i in Int(0..(N-1)) . (!(mechanicalProblem[i] & takeoffAircrafts[i] = NONE ));
+		
+// Gar 3- The system shouldn't send repair team to a none object
+gar RepairTruckIfAircraftExited:
+	G forall i in Int(0..(N-1)) . (next(takeoffAircrafts[i] = NONE) -> next(!repairTruck[i]));
+	
+// For the completeness of the controller we added this gar for the initial state of the controller 
+gar RepairTruckIfAircraftExistdBegining:
+	forall i in Int(0..(N-1)) . ((takeoffAircrafts[i] = NONE) -> (!repairTruck[i]));
+	
+// Gar 4 - Repair team should be send only if mechanical problem exists, we used trigger to describe behavior that  should never happen
+/* Note : we decided not to use triggers to duplication of code, since triggers still can't use the
+ * Int (0..(doubleN-1)) i syntax, hence you can see the gar down below written in a different way 
+gar  trig [true]*([!mechanicalProblem[0] & repairTruck[0]]) |=> false;
+gar  trig [true]*([!mechanicalProblem[1] & repairTruck[1]]) |=> false;*/
+
+
+// Gar 4 - Repair team should be sent only if mechanical problem exists,another version without triggers and with parametric approach 	
+gar repairTruckOnlyIfBroken:
+	G forall i in Int(0..(N-1)) . (next(!mechanicalProblem[i]) -> next(!repairTruck[i]));
+
+// For the completeness of the controller we added this gar for the initial state of the controller 
+gar repairTruckOnlyIfBrokenBegin:
+	 forall i in Int(0..(N-1)) . ((!mechanicalProblem[i]) -> (!repairTruck[i]));
+
+// Gar 5- Eventually a repair team will arrive to fix the mechanical problem	
+gar eventuallyRepairTrackArrives {Int(0..(N-1)) i}:
+	S_responds_to_P_globally(repairTruck[i], mechanicalProblem[i] & takeoffAircrafts[i] != NONE);
+ 
+// Gar 6 - If a take off plane has a mechanical problem it won't be allowed to perform take off  
+gar noTrafficAllowedWhileNotRepaired:
+	G forall i in Int(0..(N-1)) . (next(mechanicalProblem[i] & !repairTruck[i]) -> (next(!takeoffAllowed[(2*i)]) & next(!takeoffAllowed[(2*i+1)])));
+
+// For the completeness of the controller we added this gar for the initial state of the controller 		
+gar noTrafficAllowedWhileNotRepairedBegin:
+	forall i in Int(0..(N-1)) . ((mechanicalProblem[i] & !repairTruck[i]) -> ((!takeoffAllowed[(2*i)]) & (!takeoffAllowed[(2*i+1)])));	
+
+	
+//// **************************************************************************
+//// ***                          Slippery Runway                           ***
+//// **************************************************************************
+
+// Asm 5-  In the first state of the controller we wouldn't like to have a slippery runway 
+asm !slipperyRunway[0] & !slipperyRunway[1] & !slipperyRunway[2] & !slipperyRunway[3];
+
+// Asm 6 - If a runway is experiencing a slippery situation, it will remain in this state until a cleaning team arrives to clean it
+asm consistentAssertionSlippery:
+	G forall i in Int(0..(doubleN-1)) . consistentAssertionStillDirty(slipperyRunway[i],cleanTruck[i]); 
+	
+// Asm 7- If a clean team to runway i in the next state runway i won't be slippery 
+asm cleanRunway:
+	G forall i in Int(0..(doubleN-1)) . (cleanTruck[i]->next(!slipperyRunway[i]));
+	
+//// Gar  7 - Clean team won't be sent to a not slippery runway, we used triggers to describe a behavior that shouldn't happen
+/*
+ * Note : we decided not to use triggers to duplication of code, since triggers still can't use the
+ * Int (0..(doubleN-1)) i syntax, hence you can see the gar down below written in a different way
+gar N trig [true]*([!slipperyRunway[0] & cleanTruck[0]]) |=> false;
+gar  trig [true]*([!slipperyRunway[1] & cleanTruck[1]]) |=> false;
+gar  trig [true]*([!slipperyRunway[2] & cleanTruck[2]]) |=> false;
+gar  trig [true]*([!slipperyRunway[3] & cleanTruck[3]]) |=> false;*/ 
+
+// Gar  7 - Clean team won't be sent to a not slippery runway- with a more parametric approach
+gar cleanTruckOnlyIfSlippry:
+	G forall i in Int(0..(doubleN-1)) . (next(!slipperyRunway[i]) -> next(!cleanTruck[i]));
+
+// For the completeness of the controller we added this gar for the initial state of the controller 		
+gar cleanTruckOnlyIfSlippryBegin:
+	 G forall i in Int(0..(doubleN-1)) . ((!slipperyRunway[i]) -> (!cleanTruck[i]));	
+
+// Gar 8- If a runway is slippery, eventually a cleaning team will arrive to handle the issue
+gar eventuallyCleaningTruckArrives {Int (0..(doubleN-1)) i}:
+	S_responds_to_P_globally(cleanTruck[i], slipperyRunway[i]);
+	
+// Gar 9 - If a runway is slippery we won't allow to perform take off or landing on it 
+gar trafficIsNotAllowedWhileSlippery :
+	G forall i in Int(0..(doubleN-1)) . (next(slipperyRunway[i])  ->(next(!landingAllowed[i]) & next(!takeoffAllowed[i])));
+	
+// For the completeness of the controller we added this gar for the initial state of the controller 		
+gar trafficIsNotAllowedWhileSlipperyBegin:
+	 forall i in Int(0..(doubleN-1)) . ((slipperyRunway[i])  ->((!landingAllowed[i]) & (!takeoffAllowed[i])));	
+
+//// **************************************************************************
+//// ***                        Emergency Landing                           ***
+//// **************************************************************************
+
+// Asm 8 - In the initial state of the controller we won't allow emergency landings
+//This assumption will prevent the environment from starting in a state from which the system can lead it to a violation 
+asm !emergencyLanding[0] & !emergencyLanding[1];
+
+// Asm 9 - We allow only one emergency landing at a time
+asm G (next(!emergencyLanding[0]) | next(!emergencyLanding[1]));/************** */
+
+// Asm 10 - If a plane performing a emergency landing, it will remain in this state until the condition is handled 
+asm consistentEmergencyLanding:
+	G forall i in Int(0..(N-1)) . consistentEmegencyLanding( emergencyLanding[i], rescueTeam[i]);
+	
+// Asm 11 - If the emergency landing is handled, in the next state we won't have another emergency landing on both landing waiting areas 
+asm EmergencyHandled:
+	G forall i in Int(0..(N-1)) . ((rescueTeam[i] & emergencyLanding[i]) -> (next(!emergencyLanding[0]) & next(!emergencyLanding[1]) ) );
+	
+//Asm 12 - The system shouldn't send a rescue team to a none object
+asm emergencyOnlyInAircfartLanding:
+	G forall i in Int(0..(N-1)) . (next(landingAircrafts[i]=NONE) ->  next(!emergencyLanding[i]));
+
+// For the completeness of the controller we added this asm for the initial state of the controller 		
+asm emergencyOnlyInAircfartLandingBegin:
+	forall i in Int(0..(N-1)) . ((landingAircrafts[i]=NONE) ->  (!emergencyLanding[i])); 
+
+// Asm 13 - We would like to have infinite amount of times without emergency landings in at least one waiting area - to avoid starvation 	
+asm notAlwaysEmegency{Int (0..(N-1)) i}:
+	GF (!emergencyLanding[i]);
+
+
+//Gar 10 - Rescue team should be send only if an emergency landing occurred
+gar rescueOnlyIfEmergency:
+	G forall i in Int(0..(N-1)) . next(!emergencyLanding[i]) -> next(!rescueTeam[i]);
+	
+// For the 	completeness of the controller we added this gar for the initial state of the controller 			
+gar rescueOnlyIfEmergencyBegin:
+	 forall i in Int(0..(N-1)) . (!emergencyLanding[i]) -> (!rescueTeam[i]); 
+
+//Gar 11 -If a rescue team isn't sent to handle the emergency landing, the plane won't be allowed to land in the *same* state	
+gar EmergencylandingNotAllowed:
+	G forall i in Int(0..(N-1)) . ((next(emergencyLanding[i]) & next(!rescueTeam[i]))-> !(next(landingAllowed[(2*i)]) | next(landingAllowed[(2*i+1)])));
+
+// For the completeness of the controller we added this gar for the initial state of the controller 			
+gar EmergencylandingNotAllowedBegin:
+	forall i in Int(0..(N-1)) . (((emergencyLanding[i]) & (!rescueTeam[i]))-> !((landingAllowed[(2*i)]) | (landingAllowed[(2*i+1)])));
+ 
+// Gar 12 - If emergency landing happened in either waiting area 0 or 1 we won't allow other planes to perform landing  	
+gar landingCurfewWheneverEmergencylandingInLine0:
+	G ((next(emergencyLanding[0]) & next(!emergencyLanding[1])) -> (next(!landingAllowed[2]) & next(!landingAllowed[3])));
+
+// For the completeness of the controller we added this gar for the initial state of the controller 			
+gar landingCurfewWheneverEmergencylandingInLine0Begin:
+	(((emergencyLanding[0]) & (!emergencyLanding[1])) -> ((!landingAllowed[2]) & (!landingAllowed[3])));	
+
+// For the	completeness of the controller we added this gar for the initial state of the controller 			
+gar landingCurfewWheneverEmergencylandingInLine1:	
+	 (((!emergencyLanding[0]) & (emergencyLanding[1])) -> ((!landingAllowed[0]) & (!landingAllowed[1])));
+	
+gar landingCurfewWheneverEmergencylandingInLine1Begin:	
+	G ((next(!emergencyLanding[0]) & next(emergencyLanding[1])) -> (next(!landingAllowed[0]) & next(!landingAllowed[1])));	
+
+// Gar 13- If emergency landing occurred and rescue team wasn't sent, in the next state the system will send a rescue team 
+gar rescueTeamComeImmediately:
+	G forall i in Int(0..(N-1)) . ((emergencyLanding[i] & !rescueTeam[i])-> next(rescueTeam[i]));
+
+//Gar 14 - If emergency landing condition occurred, take offs aren't allowed in the airport 
+gar takeoffCurfewWheneverEmergencylanding:
+	G forall i in Int(0..(N-1)) . ( next(emergencyLanding[i]) -> (next(!takeoffAllowed[0]) & next(!takeoffAllowed[1]) & next(!takeoffAllowed[2]) & next(!takeoffAllowed[3]) ));
+
+// For the completeness of the controller we added this gar for the initial state of the controller 			
+gar takeoffCurfewWheneverEmergencylandingBegin:
+	 forall i in Int(0..(N-1)) . ( (emergencyLanding[i]) -> ((!takeoffAllowed[0]) & (!takeoffAllowed[1]) & (!takeoffAllowed[2]) & (!takeoffAllowed[3]) ));
+
+//Gar 15 - If emergency landing occurred in the *next* state landing will be allowed 
+gar EmergencylandingAllowed:
+	G forall i in Int(0..(N-1)) . ((emergencyLanding[i] & !rescueTeam[i])-> next(landingAllowed[(2*i)] | landingAllowed[(2*i+1)]));	
+
+// Gar 16- If rescue teams comes, emergency plane is allowed to land in the respective runways  
+gar whenrescueTeamComeAllowedtoland:
+	G forall i in Int(0..(N-1)) . (next(rescueTeam[i]) ->next(landingAllowed[(2*i)] | landingAllowed[(2*i+1)]));
+	
+// For the completeness of the controller we added this gar for the initial state of the controller 				
+gar whenrescueTeamComeAllowedtolandBegin:
+	forall i in Int(0..(N-1)) . (rescueTeam[i]) ->(landingAllowed[(2*i)] | landingAllowed[(2*i+1)]);	
+
+
+
+type Aircraft = {NONE, COMMERCIAL, PRIVATE, CARGO};
+
+predicate consistentAssertion(Aircraft aircraft, boolean crossAllowed1 ,boolean crossAllowed2 ):
+	(aircraft != NONE & !crossAllowed1 & !crossAllowed2) -> next(aircraft) = aircraft;
+
+predicate consistentAssertionStillDirty(boolean slippryRunway, boolean isCleaningCar ):
+	(slippryRunway & !isCleaningCar) -> next(slippryRunway);
+
+predicate consistentAssertionStillNotRepaired(Aircraft aircraft, boolean mechinicalProblem, boolean isRepairTrack):
+	(aircraft != NONE & mechinicalProblem & !isRepairTrack) -> (next(aircraft) = aircraft & next(mechinicalProblem) = mechinicalProblem);
+
+predicate consistentEmegencyLanding( boolean EmegencyLanding, boolean isRescueTeamArrives):
+	( EmegencyLanding & !isRescueTeamArrives) -> ( next(EmegencyLanding));
+
+

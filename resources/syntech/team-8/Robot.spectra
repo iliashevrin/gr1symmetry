@@ -1,0 +1,82 @@
+import "DwyerPatterns.spectra"
+
+spec Robot
+
+//define NumObstacles := 14;
+define DX := 7;
+define DY := 7;
+
+type DimX = Int(0..DX);
+type DimY = Int(0..DY);
+ 
+sys DimX robotX;
+sys DimY robotY;
+sys {UP, DOWN, LEFT, RIGHT, STAY, UP_RIGHT, UP_LEFT, DOWN_RIGHT, DOWN_LEFT} move;
+
+define p1 := robotX=0 & robotY=0;
+define p2 := robotX=7 & robotY=7;
+define upper:=7;
+define o1 := robotX=2 & robotY=0; 
+define o2 := robotX=2 & robotY=1;
+define o3 := robotX=2 & robotY=2; 
+define o4 := robotX=2 & robotY=3;
+define o5 := robotX=2 & robotY=4; 
+define o6 := robotX=2 & robotY=5;
+define o7 := robotX=2 & robotY=6; 
+define o8 := robotX=5 & robotY=1;
+define o9 := robotX=5 & robotY=2; 
+define o10 := robotX=5 & robotY=3;
+define o11 := robotX=5 & robotY=4; 
+define o12 := robotX=5 & robotY=5;
+define o13 := robotX=5 & robotY=6; 
+define o14 := robotX=5 & robotY=7;
+
+gar ini p1;
+gar alw move=UP implies minusOneY(robotY) & fixX(robotX);
+gar alw move=DOWN implies plusOneY(robotY) & fixX(robotX);
+gar alw move=LEFT implies minusOneX(robotX) & fixY(robotY);
+gar alw move=RIGHT implies plusOneX(robotX) & fixY(robotY);
+gar alw move=STAY implies fixY(robotY) & fixX(robotX);
+gar alw move=UP_RIGHT implies UP_RIGHT(robotX, robotY);
+gar alw move=DOWN_LEFT implies DOWN_LEFT(robotX, robotY);
+gar alw move=UP_LEFT implies UP_LEFT(robotX, robotY);
+gar alw move=DOWN_RIGHT implies DOWN_RIGHT(robotX, robotY);
+
+predicate plusOneX (DimX c):
+c + 1 = next (c) | (c = upper & next(c)=c);
+predicate plusOneY (DimY c):
+c + 1 = next (c) | (c = upper & next(c)=c);
+predicate minusOneX (DimX c):
+c -1 = next (c) | (c = 0 & next(c)=c);
+predicate minusOneY (DimY c):
+c -1 = next (c) | (c = 0 & next(c)=c);
+predicate fixX (DimX c):
+next(c)=c;
+predicate fixY (DimY c):
+next(c)=c;
+predicate UP_RIGHT (DimX x, DimY y):
+((x + 1 = next (x)) & (y - 1 = next (y))) | ((x = upper | y = 0) & (next(x)=x) & next(y)=y);
+predicate DOWN_LEFT (DimX x, DimY y):
+((x - 1 = next (x)) & (y + 1 = next (y))) | ((x = 0 | y = upper) & (next(x)=x) & next(y)=y);
+predicate UP_LEFT (DimX x, DimY y):
+((x - 1 = next (x)) & (y - 1 = next (y))) | ((x = 0 | y = 0) & (next(x)=x) & next(y)=y);
+predicate DOWN_RIGHT (DimX x, DimY y):
+((x + 1 = next (x)) & (y + 1 = next (y))) | ((x = upper | y = upper) & (next(x)=x) & next(y)=y);
+
+gar alw !o1;
+gar alw !o2;
+gar alw !o3;
+gar alw !o4;
+gar alw !o5;
+gar alw !o6;
+gar alw !o7;
+gar alw !o8;
+gar alw !o9;
+gar alw !o10;
+gar alw !o11;
+gar alw !o12;
+gar alw !o13;
+gar alw !o14;
+
+gar alwEv p2;
+gar alw p2 -> (move = STAY);

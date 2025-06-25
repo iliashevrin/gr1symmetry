@@ -1,0 +1,71 @@
+import "DwyerPatterns.spectra"
+
+spec Robot
+
+define NumObstacles := 14;
+define DX := 7;
+define DY := 7;
+
+type DimX = Int(0..DX);
+type DimY = Int(0..DY);
+
+//env obstacle[(NumObstacles+1)] obs; //all obs from env
+define
+		obs1 := robotX = 2 and robotY = 0;
+		obs2 := robotX = 2 and robotY = 1;
+		obs3 := robotX = 2 and robotY = 2;
+		obs4 := robotX = 2 and robotY = 3;
+		obs5 := robotX = 2 and robotY = 4;
+		obs6 := robotX = 2 and robotY = 5;
+		obs7 := robotX = 2 and robotY = 6;
+		obs8 := robotX = 5 and robotY = 1;
+		obs9 := robotX = 5 and robotY = 2;
+		obs10 := robotX = 5 and robotY = 3;
+		obs11 := robotX = 5 and robotY = 4;
+		obs12 := robotX = 5 and robotY = 5;
+		obs13 := robotX = 5 and robotY = 6;
+		obs14 := robotX = 5 and robotY = 7;
+		
+		
+sys DimX robotX;
+sys DimY robotY;
+
+define
+	start := robotX = 0 and robotY  = 0;
+	goal := (robotX = DX) and (robotY = DY);
+
+//the robot moves to the btm right and stays there
+gar alwEv goal; //the robot will get to the btm right corner
+gar alw ((robotX = DX) and (robotY = DY)) -> (next(robotX) = DX and next(robotY) = DY); //the robot stays there
+
+//the robot moves one step at a time
+//we allow diagonal moves as well as up/down/left/right
+gar alw (right(robotX) | left(robotX) | stayX(robotX)) and
+		(up(robotY) | down(robotY) | stayY(robotY));
+
+predicate right(DimX cord):
+	next(cord) - cord = 1;
+	
+predicate left(DimX cord):
+	next(cord) - cord = -1;
+	
+predicate stayX(DimX cord):
+	next(cord) = cord;
+
+predicate up(DimY cord):
+	next(cord) - cord = 1;
+	
+predicate down(DimY cord):
+	next(cord) - cord = -1;
+
+predicate stayY(DimY cord):
+	next(cord) = cord;
+	
+
+//the robot avoids obstacles
+gar alw !obs1 and !obs2 and !obs3 and !obs4 and !obs5 and !obs6 and !obs7 and !obs8 and !obs9 and !obs10 and
+		!obs11 and !obs12 and !obs13 and !obs14;
+
+//robot starts at top left
+gar ini start;
+

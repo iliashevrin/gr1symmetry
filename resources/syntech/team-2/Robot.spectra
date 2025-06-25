@@ -1,0 +1,104 @@
+import "DwyerPatterns.spectra"
+
+spec Robot
+
+define NumObstacles := 14;
+define DX := 7;
+define DY := 7;
+
+type DimX = Int(0..DX);
+type DimY = Int(0..DY);
+ 
+sys DimX robotX;
+sys DimY robotY;
+
+/*
+ * we defined a environment variable obstacle that consists of 2 cells on the grid.
+ * every cell in between the two cells that define the obstacle is part of the obstacle.
+ * 
+ * we also assume we have only two obstacles and they are parallel to the axes
+ */
+
+env DimX[2] obstacle1X;
+env DimY[2] obstacle1Y;
+
+env DimX[2] obstacle2X;
+env DimY[2] obstacle2Y;
+
+/*
+ * we assume that first coordinate if the left / bottom one
+ */
+ 
+//asm alw obstacle1X[0] <= obstacle1X[1];
+//asm alw obstacle2X[0] <= obstacle2X[1];
+//asm alw obstacle1Y[0] <= obstacle1Y[1];
+//asm alw obstacle2Y[0] <= obstacle2Y[1];
+
+
+/*
+ * in our case (Assignment 1)
+ * we assume that we only have two obstacles and they are placed exactly as described in the assignment 
+ */
+ 
+asm alw obstacle1X[0] = 2 & obstacle1X[1] = 2;
+asm alw obstacle2X[0] = 5 & obstacle2X[1] = 5;
+asm alw obstacle1Y[0] = 0 & obstacle1Y[1] = 6;
+asm alw obstacle2Y[0] = 1 & obstacle2Y[1] = 7;
+
+
+/**
+ * we define cell1 as [0,0] in the grid (top left corner) and
+ * cell2 as [7,7] in the grid (bottom right corner) 
+ **/
+define
+ 	cell1 := robotX = 0 & robotY =  0;		
+	cell2 := robotX = 7 & robotY =  7;
+
+/**
+ * Initially the robot is placed in cell1
+ * Eventually the robot is in cell2
+ * IF the robot arrives to cell2 it stays there forever
+ */
+gar ini cell1;
+gar alwEv cell2;
+gar alw cell2 -> next(cell2); 
+
+
+/*
+ * In order to not step on obstacles we guarantee that
+ * if our X coordinate is in the obstacle's X coordinate range,
+ * we will limit the Y coordinate to be outside the obstacle's Y range. 
+ */
+
+gar alwaysNotInObstacle1:
+	alw ((robotX >= obstacle1X[0] & robotX <= obstacle1X[1]) -> (robotY < obstacle1Y[0] | robotY > obstacle1Y[1]));
+
+//gar alw (robotX = 2 -> robotY=7);
+	
+gar alwaysNotInObstacle2:
+	alw ((robotX >= obstacle2X[0] & robotX <= obstacle2X[1]) -> (robotY < obstacle2Y[0] | robotY > obstacle2Y[1]));
+
+//gar alw (robotX = 5 -> robotY=0);
+
+
+/**
+ * restrict the moves of the robot to go only to neighboring
+ * squares
+ */
+gar robotMoves:
+  alw moveDistX(robotX) & moveDistY(robotY); 
+
+/**
+ * make sure parameter changes by at most +/- one 
+ * @param Dim pos
+ */    
+predicate moveDistX(DimX pos):
+  pos+1 = next(pos) |
+  pos   = next(pos) |
+  pos-1 = next(pos);  
+
+predicate moveDistY(DimY pos):
+  pos+1 = next(pos) |
+  pos   = next(pos) |
+  pos-1 = next(pos);  
+  

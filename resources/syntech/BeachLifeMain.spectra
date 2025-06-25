@@ -1,0 +1,186 @@
+import "DwyerPatterns.spectra"
+
+module BeachLife   
+
+define 
+	N_TENTH := 1;
+	N := N_TENTH*10;
+	V := 4;
+	
+	Tower1_x := N_TENTH*2;
+	Tower2_x := N_TENTH*7;
+	Towers_y := N_TENTH*8;
+	Ladders_y := Towers_y - 1;
+	
+	Shore_y := 5*N_TENTH;
+	
+	//There are 4 spots in which visitors can drown (defined here). 
+  	//Each life-guard is in charge of 2 drowning positions. 
+	atDrowningPosition1LG1_X := N_TENTH*3;
+	atDrowningPosition1LG1_Y := N_TENTH*1;
+	atDrowningPosition2LG1_X := N_TENTH*4;
+	atDrowningPosition2LG1_Y := N_TENTH*2;
+	atDrowningPosition1LG2_X := N_TENTH*7;
+	atDrowningPosition1LG2_Y := N_TENTH*1;
+	atDrowningPosition2LG2_X := N_TENTH*6;
+	atDrowningPosition2LG2_Y := N_TENTH*3;
+	
+
+type Dim = Int(0..(N-1));
+type VisitorsStates ={DROWNING,SAFE,SAVED};
+type Weather = {SUN,CLOUDS,STORM};
+type Flag = {WHITE,RED,BLACK};
+
+sys Dim[2] lifeguard1;
+sys Dim[2] lifeguard2;
+sys Flag flag1;
+sys Flag flag2;
+sys boolean lifeguard1_TsunamiWarning;
+sys boolean lifeguard2_TsunamiWarning;
+
+env Dim[V][2] visitor;
+env VisitorsStates[V] state;
+env Weather weather;
+env boolean Tsunami;
+
+define
+  inTower1 := lifeguard1[0] = Tower1_x & lifeguard1[1] = Towers_y;
+  inTower2 := lifeguard2[0] = Tower2_x & lifeguard2[1] = Towers_y;
+  onLadder1 := lifeguard1[0] = Tower1_x & lifeguard1[1] = Ladders_y;
+  onLadder2 := lifeguard2[0] = Tower2_x & lifeguard2[1] = Ladders_y;
+  
+  //Drowning Positions - each lifeguard is in charge of exactly two drowning positions
+  atDrowningPosition1LG1 := lifeguard1[0] = atDrowningPosition1LG1_X & lifeguard1[1] = atDrowningPosition1LG1_Y;
+  atDrowningPosition2LG1 := lifeguard1[0] = atDrowningPosition2LG1_X & lifeguard1[1] = atDrowningPosition2LG1_Y;
+  atDrowningPosition1LG2 := lifeguard2[0] = atDrowningPosition1LG2_X & lifeguard2[1] = atDrowningPosition1LG2_Y;
+  atDrowningPosition2LG2 := lifeguard2[0] = atDrowningPosition2LG2_X & lifeguard2[1] = atDrowningPosition2LG2_Y;
+  
+  //Return together = visitor follows lifeguard when lifeguard is saving him (visitor is always one step behind)
+  returnTogetherV0L1 := next(visitor[0][0])=lifeguard1[0] & next(visitor[0][1])=lifeguard1[1];
+  returnTogetherV1L2 := next(visitor[1][0])=lifeguard2[0] & next(visitor[1][1])=lifeguard2[1];
+  returnTogetherV2L1 := next(visitor[2][0])=lifeguard1[0] & next(visitor[2][1])=lifeguard1[1];
+  returnTogetherV3L2 := next(visitor[3][0])=lifeguard2[0] & next(visitor[3][1])=lifeguard2[1];  
+  
+predicate moveDist(Dim pos):
+  pos+1 = next(pos) |
+  pos   = next(pos) |
+  pos-1 = next(pos);
+
+//Initially all visitors are safe
+asm state[0]=SAFE;
+asm state[1]=SAFE;
+asm state[2]=SAFE;
+asm state[3]=SAFE;
+
+//Each visitor can drown in 2 drowning positions, defined above
+asm G (((visitor[0][0] != atDrowningPosition1LG1_X | visitor[0][1] != atDrowningPosition1LG1_Y) & (visitor[0][0] != atDrowningPosition2LG1_X | visitor[0][1] != atDrowningPosition2LG1_Y)) & state[0] != DROWNING) -> next(state[0]) != DROWNING;
+asm G (((visitor[2][0] != atDrowningPosition1LG1_X | visitor[2][1] != atDrowningPosition1LG1_Y) & (visitor[2][0] != atDrowningPosition2LG1_X | visitor[2][1] != atDrowningPosition2LG1_Y)) & state[2] != DROWNING) -> next(state[2]) != DROWNING;
+asm G (((visitor[1][0] != atDrowningPosition1LG2_X | visitor[1][1] != atDrowningPosition1LG2_Y) & (visitor[1][0] != atDrowningPosition2LG2_X | visitor[1][1] != atDrowningPosition2LG2_Y)) & state[1] != DROWNING) -> next(state[1]) != DROWNING;
+asm G (((visitor[3][0] != atDrowningPosition1LG2_X | visitor[3][1] != atDrowningPosition1LG2_Y) & (visitor[3][0] != atDrowningPosition2LG2_X | visitor[3][1] != atDrowningPosition2LG2_Y)) & state[3] != DROWNING) -> next(state[3]) != DROWNING;
+
+
+//Visitors move at most one step in each iteration.
+//When being saved by a lifeguard, the visitor follows the lifeguard's steps, and the lifeguard also moves at most one step each iteration.
+asm G state[0] != SAVED -> moveDist(visitor[0][0]) & moveDist(visitor[0][1]);
+asm G state[1] != SAVED -> moveDist(visitor[1][0]) & moveDist(visitor[1][1]);
+asm G state[2] != SAVED -> moveDist(visitor[2][0]) & moveDist(visitor[2][1]);
+asm G state[3] != SAVED -> moveDist(visitor[3][0]) & moveDist(visitor[3][1]);
+
+
+//Once a visitor starts drowning, he\she doesn't stop drowning until a lifeguard reaches him\her.
+asm	G (state[0]=DROWNING & (visitor[0][1] < Shore_y) & (visitor[0][0] != lifeguard1[0] | visitor[0][1] != lifeguard1[1] )) -> next(state[0]) = DROWNING;
+asm	G (state[1]=DROWNING & (visitor[1][1] < Shore_y) & (visitor[1][0] != lifeguard2[0] | visitor[1][1] != lifeguard2[1] )) -> next(state[1]) = DROWNING;
+asm	G (state[2]=DROWNING & (visitor[2][1] < Shore_y) & (visitor[2][0] != lifeguard1[0] | visitor[2][1] != lifeguard1[1] )) -> next(state[2]) = DROWNING;
+asm	G (state[3]=DROWNING & (visitor[3][1] < Shore_y) & (visitor[3][0] != lifeguard2[0] | visitor[3][1] != lifeguard2[1] )) -> next(state[3]) = DROWNING;
+
+//After a lifeguard reaches a drowning visitor, the visitor follows the lifeguard to shore.
+asm	G state[0]=SAVED -> returnTogetherV0L1;
+asm	G state[1]=SAVED -> returnTogetherV1L2;
+asm	G state[2]=SAVED -> returnTogetherV2L1;
+asm	G state[3]=SAVED -> returnTogetherV3L2;
+
+
+//When the visitor reaches shore after being saved, visitor is safe.
+asm G state[0]=SAVED & visitor[0][1] >= Shore_y -> next(state[0])=SAFE;
+asm G state[1]=SAVED & visitor[1][1] >= Shore_y -> next(state[1])=SAFE;
+asm G state[2]=SAVED & visitor[2][1] >= Shore_y -> next(state[2])=SAFE;
+asm G state[3]=SAVED & visitor[3][1] >= Shore_y -> next(state[3])=SAFE;
+
+//When visitor is safe, he\she stays safe or starts drowning.
+asm G state[0]=SAFE -> next(state[0]) != SAVED;
+asm G state[1]=SAFE -> next(state[1]) != SAVED;
+asm G state[2]=SAFE -> next(state[2]) != SAVED;
+asm G state[3]=SAFE -> next(state[3]) != SAVED;
+
+//When visitor is drowning and his dedicated lifeguard reaches him, he changes to saved.
+asm G (state[0] = DROWNING & visitor[0][0] = lifeguard1[0]) & visitor[0][1] = lifeguard1[1] -> next(state[0]) = SAVED;
+asm G (state[2] = DROWNING & visitor[2][0] = lifeguard1[0]) & visitor[2][1] = lifeguard1[1] -> next(state[2]) = SAVED; 
+asm G (state[1] = DROWNING & visitor[1][0] = lifeguard2[0]) & visitor[1][1] = lifeguard2[1] -> next(state[1]) = SAVED; 
+asm G (state[3] = DROWNING & visitor[3][0] = lifeguard2[0]) & visitor[3][1] = lifeguard2[1] -> next(state[3]) = SAVED; 
+ 
+
+//Initially both lifeguards are at towers.
+gar startInTower:
+  inTower1 & inTower2;
+
+//Initially there are no Tsunami warnings.  
+gar !lifeguard1_TsunamiWarning;
+gar !lifeguard2_TsunamiWarning;
+  
+//Initially both flags are white.
+gar flag1 = WHITE;
+gar flag2 = WHITE;
+
+//Lifeguards don't move more than one step in a single iteration.    
+gar lifguardMoves:
+	G moveDist(lifeguard1[0]) & moveDist(lifeguard1[1]) & moveDist(lifeguard2[0]) & moveDist(lifeguard2[1]);
+	
+//Lifeguards don't exit towers unless a visitor they are in charge of is drowning. 
+gar G (state[0] != DROWNING & state[2] != DROWNING) & inTower1 -> next(inTower1);
+gar G (state[1] != DROWNING & state[3] != DROWNING) & inTower2 -> next(inTower2);
+
+//Lifeguards don't step on each other.
+gar G next(lifeguard1[0]) != next(lifeguard2[0]) | next(lifeguard1[1]) != next(lifeguard2[1]);
+
+//Life-guards respond to drowning visitor by going to rescue him.
+//Since each life-guard is in charge of 2 drowning positions, this consists of 2 patterns -
+//from tower to first drowning position, then from first drowning position to second drowning position.
+gar S_responds_to_P_globally(atDrowningPosition1LG1, (state[0] = DROWNING | state[2] = DROWNING) & inTower1);
+gar S_responds_to_P_globally(atDrowningPosition2LG1, atDrowningPosition1LG1 & !atDrowningPosition2LG1 & !inTower1);
+gar S_responds_to_P_globally(atDrowningPosition1LG2, (state[1] = DROWNING | state[3] = DROWNING) & inTower2);
+gar S_responds_to_P_globally(atDrowningPosition2LG2, atDrowningPosition1LG2 & !atDrowningPosition2LG2 & !inTower2);
+
+//After reaching drowning positions (and saving drowning visitors), life-guard returns to tower.
+gar S_responds_to_P_globally(inTower1, atDrowningPosition2LG1 & !inTower1);
+gar S_responds_to_P_globally(inTower2, atDrowningPosition2LG2 & !inTower2);
+
+//Lifeguards can only enter\exit the towers by climbing the ladder.
+gar G inTower1 -> next(inTower1) | next(onLadder1);
+gar G inTower2 -> next(inTower2) | next(onLadder2);
+gar G !onLadder1 & !inTower1 -> !next(inTower1);
+gar G !onLadder2 & !inTower2 -> !next(inTower2);
+
+//Each Lifeguard doesn't walk on the other lifeguard's tower\ladder.
+gar G next(lifeguard1[0]) != Tower2_x | (next(lifeguard1[1]) != Ladders_y & next(lifeguard1[1]) != Towers_y);
+gar G next(lifeguard2[0]) != Tower1_x | (next(lifeguard2[1]) != Ladders_y & next(lifeguard2[1]) != Towers_y);
+
+//When lifeguard in tower, he changes the flag color according to weather.
+gar G (weather = SUN & inTower1) -> next(flag1) = WHITE;
+gar G (weather = CLOUDS & inTower1) -> next(flag1) = RED;
+gar G (weather = STORM & inTower1) -> next(flag1) = BLACK;
+gar G (weather = SUN & inTower2) -> next(flag2) = WHITE;
+gar G (weather = CLOUDS & inTower2) -> next(flag2) = RED;
+gar G (weather = STORM & inTower2) -> next(flag2) = BLACK;
+
+//When lifeguard is not in tower, flag color doesn't change.
+gar G !inTower1 -> next(flag1) = flag1;
+gar G !inTower2 -> next(flag2) = flag2;
+
+//If there is a Tsunami and lifeguard is in tower, lifeguard warns about the Tsunami.
+gar G (Tsunami & inTower1) -> next(lifeguard1_TsunamiWarning);
+gar G (Tsunami & inTower2) -> next(lifeguard2_TsunamiWarning);
+
+//If there is no Tsunami or Lifeguard isn't in tower, lifeguard doesn't warn about the Tsunami.
+gar G !(Tsunami & inTower1) -> !next(lifeguard1_TsunamiWarning);
+gar G !(Tsunami & inTower2) -> !next(lifeguard2_TsunamiWarning);
+  

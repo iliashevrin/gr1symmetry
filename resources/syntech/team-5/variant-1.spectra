@@ -1,0 +1,59 @@
+import "DwyerPatterns.spectra"
+
+spec Robot
+	
+define Dim := 5;
+
+type Coord = Int(0..(Dim - 1));
+type Point = Coord[2];
+
+sys Coord robotX;
+sys Coord robotY;
+
+env Point targetA;
+env Point targetB;
+env Point targetC;
+
+define at_targetA := robotX = targetA[0] & robotY = targetA[1];
+define at_targetB := robotX = targetB[0] & robotY = targetB[1];
+define at_targetC := robotX = targetC[0] & robotY = targetC[1];
+
+define robot_at_origin := at_origin(robotX, robotY);
+
+// Assume that targets cannot be at (0,0) or on one of the obstacles
+asm ini !on_obstacle(targetA[0], targetA[1]) &
+		!on_obstacle(targetB[0], targetB[1]) & 
+		!on_obstacle(targetC[0], targetC[1]);
+asm ini !at_origin(targetA[0], targetA[1]) & 
+		!at_origin(targetB[0], targetB[1]) & 
+		!at_origin(targetC[0], targetC[1]);
+
+// Assume that target locations never change during a run
+asm alw fixed_inplace(targetA[0], targetA[1]) &
+		fixed_inplace(targetB[0], targetB[1]) &
+		fixed_inplace(targetC[0], targetC[1]);
+
+// Fix the initial location of the robot at (0,0)
+gar ini robot_at_origin;
+
+// Move robot by at most 1 step each state: 
+gar alw next(robotY) = robotY - 1 | next(robotY) = robotY + 1 | next(robotY) = robotY;	
+gar alw next(robotX) = robotX - 1 | next(robotX) = robotX + 1 | next(robotX) = robotX;
+		
+// Make sure robot doesn't walk over obstacles
+gar alw !on_obstacle(robotX, robotY);	
+	
+// Make sure the robot visits the locations an infinite amount of times
+gar alwEv at_targetA;
+gar alwEv at_targetB;
+gar alwEv at_targetC;
+gar alwEv robot_at_origin;
+
+predicate on_obstacle(Coord x, Coord y):
+	(x = 1 & y = 1) | (x = 2 & y = 1) | (x = 0 & y = 3) | (x = 3 & y = 3) | (x = 3 & y = 4);
+
+predicate at_origin(Coord x, Coord y):
+	x = 0 & y = 0;
+
+predicate fixed_inplace(Coord x, Coord y):
+	x = next(x) & y = next(y);

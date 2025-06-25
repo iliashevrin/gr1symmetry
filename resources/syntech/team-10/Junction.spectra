@@ -1,0 +1,188 @@
+import "DwyerPatterns.spectra"
+
+spec JunctionModule
+
+// *********************************************
+// *** define type of all possible vehicles  ***
+// *********************************************
+
+type Vehicle = {NONE, CAR, EMERGENCY};
+
+// ****************************************************************************************
+// *** cars arrays env variables, index 0 - right , index 1 - straight , index 2 - left ***
+// ****************************************************************************************
+
+env Vehicle[3] vehiclesNorth;
+env Vehicle[3] vehiclesSouth;
+
+// ************************************************************
+// *** pedestrians arrays env variables                     ***
+// *** for south and north: index 0 - west , index 1 - east ***
+// *** for east and west: index 0 - north , index 1 - south ***
+// ************************************************************
+
+env boolean[2] pedestriansNorthPressed;
+env boolean[2] pedestriansSouthPressed;
+env boolean[2] pedestriansEastPressed;
+env boolean[2] pedestriansWestPressed;
+
+// ***********************************************
+// *** special climate heavy fog env variable ***
+// ***********************************************
+
+env boolean foggy;
+
+// *********************************************
+// *** north road constructions env variable ***
+// *********************************************
+
+env boolean roadConstructions;
+
+// *******************************************************************************************************
+// *** cars traffic lights arrays sys variables, index 0 - right , index 1 - straight , index 2 - left ***
+// *******************************************************************************************************
+
+sys boolean[3] greenNorthVehicles;
+sys boolean[3] greenSouthVehicles;
+
+// ************************************************************
+// *** pedestrians traffic lights arrays sys variables      ***
+// *** for south and north: index 0 - west , index 1 - east ***
+// *** for east and west: index 0 - north , index 1 - south ***
+// ************************************************************
+
+sys boolean[2] greenNorthPedestrians;
+sys boolean[2] greenSouthPedestrians;
+sys boolean[2] greenEastPedestrians;
+sys boolean[2] greenWestPedestrians;
+
+// ******************************************
+
+sys boolean freezeMode;
+//env boolean manualMode;
+
+//--------------------------------------------- Implementation from here --------------------------------
+//-------------------------------------------------------------------------------------------------------
+
+// the car doesn't move as long as the light is red
+
+predicate vehicleStays(Vehicle vehicle, boolean trafficLight):
+	vehicle != NONE & !trafficLight -> next(vehicle) = vehicle;
+
+asm alw vehicleStays(vehiclesNorth[0], greenNorthVehicles[0]);
+asm alw vehicleStays(vehiclesNorth[1], greenNorthVehicles[1]);
+asm alw vehicleStays(vehiclesNorth[2], greenNorthVehicles[2]);
+asm alw vehicleStays(vehiclesSouth[0], greenSouthVehicles[0]);
+asm alw vehicleStays(vehiclesSouth[1], greenSouthVehicles[1]);
+asm alw vehicleStays(vehiclesSouth[2], greenSouthVehicles[2]);
+
+// pedestrians doesn't cross the street when they have red light
+
+predicate pedestrianStays(boolean pedestrian, boolean trafficLight):
+	pedestrian & !trafficLight -> next(pedestrian) = pedestrian;
+
+asm alw pedestrianStays(pedestriansNorthPressed[0], greenNorthPedestrians[0]);
+asm alw pedestrianStays(pedestriansNorthPressed[1], greenNorthPedestrians[1]);
+asm alw pedestrianStays(pedestriansSouthPressed[0], greenSouthPedestrians[0]);
+asm alw pedestrianStays(pedestriansSouthPressed[1], greenSouthPedestrians[1]);
+asm alw pedestrianStays(pedestriansEastPressed[0], greenEastPedestrians[0]);
+asm alw pedestrianStays(pedestriansEastPressed[1], greenEastPedestrians[1]);
+asm alw pedestrianStays(pedestriansWestPressed[0], greenWestPedestrians[0]);
+asm alw pedestrianStays(pedestriansWestPressed[1], greenWestPedestrians[1]);
+
+// when a car arrives at junction, make sure it gets green light eventually
+
+gar trig [true]*[vehiclesNorth[0] = CAR] |=> [true]*[greenNorthVehicles[0]];
+gar trig [true]*[vehiclesNorth[1] = CAR] |=> [true]*[greenNorthVehicles[1]];
+gar trig [true]*[vehiclesNorth[2] = CAR] |=> [true]*[greenNorthVehicles[2]];
+gar trig [true]*[vehiclesSouth[0] = CAR] |=> [true]*[greenSouthVehicles[0]];
+gar trig [true]*[vehiclesSouth[1] = CAR] |=> [true]*[greenSouthVehicles[1]];
+gar trig [true]*[vehiclesSouth[2] = CAR] |=> [true]*[greenSouthVehicles[2]];
+
+// when a pedestrian arrives at junction, make sure it gets green light eventually
+
+gar trig [true]*[pedestriansNorthPressed[0]] |=> [true]*[greenNorthPedestrians[0]];
+gar trig [true]*[pedestriansNorthPressed[1]] |=> [true]*[greenNorthPedestrians[1]];
+gar trig [true]*[pedestriansSouthPressed[0]] |=> [true]*[greenSouthPedestrians[0]];
+gar trig [true]*[pedestriansSouthPressed[1]] |=> [true]*[greenSouthPedestrians[1]];
+gar trig [true]*[pedestriansEastPressed[0]] |=> [true]*[greenEastPedestrians[0]];
+gar trig [true]*[pedestriansEastPressed[1]] |=> [true]*[greenEastPedestrians[1]];
+gar trig [true]*[pedestriansWestPressed[0]] |=> [true]*[greenWestPedestrians[0]];
+gar trig [true]*[pedestriansWestPressed[1]] |=> [true]*[greenWestPedestrians[1]];
+
+// prevent car accidents and cars from running over pedestrians
+
+predicate notBothGreen(boolean trafficLight1, boolean trafficLight2):
+	!(trafficLight1 & trafficLight2);
+
+gar alw notBothGreen(greenNorthVehicles[1], greenSouthVehicles[2]);
+gar alw notBothGreen(greenSouthVehicles[2], greenNorthVehicles[0]); 
+gar alw notBothGreen(greenNorthVehicles[2], greenSouthVehicles[0]); 
+gar alw notBothGreen(greenNorthVehicles[2], greenSouthVehicles[1]); 
+
+// from here - dealing with pedestrians
+
+gar alw notBothGreen(greenNorthVehicles[0], greenWestPedestrians[0]);
+gar alw notBothGreen(greenNorthVehicles[2], greenNorthPedestrians[0]);
+gar alw notBothGreen(greenNorthVehicles[1], greenNorthPedestrians[0]);
+gar alw notBothGreen(greenNorthVehicles[0], greenNorthPedestrians[0]);
+gar alw notBothGreen(greenNorthVehicles[2], greenEastPedestrians[1]);
+gar alw notBothGreen(greenNorthVehicles[1], greenSouthPedestrians[0]);
+
+gar alw notBothGreen(greenSouthVehicles[2], greenWestPedestrians[0]);
+gar alw notBothGreen(greenSouthVehicles[1], greenNorthPedestrians[1]);
+gar alw notBothGreen(greenSouthVehicles[0], greenEastPedestrians[1]);
+gar alw notBothGreen(greenSouthVehicles[0], greenSouthPedestrians[1]);
+gar alw notBothGreen(greenSouthVehicles[1], greenSouthPedestrians[1]);
+gar alw notBothGreen(greenSouthVehicles[2], greenSouthPedestrians[1]);
+
+// when there's fog - no green lights are allowed
+
+gar alw foggy & vehiclesNorth[0] != EMERGENCY -> greenNorthVehicles[0] = false;
+gar alw foggy & vehiclesNorth[1] != EMERGENCY -> greenNorthVehicles[1] = false;
+gar alw foggy & vehiclesNorth[2] != EMERGENCY -> greenNorthVehicles[2] = false;
+gar alw foggy & vehiclesSouth[0] != EMERGENCY -> greenSouthVehicles[0] = false;
+gar alw foggy & vehiclesSouth[1] != EMERGENCY -> greenSouthVehicles[1] = false;
+gar alw foggy & vehiclesSouth[2] != EMERGENCY -> greenSouthVehicles[2] = false;
+
+// when there's construction on the north - no green light is allowed on the south road
+
+gar alw roadConstructions -> greenSouthVehicles[1] = false;	
+
+// make sure always eventually there will be a chance for all vehicles to cross
+
+asm alwEv !foggy & !roadConstructions & !emergencyExists;
+
+// make sure when an emergency vehicle arrives it gets a green light ASAP
+
+define emergencyExists := vehiclesNorth[0] = EMERGENCY | vehiclesNorth[1] = EMERGENCY |
+vehiclesNorth[2] = EMERGENCY | vehiclesSouth[0] = EMERGENCY | (vehiclesSouth[1] = EMERGENCY & 
+!roadConstructions) | vehiclesSouth[2] = EMERGENCY;
+
+define emergencyPriority := !emergencyExists | 
+((vehiclesNorth[0] = EMERGENCY) & (greenNorthVehicles[0])) |
+((vehiclesNorth[1] = EMERGENCY) & (greenNorthVehicles[1])) | 
+((vehiclesNorth[2] = EMERGENCY) & (greenNorthVehicles[2])) |
+((vehiclesSouth[0] = EMERGENCY) & (greenSouthVehicles[0])) | 
+((vehiclesSouth[1] = EMERGENCY) & (greenSouthVehicles[1]) & !roadConstructions) |
+((vehiclesSouth[2] = EMERGENCY) & (greenSouthVehicles[2]));
+
+gar alw !freezeMode -> emergencyPriority;
+
+// define freeze mode
+
+define FreezeCarTraffic := next(greenNorthVehicles[0]) = greenNorthVehicles[0] &
+next(greenNorthVehicles[1]) = greenNorthVehicles[0] & next(greenNorthVehicles[2]) = 
+greenNorthVehicles[2] & next(greenSouthVehicles[0]) = greenSouthVehicles[0] & 
+next(greenSouthVehicles[1]) = greenSouthVehicles[1] & next(greenSouthVehicles[2]) = 
+greenSouthVehicles[2];
+
+define FreezePedastrianTraffic := next(pedestriansNorthPressed[0]) = pedestriansNorthPressed[0] &
+next(pedestriansNorthPressed[1]) = pedestriansNorthPressed[1] & next(pedestriansSouthPressed[0]) = 
+pedestriansSouthPressed[0] & next(pedestriansSouthPressed[1]) = pedestriansSouthPressed[1] & 
+next(pedestriansEastPressed[0]) = pedestriansEastPressed[0] & next(pedestriansEastPressed[1]) = 
+pedestriansEastPressed[1] & next(pedestriansWestPressed[0]) = pedestriansWestPressed[0] &
+next(pedestriansWestPressed[1]) = pedestriansWestPressed[1];
+
+gar alw freezeMode -> FreezeCarTraffic & FreezePedastrianTraffic;
+gar alwEv !freezeMode;

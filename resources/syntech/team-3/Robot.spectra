@@ -1,0 +1,88 @@
+import "DwyerPatterns.spectra"
+
+spec Robot
+
+//define NumObstacles := 14;
+define DX := 8;
+define DY := 8;
+
+type DimX = Int(0..DX);
+type DimY = Int(0..DY);
+type Visited = {YES, NO};
+
+env DimX A_X;
+env DimY A_Y;
+env DimX B_X;
+env DimY B_Y;
+env DimX C_X;
+env DimY C_Y;
+env Visited A;
+env Visited B;
+env Visited C;
+env Visited Origin;
+
+
+asm alw fix (A_X, A_Y) & fix (B_X, B_Y) & fix (C_X, C_Y) ;
+asm ini avoid_obstacles (A_X, A_Y) & !((A_X = 0) & (A_Y = 0)) & avoid_obstacles (B_X, B_Y) & !((B_X = 0) & (B_Y = 0)) & avoid_obstacles (C_X, C_Y) & !((C_X = 0) & (C_Y = 0));
+asm ini (A = NO) & (B = NO) & (C = NO); 
+
+sys DimX robotX;
+sys DimY robotY;
+sys {UP, DOWN, LEFT, RIGHT, STAY}move;
+
+define at_A := ((robotX = A_X) & (robotY = A_Y));
+define at_B := ((robotX = B_X) & (robotY = B_Y));
+define at_C := ((robotX = C_X) & (robotY = C_Y));
+define at_origin := ((robotX = 0) & (robotY = 0));
+define all_visited := ((A = YES) & (B = YES) & (C = YES));
+define A_visited := (next (A) = YES);
+define B_visited := (next (B) = YES);
+define C_visited := (next (C) = YES);
+define Origin_visited := (next (Origin) = YES);
+
+predicate avoid_obstacles (DimX x, DimY y):
+	(!((x = 1) & (y = 1)) & !((x = 5) & (y = 0)) & !((x = 5) & (y = 1)) & !((x = 5) & (y = 3)) & !((x = 5) & (y = 5)) & !((x = 5) & (y = 7)) & !((x = 3) & (y = 3)) & !((x = 2) & (y = 5)) & !((x = 3) & (y = 7)));
+
+predicate fix (DimX x, DimY y):
+	next (x) = x & next (y) = y;
+	
+/*Defining moves*/
+gar alw move = UP implies (next (robotY) = robotY - 1) & (next (robotX) = robotX);
+gar alw move = DOWN implies (next (robotY) = robotY + 1) & (next (robotX) = robotX);
+gar alw move = LEFT implies (next (robotX) = robotX - 1) & (next (robotY) = robotY);
+gar alw move = RIGHT implies (next (robotX) = robotX + 1) & (next (robotY) = robotY);
+gar alw move = STAY implies (next (robotX) = robotX) & (next (robotY) = robotY);
+
+/*Mark targets as visited once they are visited*/
+gar alw at_A implies A_visited & !Origin_visited;
+gar alw at_B implies B_visited & !Origin_visited;
+gar alw at_C implies C_visited & !Origin_visited;
+gar alw at_origin implies Origin_visited;
+gar ini Origin = YES;
+gar ini A = NO;
+gar ini B = NO;
+gar ini C = NO;
+
+gar alw ( (!at_A) & (!all_visited) ) implies (next (A) = A);
+gar alw ( (!at_B) & (!all_visited) ) implies (next (B) = B);
+gar alw ( (!at_C) & (!all_visited) ) implies (next (C) = C);
+gar alw (!at_origin) implies (next (Origin) = Origin);
+
+/*Mark targets as unvisited after they've all been visited*/
+gar alw all_visited implies (!A_visited & !B_visited & !C_visited);
+
+/*Guaranteeing targets are visited*/
+gar alwEv at_A;
+gar alwEv at_B;
+gar alwEv at_C;
+
+/*Guaranteeing origin is visited before the next target*/
+gar P_is_true_before_R (Origin = YES, A = YES) ;
+gar P_is_true_before_R (Origin = YES, B = YES) ;
+gar P_is_true_before_R (Origin = YES, C = YES) ;
+
+/*Initialize at (0,0)*/
+gar ini at_origin; 
+gar alw (robotX = 0 implies move != LEFT) & (robotX = DX implies move != RIGHT) & (robotY = 0 implies move != UP) & (robotY = DY implies move != DOWN) & ((robotX = DX & robotY = DY) implies move = STAY);
+/*Avoiding obstacles at (1,1) , (5,0) , (5,1) , (5,3) , (5,5) , (5,7) , (3,3) , (2,5) , (3,7)*/
+gar alw avoid_obstacles (robotX, robotY) ;

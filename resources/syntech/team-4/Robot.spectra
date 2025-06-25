@@ -1,0 +1,85 @@
+import "DwyerPatterns.spectra"
+
+spec Robot
+
+//define NumObstacles := 14;
+define DX := 7;
+define DY := 7;
+
+type DimX = Int(0..DX);
+type DimY = Int(0..DY);
+
+sys DimX robotX;	// X position of the robot from 0 to 7
+sys DimY robotY;	// Y position of the robot from 0 to 7
+
+// x coordinate predicates
+predicate fixXpos(DimX Xpos):
+ 	next(Xpos) = Xpos;
+predicate moveXposRight(DimX Xpos):
+ 	next(Xpos) = Xpos +1;
+predicate moveXposLeft(DimX Xpos):
+ 	next(Xpos) = Xpos -1;
+
+// y coordinate predicates
+predicate fixYpos(DimY Ypos):
+ 	next(Ypos) = Ypos;
+predicate moveYposDown(DimY Ypos):
+ 	next(Ypos) = Ypos +1;
+predicate moveYposUp(DimY Ypos):
+ 	next(Ypos) = Ypos -1;
+
+// robot's one step moves
+predicate robotStay(DimX Xpos, DimY Ypos):
+	fixXpos(Xpos) & fixYpos(Ypos);
+predicate robotStepDown(DimX Xpos, DimY Ypos):
+	fixXpos(Xpos) & moveYposDown(Ypos); 
+predicate robotStepUp(DimX Xpos, DimY Ypos):
+	fixXpos(Xpos) & moveYposUp(Ypos); 
+predicate robotStepLeft(DimX Xpos, DimY Ypos):
+	moveXposLeft(Xpos) & fixYpos(Ypos); 
+predicate robotStepRight(DimX Xpos, DimY Ypos):
+	moveXposRight(Xpos) & fixYpos(Ypos); 
+predicate robotStepDiagDL(DimX Xpos, DimY Ypos):
+	moveXposLeft(Xpos) & moveYposDown(Ypos); 
+predicate robotStepDiagDR(DimX Xpos, DimY Ypos):
+	moveXposRight(Xpos) & moveYposDown(Ypos); 
+predicate robotStepDiagUL(DimX Xpos, DimY Ypos):
+	moveXposLeft(Xpos) & moveYposUp(Ypos); 
+predicate robotStepDiagUR(DimX Xpos, DimY Ypos):
+	moveXposRight(Xpos) & moveYposUp(Ypos); 
+
+// facilitate robot moves predicate
+predicate robotMove(DimX Xpos, DimY Ypos):
+ 	robotStay(Xpos, Ypos) | 
+ 	robotStepDown(Xpos, Ypos) | robotStepUp(Xpos, Ypos) | 
+ 	robotStepLeft(Xpos, Ypos) | robotStepRight(Xpos, Ypos) |
+ 	robotStepDiagDL(Xpos, Ypos) | robotStepDiagDR(Xpos, Ypos) | 
+ 	robotStepDiagUL(Xpos, Ypos) | robotStepDiagUR(Xpos, Ypos);
+ 	
+// avoid obstacles predicate
+predicate avoidLeftObstaclesLine(DimX Xpos, DimY Ypos):
+	(next(Xpos) = 2) -> (next(Ypos) = DY);
+ 
+predicate avoidRightObstaclesLine(DimX Xpos, DimY Ypos):
+	(next(Xpos) = 5) -> (next(Ypos) = 0);
+
+predicate stayInBoardLimits(DimX Xpos, DimY Ypos):
+	(Xpos >= 0) & (Xpos <= DX) & (Ypos >= 0) & (Ypos <= DY);
+
+
+// note locations
+define startPoint := (robotX = 0) & (robotY = 0);
+define endPoint := (robotX = DX) & (robotY = DY);
+
+// guarantees
+gar ini startPoint;	// start at top-left cell
+gar alwEv endPoint; // end at bottom-right cell
+
+gar alw robotMove(robotX, robotY);
+
+gar alw avoidLeftObstaclesLine(robotX, robotY);	
+gar alw avoidRightObstaclesLine(robotX, robotY);
+gar alw stayInBoardLimits(robotX, robotY);
+
+gar alw endPoint -> robotStay(robotX, robotY);
+

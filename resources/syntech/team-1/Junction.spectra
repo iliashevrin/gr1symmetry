@@ -1,0 +1,201 @@
+import "DwyerPatterns.spectra"
+
+module JunctionModule
+
+
+// *********************************************
+// *** define type of all possible vehicles  ***
+// *********************************************
+
+type Vehicle = {NONE, CAR, EMERGENCY};
+
+
+// ****************************************************************************************
+// *** cars arrays env variables, index 0 - right , index 1 - straight , index 2 - left ***
+// ****************************************************************************************
+
+env Vehicle[3] vehiclesNorth;
+env Vehicle[3] vehiclesSouth;
+
+
+// ************************************************************
+// *** pedestrians arrays env variables                     ***
+// *** for south and north: index 0 - west , index 1 - east ***
+// *** for east and west: index 0 - north , index 1 - south ***
+// ************************************************************
+
+env boolean[2] pedestriansNorthPressed;
+env boolean[2] pedestriansSouthPressed;
+env boolean[2] pedestriansEastPressed;
+env boolean[2] pedestriansWestPressed;
+
+
+// ***********************************************
+// *** special climate heavy fog env variable ***
+// ***********************************************
+
+env boolean foggy;
+
+
+// *********************************************
+// *** north road constructions env variable ***
+// *********************************************
+
+env boolean roadConstructions;
+
+
+// *******************************************************************************************************
+// *** cars traffic lights arrays sys variables, index 0 - right/east , index 1 - straight , index 2 - left/west ***
+// *******************************************************************************************************
+
+sys boolean[3] greenNorthVehicles;
+sys boolean[3] greenSouthVehicles;
+
+
+// ************************************************************
+// *** pedestrians traffic lights arrays sys variables      ***
+// *** for south and north: index 0 - west , index 1 - east ***
+// *** for east and west: index 0 - north , index 1 - south ***
+// ************************************************************
+
+sys boolean[2] greenNorthPedestrians; //west -0 east -1
+sys boolean[2] greenSouthPedestrians; //west -0 east -1
+sys boolean[2] greenEastPedestrians; //north -0 south -1
+sys boolean[2] greenWestPedestrians; //north -0 south -1
+
+// ******************************************
+
+sys boolean freezeMode;
+
+//--------------------------------------------- Implementation from here --------------------------------
+//-------------------------------------------------------------------------------------------------------
+
+// *******************************************
+
+//vehicles lights
+define northToWestLight := greenNorthVehicles[2];
+define northToEastLight := greenNorthVehicles[0];
+define northToSouthLight := greenNorthVehicles[1];
+define southToNorthLight := greenSouthVehicles[1];
+define southToEastLight := greenSouthVehicles[0];
+define southToWestLight := greenSouthVehicles[2];
+
+
+//pedestrianLights
+define eastNorthernPedestrianLight := greenEastPedestrians[0];
+define eastSouthernPedestrianLight := greenEastPedestrians[1];
+define westNorthernPedestrianLight := greenWestPedestrians[0];
+define westSouthernPedestrianLight := greenWestPedestrians[1];
+define northEasternPedestrianLight := greenNorthPedestrians[1];
+define northWesternPedestrianLight := greenNorthPedestrians[0];
+define southEasternPedestrianLight := greenSouthPedestrians[1];
+define southWesternPedestrianLight := greenSouthPedestrians[0];
+
+// ******************************************
+predicate stayAtState(boolean s):
+	next(s) = s;
+
+//emergency defined as at least one emergency vehicle is waiting
+define emergency := exists i in Int(0..2). vehiclesNorth[i] = EMERGENCY or vehiclesSouth[i] = EMERGENCY;
+				
+define stay := forall j in Int(0..1). forall i in Int(0..2). stayAtState(greenNorthVehicles[i]) and stayAtState(greenSouthVehicles[i]) and stayAtState(greenEastPedestrians[j]) and stayAtState(greenWestPedestrians[j]) and stayAtState(greenNorthPedestrians[j]) and stayAtState(greenSouthPedestrians[j]);
+
+define asUsual := !foggy and !emergency and !roadConstructions and !freezeMode;		
+
+
+// *******************************************
+// lights clusters
+
+define clusterA :=  northToWestLight and northToEastLight and northToSouthLight and
+					northEasternPedestrianLight and westSouthernPedestrianLight and
+					southEasternPedestrianLight and eastNorthernPedestrianLight;
+
+define clusterB := southToEastLight and southToNorthLight and
+					westNorthernPedestrianLight and southWesternPedestrianLight;
+
+define clusterBWhenConstructions := southToEastLight and
+					westNorthernPedestrianLight and southWesternPedestrianLight;
+
+define clusterC := southToWestLight and northWesternPedestrianLight and
+					eastSouthernPedestrianLight;
+					
+define clusterAOff :=  !(northToWestLight or northToEastLight or northToSouthLight or
+					northEasternPedestrianLight or westSouthernPedestrianLight or
+					southEasternPedestrianLight or eastNorthernPedestrianLight);
+
+define clusterBOff := !(southToEastLight or southToNorthLight or
+					westNorthernPedestrianLight or southWesternPedestrianLight);
+
+define clusterBWhenConstructionsOff := !(southToEastLight or
+					westNorthernPedestrianLight or southWesternPedestrianLight);
+
+define clusterCOff := !(southToWestLight or northWesternPedestrianLight or
+					eastSouthernPedestrianLight);
+					
+define allLightsOff := clusterAOff and clusterBOff and clusterCOff;
+					
+
+// *******************************************
+// alw eventually assumptions
+
+asm alwEv asUsual;
+
+//asm only one emergency at a time
+asm alw forall i in Int(0..2). vehiclesNorth[i] = EMERGENCY ->
+			(forall j in Int(0..2). vehiclesSouth[j] != EMERGENCY and (i != j -> vehiclesNorth[j] != EMERGENCY));
+
+asm alw forall i in Int(0..2). vehiclesSouth[i] = EMERGENCY ->
+			(forall j in Int(0..2). vehiclesNorth[j] != EMERGENCY and (i != j -> vehiclesSouth[j] != EMERGENCY));
+					
+// *******************************************
+//*******************GARS*********************
+
+//***** EMERGENCY CAR BEHAVOIR ******
+//all lights are red when foggy
+gar alw foggy and !emergency -> allLightsOff;
+
+// when constructions, modify cluster B
+gar alw roadConstructions -> !greenSouthVehicles[1];
+
+// all lights stay the same when freeze mode
+gar alw freezeMode -> stay;
+
+
+//***** CARS BEHAVOIR ******
+
+// cars dont disappear until allowed to pass
+asm alw forall i in Int(0..2). 
+		((vehiclesNorth[i] != NONE) and !greenNorthVehicles[i]) -> next(vehiclesNorth[i]) = vehiclesNorth[i];
+asm alw forall i in Int(0..2). 
+		((vehiclesSouth[i] != NONE) and !greenSouthVehicles[i]) -> next(vehiclesSouth[i]) = vehiclesSouth[i];
+		
+//***** PEDESTRIANS BEHAVOIR ******
+
+// peds dont disappear until allowed to pass
+asm alw forall i in Int(0..1). 
+		(pedestriansNorthPressed[i] and !greenNorthPedestrians[i]) -> next(pedestriansNorthPressed[i]);
+asm alw forall i in Int(0..1). 
+		(pedestriansSouthPressed[i] and !greenSouthPedestrians[i]) -> next(pedestriansSouthPressed[i]);		
+asm alw forall i in Int(0..1). 
+		(pedestriansEastPressed[i] and !greenEastPedestrians[i]) -> next(pedestriansEastPressed[i]);
+asm alw forall i in Int(0..1). 
+		(pedestriansWestPressed[i] and !greenWestPedestrians[i]) -> next(pedestriansWestPressed[i]);
+
+//***** CLUSTERS BEHAVOIR ******
+
+asm alw roadConstructions -> vehiclesSouth[1]!= EMERGENCY;
+
+//clusters can only be green one at a time
+gar alw clusterA -> (clusterBOff and clusterBWhenConstructionsOff and clusterCOff);
+gar alw (clusterB or clusterBWhenConstructions) -> (clusterAOff and clusterCOff);
+gar alw clusterC -> (clusterBOff and clusterBWhenConstructionsOff and clusterAOff);
+
+gar alw clusterA or clusterB or clusterBWhenConstructions or clusterC or (allLightsOff) or emergency;
+
+gar alw forall i in Int(0..2). forall j in Int(0..2). forall k in Int(0..1).
+	( vehiclesNorth[i]= EMERGENCY -> (greenNorthVehicles[i] and !greenSouthVehicles[i] and
+		 (j != i -> !greenNorthVehicles[j] and !greenSouthVehicles[j]) and !greenEastPedestrians[k] and !greenWestPedestrians[k] and !greenSouthPedestrians[k] and !greenNorthPedestrians[k]));
+gar alw forall i in Int(0..2). forall j in Int(0..2). forall k in Int(0..1).
+	( vehiclesSouth[i]= EMERGENCY -> (greenSouthVehicles[i] and !greenNorthVehicles[i] and
+		 (j != i -> !greenSouthVehicles[j] and !greenNorthVehicles[j]) and !greenEastPedestrians[k] and !greenWestPedestrians[k] and !greenSouthPedestrians[k] and !greenNorthPedestrians[k]));
+

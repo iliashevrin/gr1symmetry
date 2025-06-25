@@ -1,0 +1,124 @@
+spec Connect4Main
+
+define NUMBEROFCOLUMNS := 3;
+define NUMBEROFROWS := 3;
+
+define NUMBEROFCOLUMNSMINUSONE := NUMBEROFCOLUMNS-1;
+define NUMBEROFROWSMINUSONE := NUMBEROFROWS-1;
+
+type color = {EMPTY, P1, P2};
+
+define existEmpty := exists i in Int(0..NUMBEROFROWSMINUSONE) .
+	exists j in Int(0..NUMBEROFCOLUMNSMINUSONE) .
+	stateOfGrid[i][j]=EMPTY;
+
+// sys token to insert
+sys Int(0..NUMBEROFROWSMINUSONE) sysRow;
+sys Int(0..NUMBEROFCOLUMNSMINUSONE) sysCol;
+
+// env token to insert
+env Int(0..NUMBEROFROWSMINUSONE) envRow;
+env Int(0..NUMBEROFCOLUMNSMINUSONE) envCol; 
+
+// current turn is sys turn
+env boolean sysTurn;
+    
+//state of grid
+env color[NUMBEROFROWS][NUMBEROFCOLUMNS] stateOfGrid; 
+
+//board is initially empty
+asm boardIsInitiallyEmpty:
+ini forall i in Int(0..NUMBEROFROWSMINUSONE) .
+	forall j in Int(0..NUMBEROFCOLUMNSMINUSONE) .
+    stateOfGrid[i][j] = EMPTY;
+
+// non empty position remains non empty and keeps its value
+asm nonEmptyPositionRemainsNonEmpty:
+G 	forall i in Int(0..NUMBEROFROWSMINUSONE) .
+	forall j in Int(0..NUMBEROFCOLUMNSMINUSONE) .
+	(stateOfGrid[i][j]!=EMPTY) -> (next(stateOfGrid[i][j])=stateOfGrid[i][j]);
+
+// sys player plays first    
+asm ini sysTurn = true;
+ 
+// if there is an empty slot, turns always alternate 
+asm G existEmpty -> (next(sysTurn) != sysTurn);
+
+// if there is no empty slot, we don't care about turns anymore, say I fix it to make the strategy smaller
+asm G !existEmpty -> next(sysTurn) = true;
+
+asm envCanOnlyChooseAnEmptyPosition:
+G   next(existEmpty) -> (!next(sysTurn) -> (
+	forall i in Int(0..NUMBEROFROWSMINUSONE) .
+	forall j in Int(0..NUMBEROFCOLUMNSMINUSONE) .
+    ((i=next(envRow)) & (j=next(envCol))) -> next(stateOfGrid[i][j])=EMPTY
+    )); 
+
+gar sysCanOnlyChooseAnEmptyPosition:
+G   next(existEmpty) -> (next(sysTurn) -> (
+	forall i in Int(0..NUMBEROFROWSMINUSONE) .
+	forall j in Int(0..NUMBEROFCOLUMNSMINUSONE) .
+    ((i=next(sysRow)) & (j=next(sysCol))) -> next(stateOfGrid[i][j])=EMPTY
+    ));
+
+asm envChoiceBecomesP1:
+G  existEmpty -> (!sysTurn & !sysWin -> (
+	forall i in Int(0..NUMBEROFROWSMINUSONE) .
+	forall j in Int(0..NUMBEROFCOLUMNSMINUSONE) .
+    (
+    	 ( ((i=envRow) & (j=envCol) & stateOfGrid[i][j]=EMPTY) -> next(stateOfGrid[i][j])=P1 ) &
+    	 ( ((i!=envRow) | (j!=envCol) | stateOfGrid[i][j]!=EMPTY) -> next(stateOfGrid[i][j])=stateOfGrid[i][j]  )  
+    )));     
+
+asm sysChoiceBecomesP2:
+G   existEmpty -> (sysTurn & !sysWin -> (
+	forall i in Int(0..NUMBEROFROWSMINUSONE) .
+	forall j in Int(0..NUMBEROFCOLUMNSMINUSONE) .
+    (
+    	(((i=sysRow) & (j=sysCol) & stateOfGrid[i][j]=EMPTY) -> next(stateOfGrid[i][j])=P2 ) & 
+    	( ((i!=sysRow) | (j!=sysCol) | stateOfGrid[i][j]!=EMPTY) -> next(stateOfGrid[i][j])=stateOfGrid[i][j]  ) 
+    )));    
+
+// can't put token above an empty slot unless it is the first row (highest empty slot for row):
+
+gar nonEmptySlotAlwaysHasNonEmptySlotBelowIt:
+G   next(existEmpty) -> (next(sysTurn) -> (
+	forall i in Int(1..NUMBEROFROWSMINUSONE) .
+	forall j in Int(0..NUMBEROFCOLUMNSMINUSONE) .
+    ((i=next(sysRow)) & (j=next(sysCol)) & next(stateOfGrid[i][j])=EMPTY) -> next(stateOfGrid[i-1][j])!=EMPTY
+    ));
+    
+gar nonEmptySlotAlwaysHasNonEmptySlotBelowItIni:
+ini   (existEmpty) -> ((sysTurn) -> (
+	forall i in Int(1..NUMBEROFROWSMINUSONE) .
+	forall j in Int(0..NUMBEROFCOLUMNSMINUSONE) .
+    ((i=(sysRow)) & (j=(sysCol)) & (stateOfGrid[i][j])=EMPTY) -> (stateOfGrid[i-1][j])!=EMPTY
+    ));
+    
+asm nonEmptySlotAlwaysHasNonEmptySlotBelowIt2:
+G   next(existEmpty) -> (!next(sysTurn) -> (
+	forall i in Int(1..NUMBEROFROWSMINUSONE) .
+	forall j in Int(0..NUMBEROFCOLUMNSMINUSONE) .
+    ((i=next(envRow)) & (j=next(envCol)) & next(stateOfGrid[i][j])=EMPTY) -> next(stateOfGrid[i-1][j])!=EMPTY
+    ));    
+    
+// about winning:
+
+predicate winner(color clr):
+	exists j in Int(0..NUMBEROFCOLUMNSMINUSONE) .
+		(stateOfGrid[0][j]=clr & stateOfGrid[1][j]=clr & stateOfGrid[2][j]=clr)
+	|
+	(exists i in Int(0..NUMBEROFROWSMINUSONE) .
+		(stateOfGrid[i][0]=clr & stateOfGrid[i][1]=clr & stateOfGrid[i][2]=clr)
+	|
+	
+	(stateOfGrid[0][0]=clr & stateOfGrid[1][1]=clr & stateOfGrid[2][2]=clr)
+	
+	|
+	(stateOfGrid[0][2]=clr & stateOfGrid[1][1]=clr & stateOfGrid[2][0]=clr))
+;
+
+define sysWin := winner(P2);
+define envWin := winner(P1);	
+
+gar G !envWin; //env does not win 

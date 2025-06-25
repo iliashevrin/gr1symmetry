@@ -1,0 +1,157 @@
+import "DwyerPatterns.spectra"
+
+spec Variant3
+
+define NumObstacles := 5;
+define DX := 4;
+define DY := 4;
+
+type DimX = Int(0..DX);
+type DimY = Int(0..DY);
+type Dim = Int(0..4);
+ 
+sys DimX robotX;
+sys DimY robotY;
+
+/*
+ * random environment variables that are fixed throughout the run
+ */
+env Dim[2] cellA;
+env Dim[2] cellB;
+env Dim[2] cellC;
+ 
+/*
+ * we'll define 'home' as "the robot is at (0,0)
+ * same for each target
+ */
+define
+	home := robotX = 0 & robotY =  0;
+	atCellA := (robotX = cellA[0]) & (robotY = cellA[1]);
+	atCellB := (robotX = cellB[0]) & (robotY = cellB[1]);
+	atCellC := (robotX = cellC[0]) & (robotY = cellC[1]);
+	
+
+// targets are not on obstacles or on (4,4)
+predicate targetNotOnObstacleOrHome(Dim cellX, Dim cellY):
+	(!(cellX = 0 & cellY = 0)) & (!(cellX = 0 & cellY = 3)) & (!(cellX = 1 & cellY = 1)) & (!(cellX = 2 & cellY = 1)) & (!(cellX = 3 & cellY = 3)) & (!(cellX = 3 & cellY = 4)) & (!(cellX = 4 & cellY = 4));
+
+asm alw targetNotOnObstacleOrHome(cellA[0], cellA[1]);
+asm alw targetNotOnObstacleOrHome(cellB[0], cellB[1]);
+asm alw targetNotOnObstacleOrHome(cellC[0], cellC[1]);
+
+
+// the robot does not step on obstacles
+predicate robotNotOnObstacle(DimX robotX, DimY robotY):
+	(!(robotX = 0 & robotY = 3)) & (!(robotX = 1 & robotY = 1)) & (!(robotX = 2 & robotY = 1)) & (!(robotX = 3 & robotY = 3)) & (!(robotX = 3 & robotY = 4));
+
+gar alw robotNotOnObstacle(robotX, robotY);
+gar alw robotY<3;
+
+// targets are in different locations
+predicate targetsAreDifferent(Dim cell1X, Dim cell1Y, Dim cell2X, Dim cell2Y):
+	!((cell1X = cell2X) & (cell1Y = cell2Y));
+
+asm alw targetsAreDifferent(cellA[0], cellA[1], cellB[0], cellB[1]);
+asm alw targetsAreDifferent(cellA[0], cellA[1], cellC[0], cellC[1]);
+asm alw targetsAreDifferent(cellB[0], cellB[1], cellC[0], cellC[1]);
+
+
+// targets do not move
+asm alw cellA[0] = next(cellA[0]) & cellA[1] = next(cellA[1]);
+asm alw cellB[0] = next(cellB[0]) & cellB[1] = next(cellB[1]);
+asm alw cellC[0] = next(cellC[0]) & cellC[1] = next(cellC[1]);
+
+asm alw cellA[0]=1 & cellA[1]=0;
+asm alw cellB[0]=2 & cellB[1]=0;
+asm alw cellC[0]=3 & cellC[1]=0;
+
+// visit each target and home fairly
+gar alwEv atCellA;
+gar alwEv atCellB;
+gar alwEv atCellC;
+ 
+sys boolean green1;
+sys boolean green2;
+sys boolean green3;
+sys boolean robotGreen;
+sys boolean goHome;
+
+env boolean engineProblem;
+
+// start at home
+gar ini home; 
+gar ini green1;
+gar ini green2;
+gar ini green3;
+gar ini robotGreen;
+gar ini !goHome;
+asm ini !engineProblem;
+
+asm home -> !engineProblem;
+gar alw engineProblem -> (goHome);
+gar alw home -> (!goHome);
+gar alw (goHome & next(!home)) -> next(goHome);
+gar alw (!goHome & next(!engineProblem)) -> next(!goHome); 
+
+/*Once in a while, a robot might have an engine problem; when an engine problem occurs, 
+ * the robot changes its color to yellow
+ */
+gar alw (goHome) iff !robotGreen;
+
+asm trig [true]*[engineProblem] |=> [goHome & !engineProblem]*[home];
+
+
+// we don't have problems at home
+/* the robot changes its color to yellow and goes back to its initial location (0,0) and change to green */
+asm alw home -> next(!engineProblem);
+
+// there will not be a problem in less than 15 steps
+asm trig [true]*[engineProblem]|=> [!engineProblem]{16,};
+
+/*
+ * When a robot visits a location (when there's no problem), the location׳’ג‚¬ג„¢s color is changed to red
+ * if the robot is having a problem, it is not considered a visit
+ */
+gar alw (atCellA & robotGreen) -> !green1;
+gar alw (atCellB & robotGreen) -> !green2;
+gar alw (atCellC & robotGreen) -> !green3;
+
+/*A robot cannot visit a location while it is red. */
+gar alw (robotGreen & !green1) -> !next(atCellA);
+gar alw (robotGreen & !green2) -> !next(atCellB);
+gar alw (robotGreen & !green3) -> !next(atCellC);
+
+/*
+ * When a robot visits a location, the location׳, color is changed to red for 3 to 5 turns. 
+ * After that, the location׳ color is changed back to green.
+ */
+gar trig [true]*[!green1] |=> [!green1]{2,4}[green1];
+gar trig [true]*[!green2] |=> [!green2]{2,4}[green2];
+gar trig [true]*[!green3] |=> [!green3]{2,4}[green3];
+
+// Green targets stay green if not visited
+gar alw (green1 & !next(atCellA)) -> next(green1);
+gar alw (green2 & !next(atCellB)) -> next(green2);
+gar alw (green3 & !next(atCellC)) -> next(green3);
+
+/*
+ * restrict the moves of the robot to go only to neighboring
+ * squares
+ */
+gar robotMoves:
+  alw moveDistX(robotX) & moveDistY(robotY); 
+
+/**
+ * make sure parameter changes by at most +/- one 
+ * @param Dim pos
+ */    
+predicate moveDistX(DimX pos):
+  pos+1 = next(pos) |
+  pos   = next(pos) |
+  pos-1 = next(pos);  
+
+predicate moveDistY(DimY pos):
+  pos+1 = next(pos) |
+  pos   = next(pos) |
+  pos-1 = next(pos);  
+  

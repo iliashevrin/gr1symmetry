@@ -1,0 +1,269 @@
+/**************************************************************************************************/
+/***                                                                                            ***/
+/***                 Welcome to the ShoppingMallCovid specification!                            ***/
+/***                                                                                            ***/
+/*** Before synthesizing a controller, user should set desired values for:                      ***/
+/***                                                                                            ***/
+/***   StoresNum - the number of stores in the mall (Default value is 4)                        ***/
+/***   StoreCapacity - max number of customers inside each store (Default value is 2)           ***/
+/***   LineCapacity - max number of customers on each waiting line (Default value is 3)         ***/
+/***   MaxIlls - max number of states on which new COVID customer arrived (Default value is 13) ***/
+/***   MaxNoCop - number of states between each mallCop patrol (Default value is 10)  		    ***/
+/***                                                                                            ***/
+/**************************************************************************************************/
+
+spec ShoppingMallCovidMain     
+
+/**************************************************************/
+/***                     User defines                      ****/
+/**************************************************************/
+
+//Number of stores in the simulation
+define StoresNum:=4;
+
+//Maximum number of customers allowed in each store
+define StoreCapacity:=2;
+
+//Maximum number of customers allowed in each waiting line
+define LineCapacity := 3;
+
+//Maximum number of states with ill customers after which mallClean is triggered
+define MaxIlls := 13;
+
+//Maximum number of states between each cop patrol
+define MaxNoCop := 10;
+
+/**************************************************************/
+/***           System useful defines and types             ****/
+/**************************************************************/
+
+type SystemMode = {REGULAR, QUARANTINE, WEEKEND};
+type CustomerState = {NONE, HEALTHY, COVID, FEVER};
+type StoreStatus = {OPEN, CLOSED};
+
+//Indicating whether a new COVID customer arrived
+define isCovidCustomer:=exists i in Int(0..N).(newCustomers[i]=COVID);
+//Indicating whether a new COVID or FEVER customer arrived
+define isFeverCustomer:=exists i in Int(0..N).((newCustomers[i]=FEVER)|(newCustomers[i]=COVID));
+
+//Indicating whether a all stores and lines are empty
+define mallIsEmpty := forall i in Int(0..N).(newCustomers[i]=NONE & insideStores[i] = 0 & peopleInStoreLine[i]=0);
+//Indicating whether a all stores are closed
+define mallIsClosed := forall i in Int(0..N).(statusStores[i] = CLOSED);
+
+//N parameter for "forall" loops over arrays
+define N:=StoresNum-1;
+
+/**************************************************************/
+/***                System useful counters                 ****/
+/**************************************************************/
+
+//Number of FEVER or COVID customers arrived to the mall indicating that the mall needs to be cleaned
+counter illCustomers(0..MaxIlls){
+	illCustomers=0;
+	inc: !mallClean & isFeverCustomer;
+	reset: mallClean;
+	overflow: keep;
+}
+
+//Number of states between each mallCop patrol
+counter copPatrol(0..MaxNoCop){
+	copPatrol=0;
+	inc: !mallCop & !mallIsClosed;
+	reset: mallCop;
+	overflow: false;
+}
+
+/**************************************************************/
+/***        Environment controlled input variables         ****/
+/**************************************************************/
+
+//Incoming new customers for each store
+env CustomerState[StoresNum] newCustomers;
+//The mall mode - regular / quarantine / weekend
+env SystemMode mode;
+//The store status for each store during QUARANTINE mode
+env StoreStatus[StoresNum] qStoreState;
+//The store status for each store during WEEKEND mode
+env StoreStatus[StoresNum] wStoreState;
+//Indicator for a manual trigger for mallCop by the user
+env boolean callCop;
+
+/**************************************************************/
+/***          System controlled input variables            ****/
+/**************************************************************/
+
+//The number of customers inside each store
+sys Int(0..StoreCapacity)[StoresNum] insideStores;
+//The number of customers waiting in each store line
+sys Int(0..LineCapacity)[StoresNum] peopleInStoreLine;
+//Indicating whether a customer has entered a store
+sys boolean[StoresNum] entersStores;
+//Indicating whether a customer has left a store
+sys boolean[StoresNum] leaveStores;
+//Indicating whether a store is OPEN or CLOSED
+sys StoreStatus[StoresNum] statusStores;
+//Indicator for a mall cop to arrive
+sys boolean mallCop; 
+//Indicator for the mall to be closed
+sys boolean closeMall;
+//Indicator for the mall to be cleaned
+sys boolean mallClean;
+
+/**************************************************************/
+/***                 System assumptions                    ****/
+/**************************************************************/
+
+//At the beginning - the system mode is "REGULAR"
+asm mode = REGULAR;
+
+//At the beginning - the callCop is false
+asm !callCop;
+
+//At the beginning - no new customers
+asm forall i in Int(0..N).newCustomers[i]=NONE;
+
+//For each store, if the store is closed - no new customers can arrive
+asm G forall i in Int(0..N).(statusStores[i] = CLOSED -> next(newCustomers[i])=NONE);
+
+//New customers are arriving to open stores infinitely often
+asm GF exists i in Int(0..N).(statusStores[i] = OPEN -> newCustomers[i]!=NONE);
+
+/**************************************************************/
+/***                  System guarantees                    ****/
+/**************************************************************/
+
+//At the beginning - the closeMall is false
+gar closeMall=false;
+
+//At the beginning - the mallCop is false
+gar mallCop=false;
+
+//At the beginning - the mallClean is false
+gar mallClean=false;
+
+//At the beginning - all stores are open
+gar forall i in Int(0..N).(statusStores[i]) = OPEN;
+
+//At the beginning - all stores are empty
+gar forall i in Int(0..N).insideStores[i]=0;
+
+//At the beginning - all lines are empty
+gar forall i in Int(0..N).(peopleInStoreLine[i] = 0);
+
+//At the beginning - all stores are empty hence no customer is leaving
+gar forall i in Int(0..N).leaveStores[i]=false;
+
+//At the beginning - all lines are empty hence no customer is entering
+gar forall i in Int(0..N).entersStores[i]=false;
+
+//If the store is empty - no customer can leave the store
+gar G forall i in Int(0..N).insideStores[i]=0->leaveStores[i]=false;
+
+//If the mall is not empty - the mall cop should patrol every MaxNoCop states or when the user launched callCop scenario
+gar G (mallIsClosed) | (copPatrol < MaxNoCop & !callCop) -> !mallCop;
+gar G (callCop & !mallIsClosed) -> mallCop;
+
+/**************************************************************/
+/***              Counter related guarantees               ****/
+/**************************************************************/
+
+gar G forall i in Int(0..N).((newCustomers[i]=HEALTHY & peopleInStoreLine[i] < LineCapacity &  peopleInStoreLine[i]>0 & leaveStores[i]) |
+	(newCustomers[i]=HEALTHY & peopleInStoreLine[i] = LineCapacity & leaveStores[i]))
+	 -> (next(peopleInStoreLine[i]) =  peopleInStoreLine[i]) &
+	  	(next(insideStores[i]) = insideStores[i]) &
+	    ((entersStores[i] = true));
+	    
+gar G forall i in Int(0..N).(newCustomers[i]!=HEALTHY & peopleInStoreLine[i]>0 & insideStores[i]=StoreCapacity & !leaveStores[i]) |
+	(newCustomers[i]!=HEALTHY & peopleInStoreLine[i]=0 & !leaveStores[i])
+	 -> (next(peopleInStoreLine[i]) =  peopleInStoreLine[i]) &
+	  	(next(insideStores[i]) = insideStores[i]) &
+	  	((entersStores[i] = false));
+
+gar G forall i in Int(0..N).((newCustomers[i]=HEALTHY & peopleInStoreLine[i] =0  & !leaveStores[i]) |
+	(newCustomers[i]=HEALTHY & peopleInStoreLine[i]<LineCapacity & peopleInStoreLine[i]>0 & !leaveStores[i] & insideStores[i]=StoreCapacity) |
+	(newCustomers[i]=HEALTHY & peopleInStoreLine[i]=LineCapacity & insideStores[i]=StoreCapacity & !leaveStores[i]))
+	 -> (next(peopleInStoreLine[i]) =  peopleInStoreLine[i]+1) & 
+	 	(next(insideStores[i]) = insideStores[i]) &
+	 	((entersStores[i] = false));
+
+gar G forall i in Int(0..N).(newCustomers[i]=HEALTHY & peopleInStoreLine[i] =0  & leaveStores[i])
+	 -> (next(peopleInStoreLine[i]) =  peopleInStoreLine[i]+1) &
+	 	(next(insideStores[i]) = insideStores[i]-1) &
+	 	((entersStores[i] = false));
+
+gar G forall i in Int(0..N).((newCustomers[i]=HEALTHY & peopleInStoreLine[i]=LineCapacity  & !leaveStores[i] & insideStores[i]<StoreCapacity) |
+	(newCustomers[i]=HEALTHY & peopleInStoreLine[i]<LineCapacity & peopleInStoreLine[i]>0 & !leaveStores[i] & insideStores[i]<StoreCapacity))
+	 -> (next(peopleInStoreLine[i]) = peopleInStoreLine[i]) &
+	  	(next(insideStores[i]) = insideStores[i]+1) &
+	  	((entersStores[i] = true));
+
+gar G forall i in Int(0..N).(newCustomers[i]!=HEALTHY & peopleInStoreLine[i]>0  & !leaveStores[i] & insideStores[i]<StoreCapacity)
+	 -> (next(peopleInStoreLine[i]) = peopleInStoreLine[i]-1) &
+	  	(next(insideStores[i]) = insideStores[i]+1) &
+	  	((entersStores[i] = true));
+
+gar G forall i in Int(0..N).((newCustomers[i]!=HEALTHY & peopleInStoreLine[i]>0  & leaveStores[i] & insideStores[i]<StoreCapacity)|
+	(newCustomers[i]!=HEALTHY & peopleInStoreLine[i]>0  & leaveStores[i] & insideStores[i]=StoreCapacity))
+	 -> (next(peopleInStoreLine[i]) = peopleInStoreLine[i]-1) & 
+	 	(next(insideStores[i]) = insideStores[i]) &
+	 	((entersStores[i] = true));
+
+gar G forall i in Int(0..N).(newCustomers[i]!=HEALTHY & peopleInStoreLine[i]=0  & leaveStores[i])
+	 -> (next(peopleInStoreLine[i]) = peopleInStoreLine[i]) &
+	  	(next(insideStores[i]) = insideStores[i]-1) &
+	  	((entersStores[i] = false));
+
+//If both the line and the store are full - someone needs to leave the store on next state
+gar G forall i in Int(0..N).((peopleInStoreLine[i]>=(LineCapacity-1))&(insideStores[i]>=(StoreCapacity-1))) -> (leaveStores[i])=true;
+
+//Number of customers inside each store should be less than StoreCapacity
+gar G forall i in Int(0..N).insideStores[i]<=(StoreCapacity);
+
+//If the mall is closed - all stores should be closed
+gar G forall i in Int(0..N).closeMall->next(statusStores[i])=CLOSED;
+
+//Set the statusStores according to the current mode and predefined qStoreState and wStoreState
+gar G forall i in Int(0..N).((mode=QUARANTINE & !closeMall) -> next(statusStores[i])=qStoreState[i]) &
+							((mode=WEEKEND & !closeMall) -> next(statusStores[i])=wStoreState[i]) &
+							((mode=REGULAR & !closeMall) -> next(statusStores[i])=OPEN);
+
+//Just to get the counter working :-)
+gar G next(illCustomers)=illCustomers | next(illCustomers)!=illCustomers;
+
+//Cleaning staff cannot clean unless the mall is empty
+gar trig [true]*[(!mallIsEmpty | !mallIsClosed) & mallClean] |=> false;
+
+//If the mallCop caught a COVID customer or the illCustomers counter reached MaxIlls - close the mall, clean it and reopen 
+gar trig [true]*([mallCop & isCovidCustomer] | [illCustomers=MaxIlls]) |=> [closeMall]*[mallClean & closeMall][!mallClean & !closeMall];
+
+//The mall cannot be closed unless one of the 2 triggers happened
+gar trig [true]*[!closeMall]([closeMall] & ~([illCustomers=MaxIlls] | [mallCop & isCovidCustomer])) |=> false;
+
+/**************************************************************/
+/***                   Array counters                      ****/
+/***                 example with lines                    ****/
+/**************************************************************/
+
+/* 
+ * predicate incLine :
+ * (forall i in Int(0..N).
+ * (newCustomers[i]=HEALTHY & peopleInStoreLine[i] =0  & !leaveStores[i]) |
+ * (newCustomers[i]=HEALTHY & peopleInStoreLine[i]<LineCapacity & peopleInStoreLine[i]>0 & !leaveStores[i] & insideStores[i]=StoreCapacity) |
+ * (newCustomers[i]=HEALTHY & peopleInStoreLine[i]=LineCapacity & insideStores[i]=StoreCapacity & !leaveStores[i])) |
+ * (newCustomers[i]=HEALTHY & peopleInStoreLine[i] =0  & leaveStores[i]))
+ * 
+ * predicate decLine:
+ * (forall i in Int(0..N).(newCustomers[i]!=HEALTHY & peopleInStoreLine[i]>0  & !leaveStores[i] & insideStores[i]<StoreCapacity)|
+ * (newCustomers[i]!=HEALTHY & peopleInStoreLine[i]>0  & leaveStores[i] & insideStores[i]<StoreCapacity)|
+ * (newCustomers[i]!=HEALTHY & peopleInStoreLine[i]>0  & leaveStores[i] & insideStores[i]=StoreCapacity)))
+ * 
+ * 
+ * counter peopleInStoreLine[N](0..LineCapacity-1){
+ * forall i in Int(0..N).peopleInStoreLine[i] = 0;
+ * inc: incLine;
+ * dec: decLine;
+ * overflow: exists i in Int(0..N). peopleInStoreLine[i] >= LineCapacityfalse -> false;
+ * underflow: exists i in Int(0..N). peopleInStoreLine[i] <= 0 -> false;
+}
+*/ 
