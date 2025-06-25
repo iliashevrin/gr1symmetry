@@ -113,7 +113,7 @@ The columns of a cores computation csv file are:
 4. **Is Real.**: if true then assumptions core is computed for the particular mutant, is false then unrealizability core is computed for the particular mutant
 5. **Total**: average time of the configured number of repeats
 
-# Symmetry leveraging evaluation results format for SYNTECH
+## Symmetry leveraging evaluation results format for SYNTECH
 
 The columns of a realizability checking/cores computation csv file from the SYNTECH jar contain only two columns: "spec" and "time" that reports average of the configured number of repeats. The Real. Check time does not include the preparation time.
 
@@ -172,7 +172,7 @@ The columns of a symmetry detection csv file are:
 4. **Time**: average time of the configured number of repeats
 5. **Best?**: has the detected symmetry the maximum attainable symmetry score?
 
-# Symmetry detection evaluation results format for SYNTECH
+## Symmetry detection evaluation results format for SYNTECH
 
 The columns of a symmetry detection csv file from the SYNTECH jar are similar to the previous section, except there is no "remove" column, and there is an "annotation" column that contains the symmetry output from the detection algorithm, where new lines and commas are replaced with the token `***` for convenient csv storage.
 
