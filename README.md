@@ -101,7 +101,7 @@ The columns of a realizability checking csv file are:
 1. **Spec**: path of the specification
 2. **Size**: the value of N
 3. **Remove**: the index of the constraint removed to obtain the mutant. The value -1 indicates the original specification
-4. The time for every mutant measurement is divided into Prep. (symmetry validation and BDD construction) and Real. Check columns
+4. The time for every mutant measurement is divided into Prep. (symmetry validation and BDD construction) and Real. Check columns. The time reported is the average of the configured number of repeats
 5. **Total**: the sum of the two values in previous two columns. This is the value that we report in the paper. All values are an average of the configured number of repeats
 	  
 
@@ -110,8 +110,12 @@ The columns of a cores computation csv file are:
 1. **Spec**: path of the specification.
 2. **Size**: the value of N.
 3. **Remove**: the index of the constraint removed to obtain the mutant. The value -1 indicates the original specification
-4. **Is Real.**: if true then assumptions core is computed for the mutant, is false then unrealizability core
+4. **Is Real.**: if true then assumptions core is computed for the particular mutant, is false then unrealizability core is computed for the particular mutant
 5. **Total**: average time of the configured number of repeats
+
+# Symmetry leveraging evaluation results format for SYNTECH
+
+The columns of a realizability checking/cores computation csv file from the SYNTECH jar contain only two columns: "spec" and "time" that reports average of the configured number of repeats. The Real. Check time does not include the preparation time.
 
 # Executing symmetry detection evaluation JAR
 
