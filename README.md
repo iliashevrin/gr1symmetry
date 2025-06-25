@@ -84,8 +84,15 @@ The result of a cores computation evaluation is a CSV file in the following name
 
 The above example command will generate the file amba.spectra_SYMMETRY_DISABLE_REORDER_results.csv
 
+## Executing the symmetry leveraging evaluation JARs for SYNTECH
 
-# Symmetry Leveraging Evaluation Results Format
+Similarly to the previous section, make sure your session recognizes the CUDD library. The execution is as follows:
+
+`java -jar [realizability_evaluation_syntech.jar | cores_evaluation_syntech.jar] <PATH> <MODE> <REPEATS>`
+
+The only difference is that PATH refers to the SYNTECH directory, and there are no PARAMETERS in the arguments.
+
+# Symmetry leveraging evaluation results format
 
 The content of every csv file is a table with the measurement data.
 
@@ -106,7 +113,7 @@ The columns of a cores computation csv file are:
 4. **Is Real.**: if true then assumptions core is computed for the mutant, is false then unrealizability core
 5. **Total**: average time of the configured number of repeats
 
-# Executing the symmetry detection evaluation JARs
+# Executing symmetry detection evaluation JAR
 
 Make sure that your session recognizes the CUDD library by running the following command in the terminal before executing the JARs
         
@@ -141,7 +148,15 @@ The result of a detection evaluation is a CSV file in the following name format:
 
 The above example command will generate the file amba.spectra_SYNTAX_AWARE_DETECTION_results.csv
 
-# Symmetry Detection Evaluation Results Format
+## Executing symmetry detection evaluation JAR for SYNTECH
+
+Similarly to the previous section, make sure your session recognizes the CUDD and Z3 libraries. The execution is as follows:
+
+`java -jar detection_evaluation_syntech.jar <PATH> <MODE>`
+
+The only difference is that PATH refers to the SYNTECH directory, and there are no PARAMETERS and REPEATS in the arguments as we focused on symmetry prevalence and not detection performance in this evaluation.
+
+# Symmetry detection evaluation results format
 
 The content of every csv file is a table with the measurement data.
 
@@ -153,6 +168,9 @@ The columns of a symmetry detection csv file are:
 4. **Time**: average time of the configured number of repeats
 5. **Best?**: has the detected symmetry the maximum attainable symmetry score?
 
+# Symmetry detection evaluation results format for SYNTECH
+
+The columns of a symmetry detection csv file from the SYNTECH jar are similar to the previous section, except there is no "remove" column, and there is an "annotation" column that contains the symmetry output from the detection algorithm, where new lines and commas are replaced with the token `***` for convenient csv storage.
 
 # Executing the processing JAR
 
